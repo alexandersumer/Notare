@@ -1,0 +1,434 @@
+{
+  "swagger": "2.0",
+  "basePath": "/v1",
+  "info": {
+    "version": "0.0.1",
+    "title": "Notare Note Taking and Organisation System",
+    "description": "This service is used for storing notes taken against videos on youtube."
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "definitions": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "errorMessage": {
+          "type": "string",
+          "example": "error message"
+        }
+      }
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "note_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "note": {
+          "type": "string",
+          "example": "this is my note"
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "video_id": {
+          "type": "string",
+          "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+        },
+        "timestamp": {
+          "type": "number",
+          "example": 2.5
+        }
+      }
+    },
+    "video": {
+      "type": "object",
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "video_title": {
+          "type": "string",
+          "example": "physics 101"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "education",
+            "comedy"
+          ]
+        },
+        "notes_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "example": [
+            1,
+            4,
+            17
+          ]
+        },
+        "notes_count": {
+          "type": "integer",
+          "example": 3
+        }
+      }
+    }
+  },
+  "paths": {
+    "/notes": {
+      "get": {
+        "operationId": "get_notes",
+        "description": "this is used for getting notes for a youtube video",
+        "summary": "notes",
+        "tags": [
+          "Notes"
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "type": "string",
+            "in": "query",
+            "enum": [
+              "+note_id",
+              "+note",
+              "+user_id",
+              "+video_id",
+              "+timestamp",
+              "-note_id",
+              "-note",
+              "-user_id",
+              "-video_id",
+              "-timestamp"
+            ],
+            "default": "+timestamp"
+          },
+          {
+            "name": "note_id",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "video_id",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "user_id",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "timestamp",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "note",
+            "type": "string",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "notes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/note"
+                  }
+                },
+                "num_notes": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_notes",
+        "description": "this is used for creating notes on a youtube video",
+        "summary": "create notes",
+        "tags": [
+          "Notes"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "note": {
+                  "type": "string",
+                  "example": "this is my note"
+                },
+                "user_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "video_id": {
+                  "type": "string",
+                  "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+                },
+                "timestamp": {
+                  "type": "number",
+                  "example": 2.5
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/note"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "409": {
+            "description": "Conflict (Already Created)",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/notes/{note_id}": {
+      "get": {
+        "operationId": "get_note",
+        "description": "this is used for getting a specific note on a youtube video",
+        "summary": "get note",
+        "tags": [
+          "Notes"
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/note"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_notes",
+        "description": "this is used for editing notes on a youtube video",
+        "summary": "edit notes",
+        "tags": [
+          "Notes"
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/note"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/note"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_notes",
+        "description": "this is used for deleting notes on a youtube video",
+        "summary": "delete notes",
+        "tags": [
+          "Notes"
+        ],
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/videos": {
+      "get": {
+        "operationId": "get_videos",
+        "description": "this is used for getting the videos that a user has notes on",
+        "summary": "videos",
+        "tags": [
+          "Videos"
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "type": "string",
+            "in": "query",
+            "enum": [
+              "+video_id",
+              "+user_id",
+              "-video_id",
+              "-user_id",
+              "+video_title",
+              "-video_title",
+              "+categories",
+              "-categories",
+              "+notes_count",
+              "-notes_count"
+            ],
+            "default": "+video_id"
+          },
+          {
+            "name": "video_id",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "video_title",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "categories",
+            "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "notes_count",
+            "type": "integer",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "videos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/video"
+                  }
+                },
+                "num_videos": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
