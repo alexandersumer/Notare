@@ -19,6 +19,7 @@ pip3 install swagger-py-codegen <br/>
 swagger_py_codegen -s swagger.yaml app -p src --ui --spec <br/>
 cd app <br/>
 pip install -r requirements.txt <br/>
+Then copy relevant code from oldapp <br/>
 python3 src/__init__.py <br/>
 http://127.0.0.1:5000/static/swagger-ui/index.html <br/>
 
