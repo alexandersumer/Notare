@@ -11,5 +11,5 @@ class Videos(Resource):
 
     def get(self):
         print(g.args)
-
+        # TODO alex
         return {}, 200, None

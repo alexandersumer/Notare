@@ -53,5 +53,11 @@ class Notes(Resource):
     def post(self):
         print(g.json)
         # TODO mitch
+        # TODO validate video_id with youtube api
+        # TODO if video_id not in videos table database create new entry
+        # TODO leave video category empty for now
+        # TODO create new entry for note based off data provided
+
+        
 
         return {}, 201, None
