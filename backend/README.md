@@ -13,7 +13,7 @@ cp swagger.yaml oldswagger.yaml <br/>
 copy new swagger design into swagger.yaml <br/>
 rm -rf app <br/>
 rm -rf venv <br/>
-virtualenv --python=`which python3` venv <br/>
+virtualenv --python=\`which python3\` venv <br/>
 source ./venv/bin/activate <br/>
 pip3 install swagger-py-codegen <br/>
 swagger_py_codegen -s swagger.yaml app -p src --ui --spec <br/>
