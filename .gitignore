@@ -3,3 +3,4 @@ venv
 *__pycache__
 extension/dist/*
 extension/node_modules/*
+database.db
