@@ -34,16 +34,15 @@ def create_db():
             cur = conn.cursor()
             sql_command = """
             CREATE TABLE notes (
-                id INT NOT NULL, 
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
                 note VARCHAR,
-                user_id INT,
+                user_id INTEGER,
                 video_id VARCHAR,
-                timestamp DOUBLE,
-                PRIMARY KEY (id)
+                timestamp DOUBLE
             );
             CREATE TABLE videos (
                 id VARCHAR NOT NULL,
-                user_id INT,
+                user_id INTEGER,
                 video_title VARCHAR,
                 categories VARCHAR,
                 PRIMARY KEY (id)
