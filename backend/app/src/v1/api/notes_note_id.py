@@ -10,11 +10,13 @@ from .. import schemas
 class NotesNoteId(Resource):
 
     def get(self, note_id):
+        # TODO alex
 
         return {}, 200, None
 
     def put(self, note_id):
         print(g.json)
+        # TODO alex
 
         return {}, 200, None
 

@@ -49,5 +49,6 @@ class Notes(Resource):
 
     def post(self):
         print(g.json)
+        # TODO mitch
 
         return {}, 201, None
