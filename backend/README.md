@@ -1,5 +1,5 @@
 # BACKEND SETUP
-virtualenv --python=`which python3` venv <br/>
+virtualenv --python=\`which python3\` venv <br/>
 source ./venv/bin/activate <br/>
 cd app <br/>
 pip install -r requirements.txt <br/>
