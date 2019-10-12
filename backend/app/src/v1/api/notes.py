@@ -90,10 +90,10 @@ def get_notes(query_params, args):
         if query_param in args:
             if query_ops == "":
                 query_ops = f"WHERE {query_mapping.get(query_param, query_param)}=?"
-                data.append(g.args[query_param])
+                data.append(args[query_param])
             else:
                 query_ops += f" and {query_mapping.get(query_param, query_param)}=?"
-                data.append(g.args[query_param])
+                data.append(args[query_param])
     print(query_ops)
     print(data)
     return {
