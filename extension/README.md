@@ -1,68 +1,16 @@
-# Chrome Extension TypeScript Starter
+# Chrome Extension (built with TypeScript + React)
 
-[![Build Status](https://travis-ci.org/chibat/chrome-extension-typescript-starter.svg?branch=master)](https://travis-ci.org/chibat/chrome-extension-typescript-starter)
+> This project is a boilerplate project to allow you to quickly build chrome extensions using TypeScript and React.
 
-Chrome Extension, TypeScript and Visual Studio Code
+## Building
 
-## Prerequisites
+1.  Clone repo
+2.  `npm i`
+3.  `npm run dev` to compile once or `npm run watch` to run the dev task in watch mode
+4.  `npm run build` to build a production (minified) version
 
-* [node + npm](https://nodejs.org/) (Current Version)
+## Installation
 
-## Option
-
-* [Visual Studio Code](https://code.visualstudio.com/)
-
-## Includes the following
-
-* TypeScript
-* Webpack
-* Moment.js
-* jQuery
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
-
-## Setup
-
-```
-npm install
-```
-
-## Import as Visual Studio Code project
-
-...
-
-## Build
-
-```
-npm run build
-```
-
-## Build in watch mode
-
-### terminal
-
-```
-npm run watch
-```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
-
-## Load extension to chrome
-
-Load `dist` directory
-
+1.  Complete the steps to build the project above
+2.  Go to [_chrome://extensions_](chrome://extensions) in Google Chrome
+3.  With the developer mode checkbox ticked, click **Load unpacked extension...** and select the _dist_ folder from this repo
