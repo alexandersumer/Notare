@@ -8,27 +8,25 @@ from .. import schemas
 
 import sqlite3
 
+query_mapping = {
+    'note_id': 'id'
+}
+
 class Notes(Resource):
 
     def get(self):
         print(g.args)
-        query_ops = ""
-        data = []
         # NOTE: cannot inject SQL :)
-        for query_param in ['note_id', 'video_id', 'user_id', 'timestamp', 'note']:
-            if query_param in g.args:
-                if query_ops == "":
-                    query_ops = f"WHERE {query_param}=?"
-                    data.append(g.args[query_param])
-                else:
-                    query_ops += f" and {query_param}=?"
-                    data.append(g.args[query_param])
+        query_ops = get_notes(
+            ['note_id', 'video_id', 'user_id', 'timestamp', 'note'],
+            g.args
+        )
 
         notes = []
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        SQL = f"SELECT * FROM notes {query_ops};"
-        c.execute(SQL, tuple(data))
+        SQL = f"SELECT * FROM notes {query_ops['query_ops']};"
+        c.execute(SQL, tuple(query_ops['data']))
         entries = c.fetchall()
         conn.close()
         print(entries)
@@ -82,3 +80,22 @@ class Notes(Resource):
 
 
         return {}, 201, None
+
+# helper functions
+
+def get_notes(query_params, args):
+    query_ops = ""
+    data = []
+    for query_param in query_params:
+        if query_param in args:
+            if query_ops == "":
+                query_ops = f"WHERE {query_mapping.get(query_param, default = query_param)}=?"
+                data.append(g.args[query_param])
+            else:
+                query_ops += f" and {query_mapping.get(query_param, default = query_param)}=?"
+                data.append(g.args[query_param])
+
+    return {
+        'query_ops': query_ops,
+        'data': data
+    }
