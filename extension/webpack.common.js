@@ -1,4 +1,8 @@
-const path = require("path");
+const webpack = require("webpack");
+const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const srcDir = '../src/';
+;
 
 module.exports = {
   entry: {
@@ -36,5 +40,14 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"]
-  }
+  },
+  plugins: [
+    // exclude locale files in moment
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new CopyPlugin([
+        { from: '.', to: '../' }
+      ],
+      {context: 'public' }
+    ),
+  ]
 };
