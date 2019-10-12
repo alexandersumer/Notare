@@ -11,7 +11,6 @@ import sqlite3
 class Notes(Resource):
 
     def get(self):
-        # TODO implement sort
         print(g.args)
         query_ops = ""
         data = []
@@ -45,6 +44,10 @@ class Notes(Resource):
             ],
             'num_notes': len(entries)
         }
+        if 'sort' in g.args:
+            descending = (g.args['sort'][0] == '-')
+            sort_key = g.args['sort'][1:]
+            response['notes'] = sorted(response['notes'], key=lambda k: k[sort_key], reverse=descending)
         return response, 200, None
 
     def post(self):
