@@ -54,10 +54,31 @@ class Notes(Resource):
         print(g.json)
         # TODO mitch
         # TODO validate video_id with youtube api
-        # TODO if video_id not in videos table database create new entry
+        # TODO get video title
         # TODO leave video category empty for now
         # TODO create new entry for note based off data provided
 
-        
+        for param in ["note", "user_id", "video_id", "timestamp"]:
+            if param not in g.json:
+                return {"errorMessage": f"param {param} not in body"}, 400
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        SQL = f"SELECT * FROM videos where id=?;"
+        c.execute(SQL, (g.json['video_id'], ))
+        entries = c.fetchall()
+        conn.close()
+        print(entries)
+        if len(entries) == 0:
+            # TODO if video_id not in videos table database create new entry
+            # TODO how to update SQL = f"UPDATE timeslots SET status=?, reserved_by=? WHERE id=? and dentist_id=?;"
+            # TODO how to insert 'INSERT INTO notes (id, note, user_id, video_id, timestamp) values (?,?,?,?,?)', note)
+            SQL = f"INSERT INTO videos (id, user_id, video_title, categories) values (?,?,?,?)"
+            conn = sqlite3.connect('database.db')
+            c = conn.cursor()
+            c.execute(SQL, (g.json['video_id'], g.json['user_id'], "GET VIDEO TITLE", "GET VIDEO CATEGORY",))
+            conn.close()
+
+
 
         return {}, 201, None
