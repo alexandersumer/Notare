@@ -12,10 +12,14 @@ import sqlite3
 notes = [
     [1, "this is the note", 1, "https://www.youtube.com/watch?v=045L8bBVF8A", 2.5],
     [2, "this is the second note", 1, "https://www.youtube.com/watch?v=045L8bBVF8A", 4.5],
+    [3, "different video note", 1, "https://www.youtube.com/watch?v=AMwYoA1kvqc", 1.2],
+    [4, "different video differnt user note", 2, "https://www.youtube.com/watch?v=6C9hOtchZD8", 43.2]
 ]
 
 videos = [
-    ["https://www.youtube.com/watch?v=045L8bBVF8A", 1, "racing cars", "comedy"]
+    ["https://www.youtube.com/watch?v=045L8bBVF8A", 1, "racing cars", "comedy"],
+    ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", "romance"],
+    ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"]
 ]
 
 def create_db():
