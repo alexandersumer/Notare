@@ -1,32 +1,35 @@
 {
-  "name": "chrome-extension-typescript-starter",
+  "name": "chrome-extension-react-typescript-boilerplate",
   "version": "1.0.0",
-  "description": "chrome-extension-typescript-starter",
-  "main": "index.js",
+  "description": "A boilerplate project to quickly build a Chrome extension using TypeScript and React (built using webpack).",
   "scripts": {
-    "watch": "webpack --config webpack/webpack.dev.js --watch",
-    "build": "webpack --config webpack/webpack.prod.js",
-    "clean": "rimraf dist"
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack --config webpack.dev.js",
+    "watch": "webpack -w --config webpack.dev.js",
+    "lint": "tslint 'src/**/*.{ts, tsx}'"
   },
-  "author": "",
+  "author": "Joe Martella",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
+  "devDependencies": {
+    "@types/chrome": "0.0.60",
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4",
+    "css-loader": "^0.28.11",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.3",
+    "ts-loader": "^4.0.1",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^2.7.2",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "copy-webpack-plugin": "^5.0.4",
     "jquery": "^3.4.1",
-    "moment": "~2.24.0"
-  },
-  "devDependencies": {
-    "@types/chrome": "0.0.86",
-    "@types/jquery": "^3.3.30",
-    "copy-webpack-plugin": "^5.0.3",
-    "rimraf": "^2.6.3",
-    "ts-loader": "^5.4.5",
-    "typescript": "~3.4.5",
-    "webpack": "~4.17.2",
-    "webpack-cli": "~3.1.0",
-    "webpack-merge": "~4.2.1"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }
