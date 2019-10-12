@@ -1,4 +1,6 @@
 venv
 *.pyc
 *__pycache__
+extension/dist/*
+extension/node_modules/*
 database.db
