@@ -17,6 +17,8 @@ class NotesNoteId(Resource):
     def put(self, note_id):
         print(g.json)
         # TODO alex
+        # TODO how to update SQL = f"UPDATE timeslots SET status=?, reserved_by=? WHERE id=? and dentist_id=?;"
+
 
         return {}, 200, None
 

@@ -53,8 +53,7 @@ class Notes(Resource):
         # TODO mitch
         # TODO validate video_id with youtube api
         # TODO get video title
-        # TODO leave video category empty for now
-        # TODO create new entry for note based off data provided
+        # TODO leave video category for now
 
         for param in ["note", "user_id", "video_id", "timestamp"]:
             if param not in g.json:
@@ -64,22 +63,42 @@ class Notes(Resource):
         c = conn.cursor()
         SQL = f"SELECT * FROM videos where id=?;"
         c.execute(SQL, (g.json['video_id'], ))
-        entries = c.fetchall()
+        video_entries = c.fetchall()
         conn.close()
-        print(entries)
-        if len(entries) == 0:
-            # TODO if video_id not in videos table database create new entry
-            # TODO how to update SQL = f"UPDATE timeslots SET status=?, reserved_by=? WHERE id=? and dentist_id=?;"
-            # TODO how to insert 'INSERT INTO notes (id, note, user_id, video_id, timestamp) values (?,?,?,?,?)', note)
+        print(video_entries)
+        # if video not in videos table database create new video
+        if len(video_entries) == 0:
             SQL = f"INSERT INTO videos (id, user_id, video_title, categories) values (?,?,?,?)"
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
+            # TODO get video title from youtube api and category
             c.execute(SQL, (g.json['video_id'], g.json['user_id'], "GET VIDEO TITLE", "GET VIDEO CATEGORY",))
+            conn.commit()
             conn.close()
 
+        #insert the note
+        SQL = f"INSERT INTO notes (note, user_id, video_id, timestamp) values (?,?,?,?)"
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute(SQL, (g.json['note'], g.json['user_id'], g.json['video_id'], g.json['timestamp'],))
+        conn.commit()
+        # get the note id last inserted
+        SQL = f"SELECT last_insert_rowid();"
+        c.execute(SQL, ())
+        note_id = c.fetchall()[0][0]
+        conn.close()
+        print(f"note_id: {note_id}")
 
+        response = {
+            "note_id": note_id,
+            "note": g.json['note'],
+            "user_id": g.json['user_id'],
+            "video_id": g.json['video_id'],
+            "timestamp": g.json['timestamp']
+        }
+        
 
-        return {}, 201, None
+        return response, 201, None
 
 # helper functions
 
@@ -90,10 +109,10 @@ def get_notes(query_params, args):
         if query_param in args:
             if query_ops == "":
                 query_ops = f"WHERE {query_mapping.get(query_param, query_param)}=?"
-                data.append(g.args[query_param])
+                data.append(args[query_param])
             else:
                 query_ops += f" and {query_mapping.get(query_param, query_param)}=?"
-                data.append(g.args[query_param])
+                data.append(args[query_param])
     print(query_ops)
     print(data)
     return {
