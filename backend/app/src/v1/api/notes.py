@@ -94,7 +94,8 @@ def get_notes(query_params, args):
             else:
                 query_ops += f" and {query_mapping.get(query_param, query_param)}=?"
                 data.append(g.args[query_param])
-
+    print(query_ops)
+    print(data)
     return {
         'query_ops': query_ops,
         'data': data

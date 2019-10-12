@@ -23,10 +23,10 @@ class Videos(Resource):
         for query_param in ['video_id', 'user_id', 'video_title', 'categories']:
             if query_param in g.args:
                 if query_ops == "":
-                    query_ops = f"WHERE {query_mapping.get(query_param, default = query_param)}=?"
+                    query_ops = f"WHERE {query_mapping.get(query_param, query_param)}=?"
                     data.append(g.args[query_param])
                 else:
-                    query_ops += f" and {query_mapping.get(query_param, default = query_param)}=?"
+                    query_ops += f" and {query_mapping.get(query_param, query_param)}=?"
                     data.append(g.args[query_param])
 
         conn = sqlite3.connect('database.db')
