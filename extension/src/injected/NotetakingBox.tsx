@@ -126,7 +126,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
                 <h1>Notare</h1>
                 {/*Some text box type*/}
                 <StyledTextArea value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
-                <h2>Your Notes</h2>
+                <h3>Your Notes</h3>
                 <NoteList notesList={allNotes}/>
             </StyledWrapper>
         );

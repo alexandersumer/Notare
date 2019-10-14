@@ -5,6 +5,9 @@ import { Note } from './types';
 
 const StyledWrapper = styled.div`
     color: ${TEXT_COLOR};
+    overflow: auto;
+    height: 230px;
+    font-size: 13px;
 `;
 
 const formatTimestamp = (seconds: number): string => {
