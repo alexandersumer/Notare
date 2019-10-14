@@ -9,12 +9,12 @@ import os
 import sqlite3
 
 notes = [
-    [1, "this is the note", 1, "https://www.youtube.com/watch?v=045L8bBVF8A", 36.5],
+    [1, "this is the note", 1, "https://www.youtube.com/watch?v=gSdG3FsMBq4", 2.5],
     [
         2,
         "this is the second note",
         1,
-        "https://www.youtube.com/watch?v=045L8bBVF8A",
+        "https://www.youtube.com/watch?v=gSdG3FsMBq4",
         4.5,
     ],
     [3, "different video note", 1, "https://www.youtube.com/watch?v=AMwYoA1kvqc", 1.2],

@@ -13,6 +13,13 @@ import sqlite3
 
 query_mapping = {"note_id": "id"}
 
+db_mapping = {
+    "note_id": 0,
+    "note": 1,
+    "user_id": 2,
+    "video_id": 3,
+    "timestamp": 4
+}
 
 class NotesNoteId(Resource):
     def get(self, note_id):
@@ -50,19 +57,16 @@ class NotesNoteId(Resource):
         current_note = c.fetchall()
         conn.close()
 
+        if len(current_note) == 0:
+            return {"errorMessage": f"note id {note_id} not found"}, 404
+
         query_params = ["note_id", "note", "user_id", "video_id", "timestamp"]
 
-        print(g.json)
-        print(f"Printing video id {g.json['video_id']}")
-        for index, query_param in enumerate(query_params):
-            print(query_param)
-            print(g.json[query_param])
-            if query_param not in g.json:
+        for query_param in query_params:
+            if query_param not in query_params:
                 return {"errorMessage": f"param {query_param} not in body"}, 400
-            elif (
-                query_param != "note" and g.json[query_param] != current_note[0][index]
-            ):
-                return {"errorMessage": f"param {query_param} not in body"}, 400
+            elif query_param != "note" and g.json[query_param] != current_note[0][db_mapping[query_param]]:
+                return {"errorMessage": f"You cannot change the value of {query_param}"}, 400
 
         SQL = f"UPDATE notes SET note=? WHERE id=?;"
         conn = sqlite3.connect("database.db")
@@ -78,7 +82,7 @@ class NotesNoteId(Resource):
             "timestamp": g.json["timestamp"],
         }
 
-        return response, 201, None
+        return response, 200, None
 
     def delete(self, note_id):
         return None, 200, None
