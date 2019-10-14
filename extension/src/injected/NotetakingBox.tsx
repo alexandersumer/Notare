@@ -94,7 +94,15 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     onKeyDown(event){
         if(event.keyCode == 13 && event.shiftKey == false) {
             event.preventDefault();
-            this.addNote();
+            if (this.state.textBoxValue.trim().length) {
+                // Only add notes with more than just spaces
+                this.addNote();
+            } else {
+                // empty text box anyway
+                this.setState({
+                    textBoxValue: '',
+                })
+            }
         }
     }
 
