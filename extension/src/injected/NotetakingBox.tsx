@@ -2,6 +2,10 @@ import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
 import {BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { getNotes, addNote } from '../api/notes';
+import { Note } from './types';
+
+const USER_ID = 1; // for testing
 
 const StyledWrapper = styled.div`
     background-color: ${BACKGROUND_COLOR};
@@ -27,7 +31,7 @@ interface AppProps {}
 
 interface AppState {
     textBoxValue: string,
-    allNotes: string[];
+    allNotes: Note[],
 }
 
 export default class NotetakingBox extends React.Component<AppProps, AppState> {
@@ -41,19 +45,36 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    addNote(){
+    async getNotes(): Promise<void | Note[]> {
+        const response = await getNotes({
+            sort: "-timestamp",
+            user_id: USER_ID,
+        });
+        if (response) return response.notes;
+        return undefined;
+    }
+
+    async addNote(){
         const state = this.state;
         const today = new Date();   
         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-        this.setState(state => {
-            const newNote = `${time} - ${state.textBoxValue}`;
-            const notes = [newNote, ...state.allNotes];
-            return {
+        console.log("adding notes")
+        await addNote({
+            note: state.textBoxValue,
+            user_id: USER_ID,
+            video_id: "https://www.youtube.com/watch?v=EG29YjLC7aM", // TODO: get actual video
+            timestamp: 420,
+        });
+        console.log("added notes")
+
+        const newNotes = await this.getNotes();
+        if (newNotes){
+            this.setState({ 
                 textBoxValue: '',
-                allNotes: notes,
-            };
-          });
+                allNotes: newNotes,
+            });
+        }
     }
 
     handleChange(event){
@@ -67,9 +88,17 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Example of how to send a message to eventPage.ts.
         chrome.runtime.sendMessage({ popupMounted: true });
+
+        const newNotes = await this.getNotes();
+        if (newNotes){
+            this.setState({ 
+                textBoxValue: '',
+                allNotes: newNotes,
+            });
+        }
     }
 
     render() {
