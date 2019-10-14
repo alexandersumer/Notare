@@ -24,3 +24,14 @@ export const postRequest = async (route, params) => {
     console.log('post unsuccessful. status: ', response.status);
   }
 }
+
+export const deleteRequest = async (route) => {
+  console.log("deleteRequest called with route: ", route);
+  const response = await backendapi.delete(route);
+
+  if (response.status == 200){
+    console.log('delete successful');
+  } else {
+    console.log('delete unsuccessful. status: ', response.status);
+  }
+}

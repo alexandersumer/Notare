@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
 import {BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
-import { getNotes, addNote } from '../api/notes';
+import { getNotes, addNote, deleteNote} from '../api/notes';
 import { Note } from './types';
 
 const USER_ID = 1; // for testing
@@ -87,6 +87,12 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         }
     }
 
+    async deleteNote(note_id: number){
+        console.log('deleting note_id:', note_id);
+        deleteNote(note_id);
+        console.log('deleted note_id:', note_id);
+    }
+
     handleChange(event){
         this.setState({textBoxValue: event.target.value});
     }
@@ -119,7 +125,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
                 {/*Some text box type*/}
                 <StyledTextArea value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
                 <h2>Your Notes</h2>
-                <NoteList notesList={allNotes}/>
+                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote}/>
             </StyledWrapper>
         );
     }

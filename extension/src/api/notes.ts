@@ -1,4 +1,4 @@
-import { getRequest, postRequest } from './backendapi';
+import { getRequest, postRequest, deleteRequest } from './backendapi';
 import { Note } from '../injected/types';
 
 
@@ -18,7 +18,6 @@ type getNotesResponse = {
 export const getNotes = async (params: getNotesParams): Promise<getNotesResponse | void > =>
   getRequest('/notes', params);
 
-
 // ADD NOTE
 type addNotesParams = {
   note: string,
@@ -28,3 +27,6 @@ type addNotesParams = {
 }
 export const addNote = async (params: addNotesParams): Promise<void> =>
   postRequest('/notes', params);
+
+ export const deleteNote = async (note_id: number): Promise<void> =>
+  deleteRequest('/notes/'+note_id); 
