@@ -27,9 +27,11 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "@types/styled-components": "^4.1.19",
     "copy-webpack-plugin": "^5.0.4",
     "jquery": "^3.4.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "styled-components": "^4.4.0"
   }
 }
