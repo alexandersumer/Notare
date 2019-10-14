@@ -6,7 +6,7 @@ import { Note } from '../injected/types';
 type getNotesParams = {
   sort?: string,
   note_id?: number,
-  video_id?: number,
+  video_id?: string,
   user_id?: number,
   timestamp?: number,
 }

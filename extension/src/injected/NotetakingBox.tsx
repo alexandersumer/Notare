@@ -27,11 +27,23 @@ const StyledTextArea = styled.textarea`
     resize: none;
 `;
 
-interface AppProps {}
+interface AppProps {
+    video: HTMLMediaElement,
+}
 
 interface AppState {
     textBoxValue: string,
     allNotes: Note[],
+}
+
+const getCurrentYoutubeId = () : string => {
+    // gets the youtube id (no url!). e.g. EG29YjLC7aM
+    var video_id = window.location.search.split('v=')[1];
+    var ampersandPosition = video_id.indexOf('&');
+    if(ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+    }
+    return video_id;
 }
 
 export default class NotetakingBox extends React.Component<AppProps, AppState> {
@@ -45,10 +57,11 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    async getNotes(): Promise<void | Note[]> {
+    async getVidNotes(): Promise<void | Note[]> {
         const response = await getNotes({
             sort: "-timestamp",
             user_id: USER_ID,
+            video_id: getCurrentYoutubeId(),
         });
         if (response) return response.notes;
         return undefined;
@@ -56,19 +69,16 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
 
     async addNote(){
         const state = this.state;
-        const today = new Date();   
-        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        const video = this.props.video;
 
-        console.log("adding notes")
         await addNote({
             note: state.textBoxValue,
             user_id: USER_ID,
-            video_id: "https://www.youtube.com/watch?v=EG29YjLC7aM", // TODO: get actual video
-            timestamp: 420,
+            video_id: getCurrentYoutubeId(),
+            timestamp: video.currentTime,
         });
-        console.log("added notes")
 
-        const newNotes = await this.getNotes();
+        const newNotes = await this.getVidNotes();
         if (newNotes){
             this.setState({ 
                 textBoxValue: '',
@@ -92,7 +102,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         // Example of how to send a message to eventPage.ts.
         chrome.runtime.sendMessage({ popupMounted: true });
 
-        const newNotes = await this.getNotes();
+        const newNotes = await this.getVidNotes();
         if (newNotes){
             this.setState({ 
                 textBoxValue: '',
