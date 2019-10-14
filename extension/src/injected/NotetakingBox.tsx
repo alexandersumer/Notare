@@ -13,6 +13,8 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledTextArea = styled.textarea`
+    padding: 20px;
+    box-sizing: border-box;
     width: 100%;
     height: 150px;
     margin-bottom: 20px;
