@@ -27,9 +27,18 @@ class App extends React.Component {
     console.log(response.data)
     if (response.status === 200) {
   
-      //this.setState({videos: response.data)});
+      this.setState({videos: response.data.videos});
 
     }
+  }
+
+  videoList = () => {
+    const listItems = this.state.videos.map((video) =>
+      <li key={video.video_id}>{video.video_id}</li>
+    );
+    return (
+      <ul>{listItems}</ul>
+    );
   }
 
   componentDidMount() {
@@ -37,9 +46,10 @@ class App extends React.Component {
   }
 
   render() {
+    
     return (
       <div className="App">
-        <p>hiiii</p>
+        {this.videoList()}
       </div>
     );
   }
