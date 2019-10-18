@@ -49,7 +49,6 @@ class NotesNoteId(Resource):
         return response, 200, None
 
     def put(self, note_id):
-        print(g.json)
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"
@@ -85,4 +84,20 @@ class NotesNoteId(Resource):
         return response, 200, None
 
     def delete(self, note_id):
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM notes where id=?;"
+        c.execute(SQL, (note_id,))
+        current_note = c.fetchall()
+        conn.close()
+
+        if len(current_note) == 0:
+            return {"errorMessage": f"note id {note_id} not found"}, 404
+
+        SQL = f"DELETE FROM notes WHERE id=?;"
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute(SQL, (note_id,))
+        conn.commit()
+        
         return None, 200, None
