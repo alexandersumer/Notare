@@ -88,9 +88,15 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     }
 
     async deleteNote(note_id: number){
-        console.log('deleting note_id:', note_id);
-        deleteNote(note_id);
-        console.log('deleted note_id:', note_id);
+        await deleteNote(note_id);
+
+        const newNotes = await this.getVidNotes();
+        if (newNotes){
+            this.setState({ 
+                textBoxValue: '',
+                allNotes: newNotes,
+            });
+        }
     }
 
     handleChange(event){
@@ -133,7 +139,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
                 {/*Some text box type*/}
                 <StyledTextArea value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
                 <h2>Your Notes</h2>
-                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote}/>
+                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
             </StyledWrapper>
         );
     }
