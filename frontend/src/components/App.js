@@ -74,6 +74,15 @@ class App extends React.Component {
     }
   }
 
+  videoList = () => {
+    const listItems = this.state.videos.map((video) =>
+      <li key={video.video_id}>{video.video_id}</li>
+    );
+    return (
+      <ul>{listItems}</ul>
+    );
+  }
+
   componentDidMount() {
     if (this.state.isAuthenticated) {
       this.getVideos();
@@ -120,6 +129,7 @@ class App extends React.Component {
         <div className="App">
             {content}
         </div>
+
     );
   }
 }
