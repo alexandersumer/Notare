@@ -3,6 +3,9 @@ from __future__ import absolute_import
 
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import (
+    JWTManager
+)
 
 import v1
 import os
@@ -28,9 +31,14 @@ notes = [
 ]
 
 videos = [
-    ["https://www.youtube.com/watch?v=045L8bBVF8A", 1, "racing cars", "comedy"],
+    ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", "comedy"],
     ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", "romance"],
     ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
+]
+
+users = [
+    [1, "mitchellshelton97@gmail.com"],
+    [2, "mitchell_shelton@y7mail.com"]
 ]
 
 
@@ -59,6 +67,14 @@ def create_db():
                 categories VARCHAR,
                 PRIMARY KEY (id)
             );
+            CREATE TABLE users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email VARCHAR
+            );
+            CREATE TABLE blacklisted_access_tokens (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                access_token VARCHAR
+            );
             """
             cur.executescript(sql_command)
             conn.commit()
@@ -72,12 +88,20 @@ def create_db():
                     "INSERT INTO videos (id, user_id, video_title, categories) values (?,?,?,?)",
                     video,
                 )
+            for user in users:
+                cur.execute(
+                    "INSERT INTO users (id, email) values (?,?)",
+                    user,
+                )
 
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
             entries = cur.fetchall()
             print(entries)
             cur.execute("""SELECT * FROM videos""")
+            entries = cur.fetchall()
+            print(entries)
+            cur.execute("""SELECT * FROM users""")
             entries = cur.fetchall()
             print(entries)
 
@@ -91,6 +115,23 @@ def create_app():
     app = Flask(__name__, static_folder="static")
     app.register_blueprint(v1.bp, url_prefix="/v1")
     cors = CORS(app)
+    # Setup the Flask-JWT-Extended extension
+    app.config['JWT_SECRET_KEY'] = 'This key is super secret' 
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 60 * 60 * 24 #access tokens last for a day
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
+    jwt = JWTManager(app)
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token['jti']
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
+        c.execute(SQL, (jti,))
+        entries = c.fetchall()
+        conn.close()
+        return False if len(entries) == 0 else True
+
     return app
 
 

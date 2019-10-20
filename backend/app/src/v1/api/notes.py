@@ -2,6 +2,9 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
+from flask_jwt_extended import (
+    jwt_required, get_jwt_identity
+)
 
 from . import Resource
 from .. import schemas
@@ -12,8 +15,13 @@ query_mapping = {"note_id": "id"}
 
 
 class Notes(Resource):
+    
+    @jwt_required
     def get(self):
         print(g.args)
+        print(g.headers)
+        current_user = get_jwt_identity()
+        print(f"CURRENT USER IN GET /NOTES {current_user}")
         # NOTE: cannot inject SQL :)
         query_ops = get_notes(
             ["note_id", "video_id", "user_id", "timestamp", "note"], g.args
@@ -46,8 +54,12 @@ class Notes(Resource):
             )
         return response, 200, None
 
+    @jwt_required
     def post(self):
         print(g.json)
+        print(g.headers)
+        current_user = get_jwt_identity()
+        print(f"CURRENT USER: {current_user}")
         # TODO mitch
         # TODO validate video_id with youtube api
         # TODO get video title

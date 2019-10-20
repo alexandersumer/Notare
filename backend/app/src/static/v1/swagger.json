@@ -91,6 +91,98 @@
     }
   },
   "paths": {
+    "/auth/google/logout": {
+      "delete": {
+        "operationId": "auth_google_logout",
+        "description": "logs a user out of their google account on the service",
+        "summary": "auth google logout",
+        "tags": [
+          "Google Auth"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "successfully logged out"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/auth/google/login": {
+      "post": {
+        "operationId": "auth_google_login",
+        "description": "this takes a google access token, verifies it and returns a server generated access token from JWTs to the user",
+        "summary": "auth google login",
+        "tags": [
+          "Google Auth"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "googleAccessToken": {
+                  "type": "string",
+                  "example": "hfwfhw0fhw0f"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "mitchell_shelton@y7mail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string",
+                  "example": "fuehfoeifjw"
+                },
+                "user_id": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
     "/notes": {
       "get": {
         "operationId": "get_notes",
@@ -100,6 +192,12 @@
           "Notes"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "sort",
             "type": "string",
@@ -130,12 +228,12 @@
           },
           {
             "name": "user_id",
-            "type": "string",
+            "type": "integer",
             "in": "query"
           },
           {
             "name": "timestamp",
-            "type": "string",
+            "type": "number",
             "in": "query"
           },
           {
@@ -168,6 +266,12 @@
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -179,6 +283,12 @@
           "Notes"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -219,11 +329,17 @@
               "$ref": "#/definitions/error"
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "409": {
             "description": "Conflict (Already Created)",
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -237,6 +353,12 @@
           "Notes"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "note_id",
             "in": "path",
@@ -257,11 +379,17 @@
               "$ref": "#/definitions/error"
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -273,6 +401,12 @@
           "Notes"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "note_id",
             "in": "path",
@@ -301,6 +435,9 @@
               "$ref": "#/definitions/error"
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "schema": {
@@ -312,6 +449,9 @@
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       },
@@ -323,6 +463,12 @@
           "Notes"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "note_id",
             "in": "path",
@@ -340,11 +486,17 @@
               "$ref": "#/definitions/error"
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found",
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
@@ -358,6 +510,12 @@
           "Videos"
         ],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "sort",
             "type": "string",
@@ -426,6 +584,12 @@
             "schema": {
               "$ref": "#/definitions/error"
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
           }
         }
       }
