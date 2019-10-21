@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
-import {BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { MAX_CHARS } from '../constants';
 import { getNotes, addNote, deleteNote} from '../api/notes';
 import { Note } from './types';
 
@@ -22,7 +23,7 @@ const StyledTextArea = styled.textarea`
     margin-bottom: 20px;
     color: ${TEXT_COLOR};
     background-color: ${NOTE_COLOR};
-    font-size: 18px;
+    font-size: 12px;
     border: none;
     resize: none;
 `;
@@ -137,7 +138,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
             <StyledWrapper>
                 <h1>Notare</h1>
                 {/*Some text box type*/}
-                <StyledTextArea value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                <StyledTextArea maxLength={MAX_CHARS} value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
                 <h2>Your Notes</h2>
                 <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
             </StyledWrapper>

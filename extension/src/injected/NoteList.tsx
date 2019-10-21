@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { TEXT_COLOR } from '../colorConstants';
 import { Note } from './types';
+import Box from '@material-ui/core/Box';
+
 import NoteItem from './NoteItem';
 
 const StyledWrapper = styled.div`
@@ -25,9 +27,11 @@ export default class NoteList extends React.Component<Props> {
       const { notesList, onDeleteNote } = this.props
       return(
           <StyledWrapper>
-              {notesList.length ? notesList.map(n => (
-                <NoteItem note={n} onDeleteNote={onDeleteNote}/>
-              )): "There are no notes for this video" }
+                <Box display="flex" flexDirection="column">
+                    {notesList.length ? notesList.map(n => (
+                        <NoteItem key={n.note_id} note={n} onDeleteNote={onDeleteNote}/>
+                    )): "There are no notes for this video" }
+                </Box>
           </StyledWrapper>
       );
   }
