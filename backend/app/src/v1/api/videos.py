@@ -2,9 +2,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from . import Resource
 from .. import schemas
@@ -17,7 +15,6 @@ query_mapping = {"video_id": "id"}
 
 
 class Videos(Resource):
-
     @jwt_required
     def get(self):
         print(g.args)

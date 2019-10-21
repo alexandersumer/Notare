@@ -2,9 +2,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
-from flask_jwt_extended import (
-    jwt_required, get_jwt_identity
-)
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 
 from . import Resource
@@ -16,13 +14,8 @@ import sqlite3
 
 query_mapping = {"note_id": "id"}
 
-db_mapping = {
-    "note_id": 0,
-    "note": 1,
-    "user_id": 2,
-    "video_id": 3,
-    "timestamp": 4
-}
+db_mapping = {"note_id": 0, "note": 1, "user_id": 2, "video_id": 3, "timestamp": 4}
+
 
 class NotesNoteId(Resource):
     @jwt_required
@@ -76,8 +69,14 @@ class NotesNoteId(Resource):
         for query_param in query_params:
             if query_param not in query_params:
                 return {"errorMessage": f"param {query_param} not in body"}, 400
-            elif query_param != "note" and g.json[query_param] != current_note[0][db_mapping[query_param]]:
-                return {"errorMessage": f"You cannot change the value of {query_param}"}, 400
+            elif (
+                query_param != "note"
+                and g.json[query_param] != current_note[0][db_mapping[query_param]]
+            ):
+                return (
+                    {"errorMessage": f"You cannot change the value of {query_param}"},
+                    400,
+                )
 
         SQL = f"UPDATE notes SET note=? WHERE id=?;"
         conn = sqlite3.connect("database.db")
@@ -115,5 +114,5 @@ class NotesNoteId(Resource):
         c = conn.cursor()
         c.execute(SQL, (note_id,))
         conn.commit()
-        
+
         return None, 200, None
