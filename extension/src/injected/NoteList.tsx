@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { TEXT_COLOR } from '../colorConstants';
 import { Note } from './types';
+import NoteItem from './NoteItem';
 
 const StyledWrapper = styled.div`
     color: ${TEXT_COLOR};
@@ -9,13 +10,6 @@ const StyledWrapper = styled.div`
     height: 230px;
     font-size: 13px;
 `;
-
-const formatTimestamp = (seconds: number): string => {
-    const date = new Date(null);
-    date.setSeconds(seconds);
-    const timeString = date.toISOString().substr(11, 8);
-    return timeString;
-}
 
 type Props = {
     notesList: Note[],
@@ -32,7 +26,7 @@ export default class NoteList extends React.Component<Props> {
       return(
           <StyledWrapper>
               {notesList.length ? notesList.map(n => (
-                <div key={n.note_id} onClick={() => onDeleteNote(n.note_id)}>{formatTimestamp(n.timestamp)} - {n.note}</div>
+                <NoteItem note={n} onDeleteNote={onDeleteNote}/>
               )): "There are no notes for this video" }
           </StyledWrapper>
       );
