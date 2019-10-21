@@ -26,7 +26,7 @@ class App extends React.Component {
     backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
     const backend_response = await backendapi.delete('/auth/google/logout')
     console.log(backend_response)
-    if (backend_response.status === 200) {
+    if (backend_response.status === 200 || backend_response.status === 401) {
       localStorage.removeItem('userId');
       localStorage.removeItem('accessToken');
       this.setState({isAuthenticated: false, accessToken: '', userId: null, videos: []});
