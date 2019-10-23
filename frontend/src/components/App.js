@@ -9,72 +9,72 @@ class App extends React.Component {
 
   constructor(props) {
       super(props);
-      const expirationDuration = (60*60*24)*1000; //1 Day
-      var accessTokenTimestamp = localStorage.getItem('accessTokenTimestamp');
-      if (accessTokenTimestamp !== null) {
-          const currentTime = new Date().getTime();
-          console.log(parseInt(currentTime) - parseInt(accessTokenTimestamp));
-          if (parseInt(currentTime) - parseInt(accessTokenTimestamp) > expirationDuration) {
-            console.log("expired access token, remove local storage");
-            localStorage.removeItem('userId');
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('accessTokenTimestamp');
-          }
-      }
-      const user_id = localStorage.getItem('userId');
-      const accessToken = localStorage.getItem('accessToken');
-      const authenticated = (accessToken !== null) ? true : false
+      // const expirationDuration = (60*60*24)*1000; //1 Day
+      // var accessTokenTimestamp = localStorage.getItem('accessTokenTimestamp');
+      // if (accessTokenTimestamp !== null) {
+      //     const currentTime = new Date().getTime();
+      //     console.log(parseInt(currentTime) - parseInt(accessTokenTimestamp));
+      //     if (parseInt(currentTime) - parseInt(accessTokenTimestamp) > expirationDuration) {
+      //       console.log("expired access token, remove local storage");
+      //       localStorage.removeItem('userId');
+      //       localStorage.removeItem('accessToken');
+      //       localStorage.removeItem('accessTokenTimestamp');
+      //     }
+      // }
+      // const user_id = localStorage.getItem('userId');
+      // const accessToken = localStorage.getItem('accessToken');
+      // const authenticated = (accessToken !== null) ? true : false
       this.state = { 
-          videos: [],
-          isAuthenticated: authenticated,
-          userId: user_id,
-          accessToken: accessToken
+          videos: []
+          // isAuthenticated: authenticated,
+          // userId: user_id,
+          // accessToken: accessToken
       };
       console.log(this.state);
   }
 
-  logout = async () => {
-    backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
-    const backend_response = await backendapi.delete('/auth/google/logout')
-    console.log(backend_response)
-    if (backend_response.status === 200 || backend_response.status === 401) {
-      localStorage.removeItem('userId');
-      localStorage.removeItem('accessToken');
-      this.setState({isAuthenticated: false, accessToken: '', userId: null, videos: []});
-    } else {
-      console.log("failed to logout");
-    }
-  };
+  // logout = async () => {
+  //   backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
+  //   const backend_response = await backendapi.delete('/auth/google/logout')
+  //   console.log(backend_response)
+  //   if (backend_response.status === 200 || backend_response.status === 401) {
+  //     localStorage.removeItem('userId');
+  //     localStorage.removeItem('accessToken');
+  //     this.setState({isAuthenticated: false, accessToken: '', userId: null, videos: []});
+  //   } else {
+  //     console.log("failed to logout");
+  //   }
+  // };
 
-  onFailure = (error) => {
-    console.log(error);
-  };
+  // onFailure = (error) => {
+  //   console.log(error);
+  // };
 
-  googleLoginResponse = async (response) => {
-    console.log(response)
-    console.log(response.accessToken)
-    console.log(response.profileObj.email)
-    const backend_response = await backendapi.post('/auth/google/login', {
-      googleAccessToken: response.accessToken,
-      email: response.profileObj.email
-    })
-    console.log(backend_response)
+  // googleLoginResponse = async (response) => {
+  //   console.log(response)
+  //   console.log(response.accessToken)
+  //   console.log(response.profileObj.email)
+  //   const backend_response = await backendapi.post('/auth/google/login', {
+  //     googleAccessToken: response.accessToken,
+  //     email: response.profileObj.email
+  //   })
+  //   console.log(backend_response)
 
-    if (backend_response.status === 200) {
-      localStorage.setItem('accessToken', backend_response.data.accessToken);
-      localStorage.setItem('userId', backend_response.data.user_id);
-      localStorage.setItem('accessTokenTimestamp', (new Date().getTime()).toString())
-      this.setState({isAuthenticated: true, userId: backend_response.data.user_id, accessToken: backend_response.data.accessToken})
-      this.getVideos();
-    }
-  };
+  //   if (backend_response.status === 200) {
+  //     localStorage.setItem('accessToken', backend_response.data.accessToken);
+  //     localStorage.setItem('userId', backend_response.data.user_id);
+  //     localStorage.setItem('accessTokenTimestamp', (new Date().getTime()).toString())
+  //     this.setState({isAuthenticated: true, userId: backend_response.data.user_id, accessToken: backend_response.data.accessToken})
+  //     this.getVideos();
+  //   }
+  // };
 
   getVideos = async () => {
     //if (event) event.preventDefault();
-    backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
+    backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + 'wffwfw';
     const response = await backendapi.get('/videos', {
       params: {
-        user_id: this.state.userId
+        user_id: 1
       }
     });
     console.log(response.status)
@@ -96,12 +96,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
-
-
-    if (this.state.isAuthenticated) {
       this.getVideos();
-    }
   }
 
   videoList = () => {
@@ -114,31 +109,15 @@ class App extends React.Component {
   }
 
   render() {
-    let content = !!this.state.isAuthenticated ?
+    let content = 
         (
             <div>
-                <p>Authenticated</p>
+                <p>hi</p>
                 <div>
-                    user_id: {this.state.userId}
                     <div>videos: {this.videoList()}</div>
                 </div>
-                <div>
-                    <button onClick={this.logout} className="button">
-                        Log out
-                    </button>
-                </div>
             </div>
-        ) :
-        (
-            <div>
-                <GoogleLogin
-                    clientId={config.GOOGLE_CLIENT_ID}
-                    buttonText="Login"
-                    onSuccess={this.googleLoginResponse}
-                    onFailure={this.onFailure}
-                />
-            </div>
-        );
+        ) ;
 
     return (
         <div className="App">

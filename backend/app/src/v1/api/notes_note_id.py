@@ -18,11 +18,11 @@ db_mapping = {"note_id": 0, "note": 1, "user_id": 2, "video_id": 3, "timestamp":
 
 
 class NotesNoteId(Resource):
-    @jwt_required
+    #@jwt_required
     def get(self, note_id):
         print(g.headers)
-        current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        #current_user = get_jwt_identity()
+        #print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
 
@@ -48,12 +48,12 @@ class NotesNoteId(Resource):
 
         return response, 200, None
 
-    @jwt_required
+    #@jwt_required
     def put(self, note_id):
         print(g.json)
         print(g.headers)
-        current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        #current_user = get_jwt_identity()
+        #print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"

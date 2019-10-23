@@ -15,12 +15,12 @@ query_mapping = {"video_id": "id"}
 
 
 class Videos(Resource):
-    @jwt_required
+    #@jwt_required
     def get(self):
         print(g.args)
         print(g.headers)
-        current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        #current_user = get_jwt_identity()
+        #print(f"CURRENT USER: {current_user}")
         data = []
         query_ops = ""
         for query_param in ["video_id", "user_id", "video_title", "categories"]:

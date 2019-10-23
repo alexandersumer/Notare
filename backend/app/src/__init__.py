@@ -108,24 +108,24 @@ def create_app():
     app.register_blueprint(v1.bp, url_prefix="/v1")
     cors = CORS(app)
     # Setup the Flask-JWT-Extended extension
-    app.config["JWT_SECRET_KEY"] = "This key is super secret"
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
-        60 * 60 * 24
-    )  # access tokens last for a day
-    app.config["JWT_BLACKLIST_ENABLED"] = True
-    app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
-    jwt = JWTManager(app)
+    # app.config["JWT_SECRET_KEY"] = "This key is super secret"
+    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
+    #     60 * 60 * 24
+    # )  # access tokens last for a day
+    # app.config["JWT_BLACKLIST_ENABLED"] = True
+    # app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
+    #jwt = JWTManager(app)
 
-    @jwt.token_in_blacklist_loader
-    def check_if_token_in_blacklist(decrypted_token):
-        jti = decrypted_token["jti"]
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
-        SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
-        c.execute(SQL, (jti,))
-        entries = c.fetchall()
-        conn.close()
-        return False if len(entries) == 0 else True
+    # @jwt.token_in_blacklist_loader
+    # def check_if_token_in_blacklist(decrypted_token):
+    #     jti = decrypted_token["jti"]
+    #     conn = sqlite3.connect("database.db")
+    #     c = conn.cursor()
+    #     SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
+    #     c.execute(SQL, (jti,))
+    #     entries = c.fetchall()
+    #     conn.close()
+    #     return False if len(entries) == 0 else True
 
     return app
 
