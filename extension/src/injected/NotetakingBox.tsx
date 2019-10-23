@@ -10,7 +10,6 @@ const USER_ID = 1; // for testing
 
 const StyledWrapper = styled.div`
     background-color: ${BACKGROUND_COLOR};
-    border: 2px solid ${PRIMARY_COLOR};
     font-size: 20px;
     height: 500px;
     width: 300px;
@@ -18,8 +17,11 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledTextArea = styled.textarea`
+    padding: 20px;
+    box-sizing: border-box;
     width: 100%;
     height: 150px;
+    margin-top: 10px;
     margin-bottom: 20px;
     color: ${TEXT_COLOR};
     background-color: ${NOTE_COLOR};
@@ -136,9 +138,15 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         const { allNotes, textBoxValue } = this.state;
         return (
             <StyledWrapper>
-                <h1>Notare</h1>
+                <h1>Notare.</h1>
                 {/*Some text box type*/}
-                <StyledTextArea maxLength={MAX_CHARS} value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                <StyledTextArea 
+                    placeholder="Start typing here..."
+                    maxLength={MAX_CHARS}
+                    value={textBoxValue}
+                    onChange={this.handleChange}
+                    onKeyDown={this.onKeyDown}>
+                </StyledTextArea>
                 <h2>Your Notes</h2>
                 <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
             </StyledWrapper>

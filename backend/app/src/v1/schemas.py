@@ -100,7 +100,26 @@ definitions = {
 }
 
 validators = {
+    ("auth_google_logout", "DELETE"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        }
+    },
+    ("auth_google_login", "POST"): {
+        "json": {
+            "type": "object",
+            "properties": {
+                "googleAccessToken": {"type": "string", "example": "hfwfhw0fhw0f"},
+                "email": {"type": "string", "example": "mitchell_shelton@y7mail.com"},
+            },
+        }
+    },
     ("notes", "GET"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
         "args": {
             "required": [],
             "properties": {
@@ -122,11 +141,11 @@ validators = {
                 },
                 "note_id": {"type": "integer"},
                 "video_id": {"type": "string"},
-                "user_id": {"type": "string"},
-                "timestamp": {"type": "string"},
+                "user_id": {"type": "integer"},
+                "timestamp": {"type": "number"},
                 "note": {"type": "string"},
             },
-        }
+        },
     },
     ("notes", "POST"): {
         "json": {
@@ -140,10 +159,36 @@ validators = {
                 },
                 "timestamp": {"type": "number", "example": 2.5},
             },
+        },
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
+    },
+    ("notes_note_id", "GET"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
         }
     },
-    ("notes_note_id", "PUT"): {"json": {"$ref": "#/definitions/note"}},
+    ("notes_note_id", "PUT"): {
+        "json": {"$ref": "#/definitions/note"},
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
+    },
+    ("notes_note_id", "DELETE"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        }
+    },
     ("videos", "GET"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
         "args": {
             "required": [],
             "properties": {
@@ -169,11 +214,37 @@ validators = {
                 "categories": {"type": "string"},
                 "notes_count": {"type": "integer"},
             },
-        }
+        },
     },
 }
 
 filters = {
+    ("auth_google_logout", "DELETE"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "example": "successfully logged out"}
+                },
+            },
+        },
+        401: {"headers": None, "schema": None},
+        422: {"headers": None, "schema": None},
+    },
+    ("auth_google_login", "POST"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {"type": "string", "example": "fuehfoeifjw"},
+                    "user_id": {"type": "integer", "example": 1},
+                },
+            },
+        },
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+    },
     ("notes", "GET"): {
         200: {
             "headers": None,
@@ -186,27 +257,37 @@ filters = {
             },
         },
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
+        422: {"headers": None, "schema": None},
     },
     ("notes", "POST"): {
         201: {"headers": None, "schema": {"$ref": "#/definitions/note"}},
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
         409: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        422: {"headers": None, "schema": None},
     },
     ("notes_note_id", "GET"): {
         200: {"headers": None, "schema": {"$ref": "#/definitions/note"}},
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
         404: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        422: {"headers": None, "schema": None},
     },
     ("notes_note_id", "PUT"): {
         200: {"headers": None, "schema": {"$ref": "#/definitions/note"}},
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
         404: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
         409: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        422: {"headers": None, "schema": None},
     },
     ("notes_note_id", "DELETE"): {
         200: {"headers": None, "schema": None},
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
         404: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        422: {"headers": None, "schema": None},
     },
     ("videos", "GET"): {
         200: {
@@ -223,6 +304,8 @@ filters = {
             },
         },
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+        401: {"headers": None, "schema": None},
+        422: {"headers": None, "schema": None},
     },
 }
 
