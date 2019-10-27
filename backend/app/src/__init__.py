@@ -34,7 +34,7 @@ videos = [
     ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
 ]
 
-users = [[1, "mitchellshelton97@gmail.com"], [2, "mitchell_shelton@y7mail.com"]]
+users = [[1, "mitchellshelton97@gmail.com", "password"], [2, "mitchell_shelton@y7mail.com", "secret"]]
 
 
 def create_db():
@@ -64,7 +64,8 @@ def create_db():
             );
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email VARCHAR
+                email VARCHAR,
+                password VARCHAR
             );
             CREATE TABLE blacklisted_access_tokens (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,7 +85,7 @@ def create_db():
                     video,
                 )
             for user in users:
-                cur.execute("INSERT INTO users (id, email) values (?,?)", user)
+                cur.execute("INSERT INTO users (id, email, password) values (?,?,?)", user)
 
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
@@ -108,24 +109,24 @@ def create_app():
     app.register_blueprint(v1.bp, url_prefix="/v1")
     cors = CORS(app)
     # Setup the Flask-JWT-Extended extension
-    # app.config["JWT_SECRET_KEY"] = "This key is super secret"
-    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
-    #     60 * 60 * 24
-    # )  # access tokens last for a day
-    # app.config["JWT_BLACKLIST_ENABLED"] = True
-    # app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
-    #jwt = JWTManager(app)
+    app.config["JWT_SECRET_KEY"] = "This key is super secret"
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
+        60 * 60 * 24
+    )  # access tokens last for a day
+    app.config["JWT_BLACKLIST_ENABLED"] = True
+    app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
+    jwt = JWTManager(app)
 
-    # @jwt.token_in_blacklist_loader
-    # def check_if_token_in_blacklist(decrypted_token):
-    #     jti = decrypted_token["jti"]
-    #     conn = sqlite3.connect("database.db")
-    #     c = conn.cursor()
-    #     SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
-    #     c.execute(SQL, (jti,))
-    #     entries = c.fetchall()
-    #     conn.close()
-    #     return False if len(entries) == 0 else True
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token["jti"]
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
+        c.execute(SQL, (jti,))
+        entries = c.fetchall()
+        conn.close()
+        return False if len(entries) == 0 else True
 
     return app
 

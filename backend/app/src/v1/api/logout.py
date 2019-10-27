@@ -10,12 +10,12 @@ from .. import schemas
 import sqlite3
 
 
-class AuthGoogleLogout(Resource):
-    #@jwt_required
+class Logout(Resource):
+    @jwt_required
     def delete(self):
         print(g.headers)
-        #current_user = get_jwt_identity()
-        #print(f"CURRENT USER: {current_user}")
+        current_user = get_jwt_identity()
+        print(f"CURRENT USER: {current_user}")
         jti = get_raw_jwt()["jti"]
         SQL = f"INSERT INTO blacklisted_access_tokens (access_token) values (?)"
         conn = sqlite3.connect("database.db")

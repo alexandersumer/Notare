@@ -2,8 +2,8 @@
 
 ###
 ### DO NOT CHANGE THIS FILE
-###
-### The code is auto generated, your change will be overwritten by
+### 
+### The code is auto generated, your change will be overwritten by 
 ### code generating.
 ###
 from __future__ import absolute_import
@@ -20,17 +20,11 @@ from flask_restful.utils import unpack
 from jsonschema import Draft4Validator
 
 from .schemas import (
-    validators,
-    filters,
-    scopes,
-    resolver,
-    security,
-    merge_default,
-    normalize,
-)
+    validators, filters, scopes, resolver, security, merge_default, normalize)
 
 
 class JSONEncoder(json.JSONEncoder):
+
     def default(self, o):
         if isinstance(o, date):
             return o.isoformat()
@@ -38,6 +32,7 @@ class JSONEncoder(json.JSONEncoder):
 
 
 class FlaskValidatorAdaptor(object):
+
     def __init__(self, schema):
         self.validator = Draft4Validator(schema, resolver=resolver)
 
@@ -57,11 +52,11 @@ class FlaskValidatorAdaptor(object):
         result = dict()
 
         convert_funs = {
-            "integer": lambda v: self.validate_number(int, v[0]),
-            "boolean": lambda v: v[0].lower() not in ["n", "no", "false", "", "0"],
-            "null": lambda v: None,
-            "number": lambda v: self.validate_number(float, v[0]),
-            "string": lambda v: v[0],
+            'integer': lambda v: self.validate_number(int, v[0]),
+            'boolean': lambda v: v[0].lower() not in ['n', 'no', 'false', '', '0'],
+            'null': lambda v: None,
+            'number': lambda v: self.validate_number(float, v[0]),
+            'string': lambda v: v[0]
         }
 
         def convert_array(type_, v):
@@ -69,18 +64,18 @@ class FlaskValidatorAdaptor(object):
             return [func([i]) for i in v]
 
         for k, values in obj.lists():
-            prop = self.validator.schema["properties"].get(k, {})
-            type_ = prop.get("type")
-            if type_ is None and "$ref" in prop:
-                ref = prop.get("$ref")
+            prop = self.validator.schema['properties'].get(k, {})
+            type_ = prop.get('type')
+            if type_ is None and '$ref' in prop:
+                ref = prop.get('$ref')
                 if not ref:
                     continue
-                type_ = self.validator.resolver.resolve(prop.get("$ref"))[1].get("type")
+                type_ = self.validator.resolver.resolve(prop.get('$ref'))[1].get('type')
                 if not type_:
                     continue
             fun = convert_funs.get(type_, lambda v: v[0])
-            if type_ == "array":
-                item_type = prop.get("items", {}).get("type")
+            if type_ == 'array':
+                item_type = prop.get('items', {}).get('type')
                 result[k] = convert_array(item_type, values)
             else:
                 result[k] = fun(values)
@@ -93,18 +88,18 @@ class FlaskValidatorAdaptor(object):
 
 
 def request_validate(view):
+
     @wraps(view)
     def wrapper(*args, **kwargs):
-        endpoint = request.endpoint.partition(".")[-1]
+        endpoint = request.endpoint.partition('.')[-1]
         # scope
         if (endpoint, request.method) in scopes and not set(
-            scopes[(endpoint, request.method)]
-        ).issubset(set(security.scopes)):
+                scopes[(endpoint, request.method)]).issubset(set(security.scopes)):
             abort(403)
         # data
         method = request.method
-        if method == "HEAD":
-            method = "GET"
+        if method == 'HEAD':
+            method = 'GET'
         locations = validators.get((endpoint, method), {})
         for location, schema in six.iteritems(locations):
             value = getattr(request, location, MultiDict())
@@ -113,7 +108,7 @@ def request_validate(view):
             validator = FlaskValidatorAdaptor(schema)
             result, errors = validator.validate(value)
             if errors:
-                abort(422, message="Unprocessable Entity", errors=errors)
+                abort(422, message='Unprocessable Entity', errors=errors)
             setattr(g, location, result)
         return view(*args, **kwargs)
 
@@ -121,6 +116,7 @@ def request_validate(view):
 
 
 def response_filter(view):
+
     @wraps(view)
     def wrapper(*args, **kwargs):
         resp = view(*args, **kwargs)
@@ -128,10 +124,10 @@ def response_filter(view):
         if isinstance(resp, current_app.response_class):
             return resp
 
-        endpoint = request.endpoint.partition(".")[-1]
+        endpoint = request.endpoint.partition('.')[-1]
         method = request.method
-        if method == "HEAD":
-            method = "GET"
+        if method == 'HEAD':
+            method = 'GET'
         filter = filters.get((endpoint, method), None)
         if not filter:
             return resp
@@ -150,22 +146,21 @@ def response_filter(view):
         schemas = filter.get(status)
         if not schemas:
             # return resp, status, headers
-            abort(500, message="`%d` is not a defined status code." % status)
+            abort(500, message='`%d` is not a defined status code.' % status)
 
-        resp, errors = normalize(schemas["schema"], resp, resolver=resolver)
-        if schemas["headers"]:
+        resp, errors = normalize(schemas['schema'], resp, resolver=resolver)
+        if schemas['headers']:
             headers, header_errors = normalize(
-                {"properties": schemas["headers"]}, headers, resolver=resolver
-            )
+                {'properties': schemas['headers']}, headers, resolver=resolver)
             errors.extend(header_errors)
         if errors:
-            abort(500, message="Expectation Failed", errors=errors)
+            abort(500, message='Expectation Failed', errors=errors)
 
         return current_app.response_class(
-            json.dumps(resp, cls=JSONEncoder) + "\n",
+            json.dumps(resp, cls=JSONEncoder) + '\n',
             status=status,
             headers=headers,
-            mimetype="application/json",
+            mimetype='application/json'
         )
 
     return wrapper
