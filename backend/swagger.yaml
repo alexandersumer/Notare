@@ -69,13 +69,13 @@ definitions:
 
 paths:
 
-  /auth/google/logout:
+  /logout:
     delete:
-      operationId: auth_google_logout
-      description: logs a user out of their google account on the service
-      summary: auth google logout
+      operationId: logout
+      description: logs a user out of their account on the service
+      summary: logout
       tags:
-        - Google Auth
+        - Auth
       parameters:
         - name: Authorization
           type: string
@@ -97,13 +97,13 @@ paths:
         
             
 
-  /auth/google/login:
+  /login:
     post:
-      operationId: auth_google_login
-      description: this takes a google access token, verifies it and returns a server generated access token from JWTs to the user
-      summary: auth google login
+      operationId: login
+      description: this takes an email and password, creates a new user if that email doesn't exist in the database or verifies it against the existing email and returns a server generated access token from JWTs to the user
+      summary: login
       tags:
-        - Google Auth
+        - Auth
       parameters:
         - name: body
           in: body
@@ -111,12 +111,12 @@ paths:
           schema:
             type: object
             properties:
-              googleAccessToken:
-                type: string
-                example: "hfwfhw0fhw0f"
               email:
                 type: string
                 example: "mitchell_shelton@y7mail.com"
+              password:
+                type: string
+                example: "secret"
       responses:
         200:
           description: OK
