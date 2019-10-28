@@ -94,11 +94,11 @@ class NotesNoteId(Resource):
 
         return response, 200, None
 
-    @jwt_required
+    # @jwt_required
     def delete(self, note_id):
         print(g.headers)
-        current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        # current_user = get_jwt_identity()
+        # print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"
