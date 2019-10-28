@@ -59,7 +59,11 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         this.handleChange = this.handleChange.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
     }
-    
+
+    onChangeVideoTime(timestamp: number){
+        this.props.video.currentTime = timestamp;
+    }
+
     async getVidNotes(): Promise<void | Note[]> {
         const response = await getNotes({
             sort: "-timestamp",
@@ -102,7 +106,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         }
     }
     
-    async onEditNote(note_params: editNotesParams){
+    async onEditNote(note_params: editNotesParams): Promise<void>{
         await editNote(note_params);
         
         const newNotes = await this.getVidNotes();
@@ -147,16 +151,16 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
             <StyledWrapper>
             <h1>Notare.</h1>
             <StyledTextArea 
-            placeholder="Start typing here..."
-            maxLength={MAX_CHARS}
-            value={textBoxValue}
-            onChange={this.handleChange}
-            onKeyDown={this.onKeyDown}>
-            </StyledTextArea>
+                placeholder="Start typing here..."
+                maxLength={MAX_CHARS}
+                value={textBoxValue}
+                onChange={this.handleChange}
+                onKeyDown={this.onKeyDown}/>
             <h2>Your Notes</h2>
             <NoteList notesList={allNotes}
-            onDeleteNote={this.deleteNote.bind(this)}
-            onEditNote={this.onEditNote.bind(this)}/>
+                onDeleteNote={this.deleteNote.bind(this)}
+                onEditNote={this.onEditNote.bind(this)}
+                onChangeVideoTime={this.onChangeVideoTime.bind(this)}/>
             </StyledWrapper>
         );
     }

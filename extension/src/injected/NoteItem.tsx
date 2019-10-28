@@ -53,8 +53,9 @@ const MyIconButton = materialStyled(IconButton)({
 
 interface Props {
     note: Note,
+    onChangeVideoTime: (timestamp: number) => void,
     onDeleteNote: (note_id: number) => void,
-    onEditNote: (note_params: editNotesParams) => void,
+    onEditNote: (note_params: editNotesParams) => Promise<void>,
 }
 
 interface State {
@@ -69,6 +70,10 @@ export default class NoteItem extends React.Component<Props, State> {
             inEditMode: false,
             textBoxValue: this.props.note.note,
 		};
+    }
+    
+    onTimestampClick(){
+        this.props.onChangeVideoTime(this.props.note.timestamp)
     }
     
     deleteNote(){
@@ -88,14 +93,14 @@ export default class NoteItem extends React.Component<Props, State> {
 
         // only edit note if different
         if (textBoxValue !== note.note){
-            onEditNote({
+            await onEditNote({
                 note: textBoxValue,
                 note_id: note.note_id,
                 video_id: note.video_id,
                 user_id: note.user_id,
                 timestamp: note.timestamp, 
             });
-        } 
+        }
         this.setState({inEditMode: false});
     }
 
@@ -172,7 +177,7 @@ export default class NoteItem extends React.Component<Props, State> {
                 <MyPaper><Box display="flex" py={1} pr={1}>
                     <Box display="flex" flexDirection="column" px={1} justifyContent="center">
                         <Box>
-                            <Link component="button" variant="body2">{formatTimestamp(timestamp)}</Link>
+                            <Link component="button" onClick={this.onTimestampClick.bind(this)}>{formatTimestamp(timestamp)}</Link>
                         </Box>
                     </Box>
                     <Box display="flex" flexGrow={1}>
