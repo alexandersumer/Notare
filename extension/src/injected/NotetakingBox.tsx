@@ -150,7 +150,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         return (
             <StyledWrapper>
             <h1>Notare.</h1>
-                <StyledTextArea 
+            <StyledTextArea 
                 placeholder="Start typing here..."
                 maxLength={MAX_CHARS}
                 value={textBoxValue}
