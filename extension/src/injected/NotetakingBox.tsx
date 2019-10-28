@@ -60,6 +60,10 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
+    onChangeVideoTime(timestamp: number){
+        this.props.video.currentTime = timestamp;
+    }
+
     async getVidNotes(): Promise<void | Note[]> {
         const response = await getNotes({
             sort: "-timestamp",
@@ -148,7 +152,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
                     onKeyDown={this.onKeyDown}>
                 </StyledTextArea>
                 <h2>Your Notes</h2>
-                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
+                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)} onChangeVideoTime={this.onChangeVideoTime.bind(this)}/>
             </StyledWrapper>
         );
     }

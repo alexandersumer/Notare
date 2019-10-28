@@ -53,6 +53,7 @@ const MyIconButton = materialStyled(IconButton)({
 type Props = {
     note: Note,
     onDeleteNote: (number) => void,
+    onChangeVideoTime: (timestamp: number) => void,
 }
 
 type State = {
@@ -106,6 +107,10 @@ export default class NoteItem extends React.Component<Props, State> {
             <Box></Box>
         );
     }
+
+    onTimestampClick(){
+        this.props.onChangeVideoTime(this.props.note.timestamp)
+    }
     
     deleteNote(){
         this.props.onDeleteNote(this.props.note.note_id);
@@ -124,14 +129,14 @@ export default class NoteItem extends React.Component<Props, State> {
 
 	render(){
 	   const { timestamp, note, note_id} = this.props.note;
-		 const { onDeleteNote } = this.props;
-
+        const { onDeleteNote } = this.props;
+        
 	   return (
             <Box display="flex" mb={1}>
                 <MyPaper><Box display="flex" py={1} pr={1}>
                     <Box display="flex" flexDirection="column" px={1} justifyContent="center">
                         <Box>
-                            <Link component="button" variant="body2">{formatTimestamp(timestamp)}</Link>
+                            <Link component="button" onClick={this.onTimestampClick.bind(this)}>{formatTimestamp(timestamp)}</Link>
                         </Box>
                     </Box>
                     <Box display="flex" flexGrow={1}>

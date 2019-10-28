@@ -16,6 +16,7 @@ const StyledWrapper = styled.div`
 type Props = {
     notesList: Note[],
     onDeleteNote: (number) => void,
+    onChangeVideoTime: (timestamp: number) => void,
 };
 
 export default class NoteList extends React.Component<Props> {
@@ -29,7 +30,7 @@ export default class NoteList extends React.Component<Props> {
           <StyledWrapper>
                 <Box display="flex" flexDirection="column">
                     {notesList.length ? notesList.map(n => (
-                        <NoteItem key={n.note_id} note={n} onDeleteNote={onDeleteNote}/>
+                        <NoteItem key={n.note_id} note={n} onDeleteNote={onDeleteNote} onChangeVideoTime={this.props.onChangeVideoTime}/>
                     )): "There are no notes for this video" }
                 </Box>
           </StyledWrapper>
