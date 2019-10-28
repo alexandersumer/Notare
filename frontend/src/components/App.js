@@ -1,23 +1,77 @@
 import React from 'react';
 import '../css/App.css';
 import backendapi from '../api/backendapi';
-
-
+import { GoogleLogin } from 'react-google-login';
+import config from '../config.json';
 
 
 class App extends React.Component {
 
   constructor(props) {
       super(props);
-      //console.log(props);
+      // const expirationDuration = (60*60*24)*1000; //1 Day
+      // var accessTokenTimestamp = localStorage.getItem('accessTokenTimestamp');
+      // if (accessTokenTimestamp !== null) {
+      //     const currentTime = new Date().getTime();
+      //     console.log(parseInt(currentTime) - parseInt(accessTokenTimestamp));
+      //     if (parseInt(currentTime) - parseInt(accessTokenTimestamp) > expirationDuration) {
+      //       console.log("expired access token, remove local storage");
+      //       localStorage.removeItem('userId');
+      //       localStorage.removeItem('accessToken');
+      //       localStorage.removeItem('accessTokenTimestamp');
+      //     }
+      // }
+      // const user_id = localStorage.getItem('userId');
+      // const accessToken = localStorage.getItem('accessToken');
+      // const authenticated = (accessToken !== null) ? true : false
       this.state = { 
           videos: []
+          // isAuthenticated: authenticated,
+          // userId: user_id,
+          // accessToken: accessToken
       };
-    
+      console.log(this.state);
   }
+
+  // logout = async () => {
+  //   backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.accessToken;
+  //   const backend_response = await backendapi.delete('/auth/google/logout')
+  //   console.log(backend_response)
+  //   if (backend_response.status === 200 || backend_response.status === 401) {
+  //     localStorage.removeItem('userId');
+  //     localStorage.removeItem('accessToken');
+  //     this.setState({isAuthenticated: false, accessToken: '', userId: null, videos: []});
+  //   } else {
+  //     console.log("failed to logout");
+  //   }
+  // };
+
+  // onFailure = (error) => {
+  //   console.log(error);
+  // };
+
+  // googleLoginResponse = async (response) => {
+  //   console.log(response)
+  //   console.log(response.accessToken)
+  //   console.log(response.profileObj.email)
+  //   const backend_response = await backendapi.post('/auth/google/login', {
+  //     googleAccessToken: response.accessToken,
+  //     email: response.profileObj.email
+  //   })
+  //   console.log(backend_response)
+
+  //   if (backend_response.status === 200) {
+  //     localStorage.setItem('accessToken', backend_response.data.accessToken);
+  //     localStorage.setItem('userId', backend_response.data.user_id);
+  //     localStorage.setItem('accessTokenTimestamp', (new Date().getTime()).toString())
+  //     this.setState({isAuthenticated: true, userId: backend_response.data.user_id, accessToken: backend_response.data.accessToken})
+  //     this.getVideos();
+  //   }
+  // };
 
   getVideos = async () => {
     //if (event) event.preventDefault();
+    backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + 'wffwfw';
     const response = await backendapi.get('/videos', {
       params: {
         user_id: 1
@@ -27,20 +81,49 @@ class App extends React.Component {
     console.log(response.data)
     if (response.status === 200) {
   
-      //this.setState({videos: response.data)});
+      this.setState({videos: response.data.videos});
 
     }
+  }
+
+  videoList = () => {
+    const listItems = this.state.videos.map((video) =>
+      <li key={video.video_id}>{video.video_id}</li>
+    );
+    return (
+      <ul>{listItems}</ul>
+    );
   }
 
   componentDidMount() {
       this.getVideos();
   }
 
-  render() {
+  videoList = () => {
+    const listItems = this.state.videos.map((video) =>
+      <li key={video.video_id}>{video.video_id}</li>
+    );
     return (
-      <div className="App">
-        <p>hiiii</p>
-      </div>
+      <ul>{listItems}</ul>
+    );
+  }
+
+  render() {
+    let content = 
+        (
+            <div>
+                <p>hi</p>
+                <div>
+                    <div>videos: {this.videoList()}</div>
+                </div>
+            </div>
+        ) ;
+
+    return (
+        <div className="App">
+            {content}
+        </div>
+
     );
   }
 }

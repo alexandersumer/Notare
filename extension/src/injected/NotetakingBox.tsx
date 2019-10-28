@@ -1,15 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
-import {BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
-import { getNotes, addNote } from '../api/notes';
+import { BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { MAX_CHARS } from '../constants';
+import { getNotes, addNote, deleteNote} from '../api/notes';
 import { Note } from './types';
 
 const USER_ID = 1; // for testing
 
 const StyledWrapper = styled.div`
     background-color: ${BACKGROUND_COLOR};
-    border: 2px solid ${PRIMARY_COLOR};
     font-size: 20px;
     height: 500px;
     width: 300px;
@@ -17,12 +17,15 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledTextArea = styled.textarea`
+    padding: 20px;
+    box-sizing: border-box;
     width: 100%;
     height: 150px;
+    margin-top: 10px;
     margin-bottom: 20px;
     color: ${TEXT_COLOR};
     background-color: ${NOTE_COLOR};
-    font-size: 18px;
+    font-size: 12px;
     border: none;
     resize: none;
 `;
@@ -87,6 +90,18 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         }
     }
 
+    async deleteNote(note_id: number){
+        await deleteNote(note_id);
+
+        const newNotes = await this.getVidNotes();
+        if (newNotes){
+            this.setState({ 
+                textBoxValue: '',
+                allNotes: newNotes,
+            });
+        }
+    }
+
     handleChange(event){
         this.setState({textBoxValue: event.target.value});
     }
@@ -94,7 +109,15 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     onKeyDown(event){
         if(event.keyCode == 13 && event.shiftKey == false) {
             event.preventDefault();
-            this.addNote();
+            if (this.state.textBoxValue.trim().length) {
+                // Only add notes with more than just spaces
+                this.addNote();
+            } else {
+                // empty text box anyway
+                this.setState({
+                    textBoxValue: '',
+                })
+            }
         }
     }
 
@@ -115,11 +138,17 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         const { allNotes, textBoxValue } = this.state;
         return (
             <StyledWrapper>
-                <h1>Notare</h1>
+                <h1>Notare.</h1>
                 {/*Some text box type*/}
-                <StyledTextArea value={textBoxValue} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                <StyledTextArea 
+                    placeholder="Start typing here..."
+                    maxLength={MAX_CHARS}
+                    value={textBoxValue}
+                    onChange={this.handleChange}
+                    onKeyDown={this.onKeyDown}>
+                </StyledTextArea>
                 <h2>Your Notes</h2>
-                <NoteList notesList={allNotes}/>
+                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
             </StyledWrapper>
         );
     }

@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 
 from . import Resource
@@ -13,16 +14,15 @@ import sqlite3
 
 query_mapping = {"note_id": "id"}
 
-db_mapping = {
-    "note_id": 0,
-    "note": 1,
-    "user_id": 2,
-    "video_id": 3,
-    "timestamp": 4
-}
+db_mapping = {"note_id": 0, "note": 1, "user_id": 2, "video_id": 3, "timestamp": 4}
+
 
 class NotesNoteId(Resource):
+    #@jwt_required
     def get(self, note_id):
+        print(g.headers)
+        #current_user = get_jwt_identity()
+        #print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
 
@@ -48,8 +48,12 @@ class NotesNoteId(Resource):
 
         return response, 200, None
 
+    #@jwt_required
     def put(self, note_id):
         print(g.json)
+        print(g.headers)
+        #current_user = get_jwt_identity()
+        #print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"
@@ -65,8 +69,14 @@ class NotesNoteId(Resource):
         for query_param in query_params:
             if query_param not in query_params:
                 return {"errorMessage": f"param {query_param} not in body"}, 400
-            elif query_param != "note" and g.json[query_param] != current_note[0][db_mapping[query_param]]:
-                return {"errorMessage": f"You cannot change the value of {query_param}"}, 400
+            elif (
+                query_param != "note"
+                and g.json[query_param] != current_note[0][db_mapping[query_param]]
+            ):
+                return (
+                    {"errorMessage": f"You cannot change the value of {query_param}"},
+                    400,
+                )
 
         SQL = f"UPDATE notes SET note=? WHERE id=?;"
         conn = sqlite3.connect("database.db")
@@ -84,5 +94,25 @@ class NotesNoteId(Resource):
 
         return response, 200, None
 
+    # @jwt_required
     def delete(self, note_id):
+        print(g.headers)
+        # current_user = get_jwt_identity()
+        # print(f"CURRENT USER: {current_user}")
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM notes where id=?;"
+        c.execute(SQL, (note_id,))
+        current_note = c.fetchall()
+        conn.close()
+
+        if len(current_note) == 0:
+            return {"errorMessage": f"note id {note_id} not found"}, 404
+
+        SQL = f"DELETE FROM notes WHERE id=?;"
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute(SQL, (note_id,))
+        conn.commit()
+
         return None, 200, None
