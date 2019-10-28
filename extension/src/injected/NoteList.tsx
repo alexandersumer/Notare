@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { TEXT_COLOR } from '../colorConstants';
+import { TEXT_COLOR, NOTE_COLOR } from '../colorConstants';
 import { Note } from './types';
 import Box from '@material-ui/core/Box';
+import { editNotesParams } from '../api/notes';
 
 import NoteItem from './NoteItem';
 
@@ -13,9 +14,10 @@ const StyledWrapper = styled.div`
     font-size: 13px;
 `;
 
-type Props = {
+interface Props {
     notesList: Note[],
-    onDeleteNote: (number) => void,
+    onDeleteNote: (note_id: number) => void,
+    onEditNote: (note_params: editNotesParams) => void,
 };
 
 export default class NoteList extends React.Component<Props> {
@@ -24,12 +26,12 @@ export default class NoteList extends React.Component<Props> {
   }
 
   render(){
-      const { notesList, onDeleteNote } = this.props
+      const { notesList, onDeleteNote, onEditNote } = this.props
       return(
           <StyledWrapper>
                 <Box display="flex" flexDirection="column">
                     {notesList.length ? notesList.map(n => (
-                        <NoteItem key={n.note_id} note={n} onDeleteNote={onDeleteNote}/>
+                        <NoteItem key={n.note_id} note={n} onDeleteNote={onDeleteNote} onEditNote={onEditNote}/>
                     )): "There are no notes for this video" }
                 </Box>
           </StyledWrapper>
