@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
-import {BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
-import { getNotes, addNote } from '../api/notes';
+import { BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { MAX_CHARS } from '../constants';
+import { getNotes, addNote, deleteNote} from '../api/notes';
 import { Note } from './types';
 
 const USER_ID = 1; // for testing
@@ -24,7 +25,7 @@ const StyledTextArea = styled.textarea`
     margin-bottom: 20px;
     color: ${TEXT_COLOR};
     background-color: ${NOTE_COLOR};
-    font-size: 18px;
+    font-size: 12px;
     border: none;
     resize: none;
 `;
@@ -89,6 +90,18 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         }
     }
 
+    async deleteNote(note_id: number){
+        await deleteNote(note_id);
+
+        const newNotes = await this.getVidNotes();
+        if (newNotes){
+            this.setState({ 
+                textBoxValue: '',
+                allNotes: newNotes,
+            });
+        }
+    }
+
     handleChange(event){
         this.setState({textBoxValue: event.target.value});
     }
@@ -129,12 +142,13 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
                 {/*Some text box type*/}
                 <StyledTextArea 
                     placeholder="Start typing here..."
+                    maxLength={MAX_CHARS}
                     value={textBoxValue}
                     onChange={this.handleChange}
                     onKeyDown={this.onKeyDown}>
                 </StyledTextArea>
                 <h2>Your Notes</h2>
-                <NoteList notesList={allNotes}/>
+                <NoteList notesList={allNotes} onDeleteNote={this.deleteNote.bind(this)}/>
             </StyledWrapper>
         );
     }
