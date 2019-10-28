@@ -6,7 +6,7 @@ const backendapi = axios.create({
 
 backendapi.defaults.headers.common['Authorization'] = 'Bearer adsf'; // TODO: change me when bringing back auth
 
-export const getRequest = async (route, params) => {
+export const getRequest = async (route:string, params) => {
   const response = await backendapi.get(route, { params });
 
   if (response.status == 200){
@@ -16,23 +16,33 @@ export const getRequest = async (route, params) => {
   }
 }
 
-export const postRequest = async (route, params) => {
+export const postRequest = async (route: string, params) => {
   const response = await backendapi.post(route, params);
 
   if (response.status == 201){
-    console.log('post successful');
+    console.log(`post to ${route} successful.`);
   } else {
-    console.log('post unsuccessful. status: ', response.status);
+    console.log(`post to ${route} unsuccessful. status: `, response.status);
   }
 }
 
-export const deleteRequest = async (route) => {
+export const putRequest = async (route: string, params) => {
+  const response = await backendapi.put(route, params);
+
+  if (response.status == 200){
+    console.log(`put to ${route} successful`);
+  } else {
+    console.log(`put to ${route} unsuccessful. status: `, response.status);
+  }
+}
+
+export const deleteRequest = async (route: string) => {
   console.log("deleteRequest called with route: ", route);
   const response = await backendapi.delete(route);
 
   if (response.status == 200){
-    console.log('delete successful');
+    console.log(`delete to ${route} successful`);
   } else {
-    console.log('delete unsuccessful. status: ', response.status);
+    console.log(`delete to ${route} unsuccessful. status: `, response.status);
   }
 }
