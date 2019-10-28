@@ -117,6 +117,11 @@ export default class NoteItem extends React.Component<Props, State> {
                 alert("You can't save an empty note!");
             }
         }
+
+        // on escape key, cancel edit
+        if (event.keyCode == 27){
+            this.cancelEdit();
+        }
     }
 
 
