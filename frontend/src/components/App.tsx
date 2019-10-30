@@ -1,10 +1,8 @@
 import * as React from "react";
-import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
-import { render } from "react-dom";
-import { Home } from "./Home"
-import { Notes } from "./Notes"
-import { Videos } from "./Videos"
-import "./style.css";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Home } from "./Home";
+import { Notes } from "./Notes";
+import { Videos } from "./Videos";
 
 class App extends React.Component {
   render() {
@@ -27,4 +25,4 @@ class App extends React.Component {
   }
 }
 
-render(<App />, document.getElementById("root"));
+export default App;
