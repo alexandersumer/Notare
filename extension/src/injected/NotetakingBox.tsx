@@ -149,7 +149,8 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         const { allNotes, textBoxValue } = this.state;
         return (
             <StyledWrapper>
-            <h1>Notare.</h1>
+            <img width={'120px'} height={'30px'} src={chrome.runtime.getURL('NotareWord.png')}></img>
+            <img width={'50px'} height={'50px'} src={chrome.runtime.getURL('NotareCircleTransparent.png')}></img>
             <StyledTextArea 
                 placeholder="Start typing here..."
                 maxLength={MAX_CHARS}

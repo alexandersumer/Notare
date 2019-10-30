@@ -31,5 +31,13 @@
     },
 
     "permissions": [
+        "tabs"
+    ],
+
+    "web_accessible_resources": [
+        "NotareCircleTransparent.png",
+        "NotareWord.png",
+        "*.png",
+        "js/injected.js"
     ]
 }
