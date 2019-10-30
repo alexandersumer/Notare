@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { render } from "react-dom";
+import { Home } from "./Home"
+import { Notes } from "./Notes"
+import { Videos } from "./Videos"
+import "./style.css";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/Notes">Notes</Link>
+            <Link to="/Videos">Videos</Link>
+          </nav>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/Notes" component={Notes} />
+            <Route exact path="/Videos" component={Videos} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
-export default App;
+render(<App />, document.getElementById("root"));
