@@ -126,7 +126,6 @@ class Login extends React.Component<RouteComponentProps> {
           return <Redirect to={from} />;
       }
 
-
       return (
           <div>
               <div>
