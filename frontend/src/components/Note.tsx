@@ -1,9 +1,12 @@
 import React from "react";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 const Youtube = (function () {
     let video, results;
 
-    const getThumb = function (url, size) {
+    const getThumb = function (url: string, size: string) {
         if (url === null) {
             return '';
         }
@@ -34,4 +37,17 @@ function getTimeStamp(noteId: string) {
     return;
 }
 
-export const Note = () => <h1>Note</h1>;
+export const Note = () => {
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <Container maxWidth="sm">
+        <img 
+        src={thumbnail}
+        alt="new"
+        />
+        <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />
+      </Container>
+    </React.Fragment>
+  );
+}
