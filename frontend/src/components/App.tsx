@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import Search from './components/Search';
+//import logo from './logo.svg';
+import Search from './Search';
 import './App.css';
 
 const App: React.FC = () => {

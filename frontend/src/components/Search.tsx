@@ -37,7 +37,7 @@ export default class Search extends React.Component<Props, State> {
     getResults(){
         const { searchBarText, myNotes } = this.state;
         // filter for notes that have searchbartext in them
-        if (searchBarText == '') return myNotes
+        if (searchBarText === '') return myNotes
         return myNotes.filter(n => fuzzy_match(n.toLowerCase(), searchBarText.toLowerCase()));
 
     }
