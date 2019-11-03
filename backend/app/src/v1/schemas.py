@@ -61,7 +61,7 @@ validators = {
     ('notes_note_id', 'PUT'): {'json': {'$ref': '#/definitions/note'}, 'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('notes_note_id', 'DELETE'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('videos', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'sort': {'type': 'string', 'enum': ['+video_id', '+user_id', '-video_id', '-user_id', '+video_title', '-video_title', '+categories', '-categories', '+notes_count', '-notes_count'], 'default': '+video_id'}, 'video_id': {'type': 'string'}, 'user_id': {'type': 'integer'}, 'video_title': {'type': 'string'}, 'categories': {'type': 'string'}, 'notes_count': {'type': 'integer'}}}},
-    ('search', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': ['search'], 'properties': {'search': {'type': 'string'}}}},
+    ('search', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': ['search'], 'properties': {'search': {'type': 'string'}, 'video_id': {'type': 'string'}}}},
 }
 
 filters = {

@@ -614,6 +614,11 @@
             "type": "string",
             "in": "query",
             "required": true
+          },
+          {
+            "name": "video_id",
+            "type": "string",
+            "in": "query"
           }
         ],
         "responses": {
