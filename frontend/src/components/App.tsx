@@ -6,7 +6,6 @@ import Notes from "./Notes";
 import Videos from "./Videos";
 import backendapi from "../api/backendapi";
 
-
 export const AuthService = {
   isAuthenticated: false,
   accessToken: "",
@@ -28,11 +27,9 @@ export const AuthService = {
   }
 };
 
-
 interface PrivateRouteProps extends RouteProps {
-  // tslint:disable-next-line:no-any
   component: any;
-  //isAuthenticated: boolean;
+  isAuthenticated: boolean;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
@@ -58,8 +55,6 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-
-
 const PublicRoute = (props: RouteProps) => {
   const { component: Component, ...rest } = props;
 
@@ -71,39 +66,6 @@ const PublicRoute = (props: RouteProps) => {
   );
 };
 
-// function PublicRoute({ component: Component, ...rest}) {
-//   //console.log({...rest});
-
-//   return (
-//       <Route 
-//       {...rest}
-//       render={props => <Login {...rest} {...props} />}
-//       />
-//   )
-// }
-
-
-// function PrivateRoute({ component: React.Component, ...rest}) {
-
-//   //console.log({...rest});
-
-//   return (
-//       <Route 
-//       {...rest}
-//       render={props => AuthService.isAuthenticated ? (
-//           <StatusBoard {...rest} {...props} />
-//           ): (
-//           <Redirect 
-//               to={{pathname:"/",
-//                    state: { from: props.location }
-//               }}
-//           />
-//           )
-//       }
-//       />
-//   )
-// }
-
 class App extends React.Component {
 
 
@@ -112,33 +74,14 @@ class App extends React.Component {
         <Router>
             <div>    
                 {/* <PrivateRoute path="/Notes"  /> */}
-                <PrivateRoute path="/Home" component={Home} />
-                <PrivateRoute path="/Notes" component={Notes} />
-                <PrivateRoute path="/Videos" component={Videos} />
+                <PrivateRoute path="/Home" component={Home} isAuthenticated={AuthService.isAuthenticated} />
+                <PrivateRoute path="/Notes" component={Notes} isAuthenticated={AuthService.isAuthenticated} />
+                <PrivateRoute path="/Videos" component={Videos} isAuthenticated={AuthService.isAuthenticated} />
                 <PublicRoute exact path="/" />           
             </div>
         </Router>
     )
   }
-
-  // render() {
-  //   return (
-  //     <Router>
-  //       <div>
-  //         <nav>
-  //           <Link to="/">Home</Link>
-  //           <Link to="/Notes">Notes</Link>
-  //           <Link to="/Videos">Videos</Link>
-  //         </nav>
-  //         <Switch>
-  //           <Route exact path="/" component={Home} />
-  //           <Route exact path="/Notes" component={Notes} />
-  //           <Route exact path="/Videos" component={Videos} />
-  //         </Switch>
-  //       </div>
-  //     </Router>
-  //   );
-  // }
 }
 
 class Login extends React.Component<RouteComponentProps> {
@@ -162,13 +105,11 @@ class Login extends React.Component<RouteComponentProps> {
   updateEmail = (event: SyntheticEvent) => {
       event.preventDefault();
       this.setState({email: (event.target as HTMLInputElement).value});
-      // console.log(this.state.email);
   }
 
   updatePassword = (event: SyntheticEvent) => {
       event.preventDefault();
       this.setState({password: (event.target as HTMLInputElement).value});
-      // console.log(this.state.password);
   }
 
   render() {
@@ -187,29 +128,29 @@ class Login extends React.Component<RouteComponentProps> {
 
 
       return (
-          <div className="ui middle aligned center aligned grid">
-              <div className="column">
-                  <h2 className="ui teal image header">
-                      <div className="content">Log-in to your account</div>
+          <div>
+              <div>
+                  <h2>
+                      <div>Log-in to your account</div>
                   </h2>
-                  <form className="ui large form" onSubmit={this.login} >
-                      <div className="ui stacked segment">
-                          <div className="field">
-                              <div className="ui left icon input">
-                              <i className="user icon"></i>
+                  <form onSubmit={this.login} >
+                      <div>
+                          <div>
+                              <div>
+                              <i></i>
                               <input type="text" name="email" placeholder="email" onChange={this.updateEmail} />
                           </div>
                       </div>
-                      <div className="field">
-                          <div className="ui left icon input">
-                              <i className="lock icon"></i>
+                      <div>
+                          <div>
+                              <i></i>
                               <input type="password" name="password" placeholder="Password" onChange={this.updatePassword} />
                           </div>
                       </div>
-                      <button className="ui fluid large teal submit button" >Login</button>
+                      <button>Login</button>
                   </div>
           
-                  <div className="ui error message"></div>
+                  <div></div>
           
                   </form>
           
