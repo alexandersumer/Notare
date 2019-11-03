@@ -5,6 +5,8 @@ from flask import request, g
 
 from . import Resource
 from .. import schemas
+from .notes import get_notes
+
 import sqlite3
 
 class VideosVideoIdTag(Resource):
@@ -64,5 +66,7 @@ class VideosVideoIdTag(Resource):
             
 
         print("successfuly set tag")
-        return {"videos": {"video_id": 1}}, 200
-        #return {"message": f"successfully set video to have category {g.json['tag']}"}, 200, None
+        response = {
+            "message": f"successfully set tag {g.json['tag']} for video {video_id}"
+        }
+        return response, 200, None
