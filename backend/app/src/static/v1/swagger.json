@@ -22,6 +22,19 @@
         }
       }
     },
+    "tag": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "string",
+          "example": "comedy"
+        },
+        "user_id": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
     "note": {
       "type": "object",
       "properties": {
@@ -39,7 +52,7 @@
         },
         "video_id": {
           "type": "string",
-          "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+          "example": "gSdG3FsMBq4"
         },
         "timestamp": {
           "type": "number",
@@ -52,7 +65,7 @@
       "properties": {
         "video_id": {
           "type": "string",
-          "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+          "example": "gSdG3FsMBq4"
         },
         "user_id": {
           "type": "integer",
@@ -63,14 +76,8 @@
           "example": "physics 101"
         },
         "categories": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "example": [
-            "education",
-            "comedy"
-          ]
+          "type": "string",
+          "example": "comedy"
         },
         "notes_ids": {
           "type": "array",
@@ -306,7 +313,7 @@
                 },
                 "video_id": {
                   "type": "string",
-                  "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+                  "example": "gSdG3FsMBq4"
                 },
                 "timestamp": {
                   "type": "number",
@@ -590,6 +597,164 @@
           },
           "422": {
             "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/videos/{video_id}/tag": {
+      "post": {
+        "operationId": "set tag for a video",
+        "description": "this is used for setting a tag for a video",
+        "summary": "set tag for a video",
+        "tags": [
+          "Videos"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "video_id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "tag": {
+                  "type": "string",
+                  "example": "comedy"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "videos": {
+                  "$ref": "#/definitions/video"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "post": {
+        "operationId": "create_tag",
+        "description": "this is used for creating a tag",
+        "summary": "create tag",
+        "tags": [
+          "Tag"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tag": {
+                  "$ref": "#/definitions/tag"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get_tags",
+        "description": "this is used for getting all tags",
+        "summary": "get tags",
+        "tags": [
+          "Tag"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "tag",
+            "type": "string",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/tag"
+                  }
+                },
+                "num_tags": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
           }
         }
       }

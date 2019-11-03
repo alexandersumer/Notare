@@ -30,13 +30,18 @@ notes = [
 ]
 
 videos = [
-    ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", "comedy"],
-    ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", "romance"],
-    ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
+    ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", 1],
+    ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", 2],
+    ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", 3],
 ]
 
 users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
-
+ 
+tags = [
+     [1, 2, "comedy"],
+     [2, 2, "romance"],
+     [3, 2, "physics"]
+ ]
 
 def create_db():
     """
@@ -63,6 +68,11 @@ def create_db():
                 categories VARCHAR,
                 PRIMARY KEY (id)
             );
+            CREATE TABLE tags (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                user_id INTEGER,
+                tag VARCHAR
+            );
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email VARCHAR,
@@ -88,6 +98,10 @@ def create_db():
             for user in users:
                 cur.execute("INSERT INTO users (id, email, password) values (?,?,?)", user)
 
+            for tag in tags:
+                cur.execute("INSERT INTO tags (id, user_id, tag) values (?,?,?)", tag)
+
+
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
             entries = cur.fetchall()
@@ -96,6 +110,9 @@ def create_db():
             entries = cur.fetchall()
             print(entries)
             cur.execute("""SELECT * FROM users""")
+            entries = cur.fetchall()
+            print(entries)
+            cur.execute("""SELECT * FROM tags""")
             entries = cur.fetchall()
             print(entries)
 

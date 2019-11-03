@@ -53,7 +53,7 @@ class Videos(Resource):
                     "video_id": video[0],
                     "user_id": video[1],
                     "video_title": video[2],
-                    "categories": [video[3]],
+                    "categories": video[3],
                     "notes_ids": [note_id[0] for note_id in notes_entries],
                     "notes_count": len(notes_entries),
                 }
