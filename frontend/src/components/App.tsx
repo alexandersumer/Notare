@@ -3,7 +3,7 @@ import { SyntheticEvent } from "react";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, RouteComponentProps, RouteProps } from "react-router-dom";
 import Home from "./Home";
 import Notes from "./Notes";
-import Videos from "./Videos";
+import Collections from "./Collections";
 import backendapi from "../api/backendapi";
 
 export const AuthService = {
@@ -76,7 +76,7 @@ class App extends React.Component {
                 {/* <PrivateRoute path="/Notes"  /> */}
                 <PrivateRoute path="/Home" component={Home} isAuthenticated={AuthService.isAuthenticated} />
                 <PrivateRoute path="/Notes" component={Notes} isAuthenticated={AuthService.isAuthenticated} />
-                <PrivateRoute path="/Videos" component={Videos} isAuthenticated={AuthService.isAuthenticated} />
+                <PrivateRoute path="/Collections" component={Collections} isAuthenticated={AuthService.isAuthenticated} />
                 <PublicRoute exact path="/" />           
             </div>
         </Router>

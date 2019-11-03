@@ -33,6 +33,10 @@ videos = [
     ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", "comedy"],
     ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", "romance"],
     ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
+    ["https://www.youtube.com/watch?v=743hghchZD8", 2, "sat on a wall", "physics"],
+    ["https://www.youtube.com/watch?v=6C9gidchZhl", 2, "and fell off", "physics"],
+    ["https://www.youtube.com/watch?v=fgyhOtchZD8", 2, "robots", "ai"],
+    ["https://www.youtube.com/watch?v=pflhOtchlok", 2, "riperoni", "ai"]
 ]
 
 users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]

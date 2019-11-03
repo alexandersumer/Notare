@@ -12,7 +12,7 @@ class Notes extends React.Component {
                 <nav>
                     <Link to="/Home">Home</Link>
                     <Link to="/Notes">Notes</Link>
-                    <Link to="/Videos">Videos</Link>
+                    <Link to="/Collections">Collections</Link>
                 </nav>
             </div>       
         </div>
