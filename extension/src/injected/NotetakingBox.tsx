@@ -1,9 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import NoteList from './NoteList';
-import { BACKGROUND_COLOR, NOTE_COLOR, PRIMARY_COLOR, TEXT_COLOR } from '../colorConstants';
+import { BACKGROUND_COLOR, NOTE_COLOR, TEXT_COLOR } from '../colorConstants';
 import { MAX_CHARS } from '../constants';
 import {editNotesParams, getNotes, addNote, deleteNote, editNote } from '../api/notes';
+import Box from '@material-ui/core/Box';
 import { Note } from './types';
 
 const USER_ID = 1; // for testing
@@ -17,7 +18,7 @@ padding: 20px;
 `;
 
 const StyledTextArea = styled.textarea`
-padding: 20px;
+padding: 10px;
 box-sizing: border-box;
 width: 100%;
 height: 150px;
@@ -149,8 +150,15 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
         const { allNotes, textBoxValue } = this.state;
         return (
             <StyledWrapper>
-            <img width={'120px'} height={'30px'} src={chrome.runtime.getURL('NotareWord.png')}></img>
-            <img width={'50px'} height={'50px'} src={chrome.runtime.getURL('NotareCircleTransparent.png')}></img>
+            <Box display="flex" mb={1}>
+                <Box display="flex" justifyContent="left">
+                    <img width={'120px'} height={'30px'} src={chrome.runtime.getURL('NotareWord.png')}></img>
+                </Box>
+                <Box flexGrow={1}/>
+                <Box display="flex" justifyContent="right">
+                    <img width={'30px'} height={'30px'} src={chrome.runtime.getURL('NotareCircleTransparent.png')}></img>
+                </Box>
+            </Box>
             <StyledTextArea 
                 placeholder="Start typing here..."
                 maxLength={MAX_CHARS}
