@@ -47,13 +47,18 @@ class Videos(Resource):
             SQL = f"SELECT * FROM notes {query_ops['query_ops']};"
             c.execute(SQL, tuple(query_ops["data"]))
             notes_entries = c.fetchall()
+            SQL = f"SELECT * FROM tags where id=?;"
+            print(f"tag id: {video[3]}")
+            c.execute(SQL, (video[3],))
+            tags_entries = c.fetchall()
+            tag = tags_entries[0][2] if len(tags_entries) == 1 else "No Tag"
             conn.close()
             videos.append(
                 {
                     "video_id": video[0],
                     "user_id": video[1],
                     "video_title": video[2],
-                    "categories": video[3],
+                    "categories": tag,
                     "notes_ids": [note_id[0] for note_id in notes_entries],
                     "notes_count": len(notes_entries),
                 }

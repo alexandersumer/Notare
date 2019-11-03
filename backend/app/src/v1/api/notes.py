@@ -85,7 +85,7 @@ class Notes(Resource):
                     g.json["video_id"],
                     g.json["user_id"],
                     "GET VIDEO TITLE",
-                    "GET VIDEO CATEGORY",
+                    0, #No Tag
                 ),
             )
             conn.commit()

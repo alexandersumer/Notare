@@ -11,28 +11,28 @@ import sqlite3
 import hashlib
 
 notes = [
-    [1, "this is the note", 1, "https://www.youtube.com/watch?v=gSdG3FsMBq4", 2.5],
+    [1, "this is the note", 1, "gSdG3FsMBq4", 2.5],
     [
         2,
         "this is the second note",
         1,
-        "https://www.youtube.com/watch?v=gSdG3FsMBq4",
+        "gSdG3FsMBq4",
         4.5,
     ],
-    [3, "different video note", 1, "https://www.youtube.com/watch?v=AMwYoA1kvqc", 1.2],
+    [3, "different video note", 1, "AMwYoA1kvqc", 1.2],
     [
         4,
         "different video differnt user note",
         2,
-        "https://www.youtube.com/watch?v=6C9hOtchZD8",
+        "6C9hOtchZD8",
         43.2,
     ],
 ]
 
 videos = [
-    ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", 1],
-    ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", 2],
-    ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", 3],
+    ["gSdG3FsMBq4", 1, "racing cars", 1],
+    ["AMwYoA1kvqc", 1, "more racing cars", 2],
+    ["6C9hOtchZD8", 2, "humpty dumpty", 3],
 ]
 
 users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
@@ -65,7 +65,7 @@ def create_db():
                 id VARCHAR NOT NULL,
                 user_id INTEGER,
                 video_title VARCHAR,
-                categories VARCHAR,
+                categories INTEGER,
                 PRIMARY KEY (id)
             );
             CREATE TABLE tags (
