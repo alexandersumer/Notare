@@ -14,16 +14,21 @@ from .. import schemas
 
 import sqlite3
 import requests
+import re
+import hashlib
 
 
 class Login(Resource):
     def post(self):
         print(g.json)
+        # TODO later make a create account route and email them if time permits
 
         for param in ["email", "password"]:
             if param not in g.json:
                 return {"errorMessage": f"param {param} not in body"}, 400
        
+        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", g.json['email']): 
+            return {"errorMessage": "Invalid Email"}, 400
 
         # check email if already in database
         # if not create user with that password
@@ -50,8 +55,10 @@ class Login(Resource):
             print(f"Created with user id {user_id}")
         else:
             # verify email and password
-            if g.json["password"] != user[0][2]:
-                return {"errorMessage": "Invalid Password"}, 401
+            if hashlib.sha256(g.json["password"].encode()).hexdigest() != user[0][2]:
+                print("Got here")
+                # TODO update swagger api doc to be 401 instead
+                return {"errorMessage": "Invalid Password"}, 400
             user_id = user[0][0]
             print(f"user {g.json['email']} exists with id {user_id}")
 

@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 import v1
 import os
 import sqlite3
+import hashlib
 
 notes = [
     [1, "this is the note", 1, "https://www.youtube.com/watch?v=gSdG3FsMBq4", 2.5],
@@ -34,7 +35,7 @@ videos = [
     ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
 ]
 
-users = [[1, "mitchellshelton97@gmail.com", "password"], [2, "mitchell_shelton@y7mail.com", "secret"]]
+users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
 
 
 def create_db():
