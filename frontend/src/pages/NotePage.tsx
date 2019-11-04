@@ -56,6 +56,7 @@ class NotePage extends React.Component<Props, State> {
       color: "white"
     });
 
+    if (this.state.notes.length) return <Box mr={4}>{this.state.notes.map(n => (<Note noteData={n} thumbNail allNotesLink/>))}</Box>
     return (
       <GreyFont
         display="flex"
@@ -108,7 +109,6 @@ class NotePage extends React.Component<Props, State> {
             label="Search by note text and video name..."
           />
         </Box>
-        <Box mr={4}>{this.state.notes.map(n => (<Note noteData={n} thumbNail/>))}</Box>
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}

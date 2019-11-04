@@ -4,7 +4,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Thumbnail from "../components/Thumbnail";
 import { getPlural } from "../utils/stringUtils";
 import Note from "../components/Note";
-import { RED_COLOR } from "../colorConstants";
+import { RED_COLOR, GREY_COLOR } from "../colorConstants";
 import { getVideos } from "../api/videos";
 import { getNotes } from "../api/notes";
 import { VideoType, NoteType } from "../types";
@@ -56,18 +56,31 @@ class VideoNotesPage extends React.Component<Props, State> {
     render(){
       const { video, notes } = this.state;
 
+      if (!video){
+        return (
+          <FontStyleComponent p={3} display="flex" flexDirection="column" flexGrow={1}>
+            <Box display="flex" flexGrow={1}>
+              No notes for this video :(
+            </Box>
+        </FontStyleComponent> 
+        )
+      }
       return (
         <FontStyleComponent p={3} display="flex" flexDirection="column" flexGrow={1}>
-          <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
+          <Box display="flex" flexDirection="row">
+            <h3 style={{ color: RED_COLOR }}>My Notes for: </h3>
+            <Box mr={1}/>
+            <h3>{video.video_title}</h3>
+          </Box>
           <Box display="flex" flexGrow={1}>
             <Box mr={3}>
-              <Thumbnail video_id={video ? video.video_id : ""}/>
-              <Box><b>{video ? video.video_title : "No video loaded!"}</b></Box>
+              <Thumbnail video_id={video.video_id}/>
+              <Box><b>{video.video_title}</b></Box>
               <Box>{notes.length} {getPlural("note", notes.length)}</Box>
             </Box>
 
             <Box display="flex" flexDirection="column" flexGrow={1}>
-              {notes.map(n => (<Note noteData={n} thumbNail={false}/>))}
+              {notes.map(n => (<Note noteData={n} thumbNail={false} allNotesLink={false}/>))}
             </Box>
           </Box>
         </FontStyleComponent>
