@@ -7,9 +7,11 @@ import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
-import { NoteType } from "../types";
+import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import Link from '@material-ui/core/Link';
+import Search from "../components/Search";
+
 
 const USER_ID = 1;
 
@@ -29,7 +31,8 @@ const GreyFont = materialStyled(Box)({
 interface Props {}
 
 interface State {
-  videos: Array<NoteType>;
+  videos: Array<VideoType>;
+  searched_videos: Array<VideoType>;
 }
 
 class VideoPage extends React.Component<Props> {
@@ -37,17 +40,22 @@ class VideoPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      videos: []
+      videos: [],
+      searched_videos: []
     };
   }
 
   getVideos = async () => {
     const response = await getVideos({ user_id: USER_ID });
-    response && this.setState({ videos: response.videos });
+    response && this.setState({ videos: response.videos, searched_videos: response.videos });
   };
 
   componentDidMount() {
     this.getVideos();
+  }
+
+  updateSearchedVideos(searched_videos: Array<VideoType>) {
+    this.setState({searched_videos: searched_videos});
   }
 
   renderMain() {
@@ -55,7 +63,7 @@ class VideoPage extends React.Component<Props> {
     if (numVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.videos.map(video => (
+          {this.state.searched_videos.map(video => (
             <VideoStyledComponent key={video.video_id} m={1} display="flex" flexDirection="column" alignItems="center">
               <Thumbnail video_id={video.video_id} />
               <Box>{video.video_title}</Box>
@@ -111,6 +119,7 @@ class VideoPage extends React.Component<Props> {
             margin="normal"
             label="Search by video name..."
           />
+          <Search components={this.state.videos} updateSearchedComponents={this.updateSearchedVideos.bind(this)} searchType="videos" />
         </Box>
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
