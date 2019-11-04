@@ -5,16 +5,11 @@ import { NoteType } from '../types';
 import { styled as materialStyled } from '@material-ui/core/styles';
 import { PINK_COLOR } from '../colorConstants';
 
-function getNoteText(noteId: string) {
-    return;
-}
-
-function getTimeStamp(noteId: string) {
-    return;
-}
-
-interface Props { 
-  noteData: NoteType,
+const formatTimestamp = (seconds: number): string => {
+  let date = new Date(0);
+  date.setSeconds(seconds);
+  if (seconds >= 60) return date.toISOString().substr(11, 8);
+  return date.toISOString().substr(14, 5);
 }
 
 const NoteStyle = materialStyled(Box)({
@@ -23,16 +18,12 @@ const NoteStyle = materialStyled(Box)({
   borderRadius: '5px',
 });
 
-
-const formatTimestamp = (seconds: number): string => {
-  let date = new Date(0);
-  date.setSeconds(seconds);
-  console.log(date.toISOString());
-  if (seconds >= 60) return date.toISOString().substr(11, 8);
-  return date.toISOString().substr(14, 5);
+interface Props { 
+  noteData: NoteType,
 }
 
-const Note = (props:Props) => {
+
+const Note = (props: Props) => {
   const { noteData }  = props;
   return (
     <Box display="flex" flexDirection="row" m={3} flexGrow={1}>
