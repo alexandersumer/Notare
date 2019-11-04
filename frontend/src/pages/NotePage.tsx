@@ -22,12 +22,6 @@ interface State {
   notes: Array<NoteType>;
 }
 
-const TestNoteComp = materialStyled(Box)({
-  width: "400px",
-  height: "100px",
-  backgroundColor: PINK_COLOR
-});
-
 const GreyFont = materialStyled(Box)({
   color: GREY_COLOR
 });
