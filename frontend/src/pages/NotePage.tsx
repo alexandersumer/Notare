@@ -8,6 +8,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import { getNotes } from "../api/notes";
 import { NoteType } from "../types";
+import Note from "../components/Note";
 
 const USER_ID = 1;
 
@@ -16,6 +17,7 @@ const FontStyleComponent = materialStyled(Box)({
 });
 
 interface Props {}
+
 interface State {
   notes: Array<NoteType>;
 }
@@ -96,7 +98,6 @@ class NotePage extends React.Component<Props, State> {
     return (
       <FontStyleComponent p={3}>
         <Box display="flex" flexDirection="row" alignItems="center">
-          <Box mr={4}>{}</Box>
           <Box mr={2}>
             <SearchIcon />
           </Box>
@@ -104,9 +105,10 @@ class NotePage extends React.Component<Props, State> {
             style={{ width: "600px" }}
             type="search"
             margin="normal"
-            label="Search by note content and video name..."
+            label="Search by note text and video name..."
           />
         </Box>
+        <Box mr={4}>{this.state.notes.map(n => (<Note noteData={n}/>))}</Box>
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}
