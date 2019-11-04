@@ -20,14 +20,15 @@ const NoteStyle = materialStyled(Box)({
 
 interface Props { 
   noteData: NoteType,
+  thumbNail: boolean,
 }
 
-
 const Note = (props: Props) => {
-  const { noteData }  = props;
+  const { noteData, thumbNail }  = props;
+  
   return (
-    <Box display="flex" flexDirection="row" m={3} flexGrow={1}>
-      <Thumbnail video_id={noteData.video_id}></Thumbnail>
+    <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
+      {thumbNail && (<Thumbnail video_id={noteData.video_id}></Thumbnail>)}
       <NoteStyle ml display="flex" flexDirection="row" flexGrow={1}>
           <Box p={1} mr={1} display="flex" alignItems="center">
             <Box>{formatTimestamp(noteData.timestamp)}</Box>
