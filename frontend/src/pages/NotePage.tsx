@@ -15,10 +15,10 @@ const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
 
-interface Props {};
+interface Props {}
 interface State {
-    notes: Array<NoteType>,
-};
+  notes: Array<NoteType>;
+}
 
 const TestNoteComp = materialStyled(Box)({
   width: "400px",
@@ -35,30 +35,18 @@ class NotePage extends React.Component<Props, State> {
     super(props, state);
 
     this.state = {
-      notes: [],
+      notes: []
     };
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     const notes = await this.getNotes();
-    console.log(notes)
-    if (notes){
-      this.setState({ notes })
+    if (notes) {
+      this.setState({ notes });
     }
   }
 
   renderMain() {
-    const numNotes = 0; // TODO: change so we actually use number of notes
-    if (numNotes) {
-      return (
-        <Box display="flex" flexWrap="wrap">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(() => (
-            <TestNoteComp m={1}>butts</TestNoteComp>
-          ))}
-        </Box>
-      );
-    }
-
     const TryNotareBox = materialStyled(Box)({
       width: "300px",
       height: "60px",
@@ -111,8 +99,6 @@ class NotePage extends React.Component<Props, State> {
           <Box mr={4}>{}</Box>
           <Box mr={2}>
             <SearchIcon />
-
-
           </Box>
           <TextField
             style={{ width: "600px" }}

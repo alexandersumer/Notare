@@ -8,7 +8,9 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { NoteType } from "../types";
-import { getVideos } from "../api/videos"
+import { getVideos } from "../api/videos";
+
+const USER_ID = 1;
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -40,7 +42,7 @@ class VideoPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const videos = await getVideos({user_id: 1});
+    const videos = await getVideos({ user_id: USER_ID });
     this.setState({ videos });
   };
 
