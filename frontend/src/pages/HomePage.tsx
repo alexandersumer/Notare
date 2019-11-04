@@ -3,12 +3,12 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { styled as materialStyled } from '@material-ui/core/styles';
+import { ORANGE_COLOR } from '../colorConstants';
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
 });
 
-const ORANGE_COLOR = "#FE904D"
 export const Home = () => <h1></h1>;
 
 interface Props {

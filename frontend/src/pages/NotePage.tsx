@@ -5,14 +5,12 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { styled as materialStyled } from '@material-ui/core/styles';
+import { GREY_COLOR, RED_COLOR, PINK_COLOR } from '../colorConstants';
+import Thumbnail from '../components/Thumbnail';
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
 });
-
-const GREY_COLOR = "#766767";
-const RED_COLOR = "#FF5756";
-const PINK_COLOR = "#FCECE6";
 
 interface Props {
 

@@ -6,84 +6,40 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { styled as materialStyled } from '@material-ui/core/styles';
 import backendapi from '../api/backendapi';
+import { GREY_COLOR, RED_COLOR, PINK_COLOR } from '../colorConstants';
+import Thumbnail from '../components/Thumbnail';
+import { NoteType } from '../types';
+
+const FontStyleComponent = materialStyled(Box)({
+    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+});
+
+const TestVideoComp = materialStyled(Box)({
+  width: '400px',
+  height: '100px',
+  backgroundColor: PINK_COLOR,
+});
+
+const GreyFont = materialStyled(Box)({
+  color: GREY_COLOR,
+});
 
 interface Props {
 
 };
 
-const FontStyleComponent = materialStyled(Box)({
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-  });
-  
-  const GREY_COLOR = "#766767";
-  const RED_COLOR = "#FF5756";
-  const PINK_COLOR = "#FCECE6";
-  
-  interface Props {
-  
-  };
-
-  interface State {
-    videos: Array<any>
-  };
-  
-  const TestVideoComp = materialStyled(Box)({
-    width: '400px',
-    height: '100px',
-    backgroundColor: PINK_COLOR,
-  });
-  
-  const GreyFont = materialStyled(Box)({
-    color: GREY_COLOR,
-  });
-
-  const dummy_data = [
-        {
-            video_id: "LlW7Es7gStA",
-            video_title: "Pewdiepie is nuts",
-            thumbnail: ""
-        },
-        { 
-            video_id: "QLx2WZWilBc",
-            video_title: "United States Grand Prix",
-            thumbnail: ""
-        }
-    ]
+interface State {
+  videos: Array<NoteType>,
+};
 
 class VideoPage extends React.Component<Props> {
     state: State
     constructor(props: Props){
         super(props);
         this.state = {
-            //videos: dummy_data
-            videos: []
+            videos: [],
         }
     }
-
-    Youtube = function () {
-        let video, results;
-    
-        const getThumb = function (url: string, size: string) {
-            if (url === null) {
-                return '';
-            }
-    
-            size    = (size === null) ? 'big' : size;
-            results = url.match('[\\?&]v=([^&#]*)');
-            video   = (results === null) ? url : results[1];
-    
-            if (size === 'small') {
-                return 'http://img.youtube.com/vi/' + video + '/2.jpg';
-            } 
-            
-            return 'http://img.youtube.com/vi/' + video + '/0.jpg';
-        };
-    
-        return {
-            thumb: getThumb
-        };
-    }();
-    
 
     getVideos = async () => {
         backendapi.defaults.headers.common['Authorization'] = 'Bearer ' + 'TODO add access token here';
@@ -94,7 +50,6 @@ class VideoPage extends React.Component<Props> {
         });
         if (backend_response.status === 200) {
             const thumbnail_videos = backend_response.data.videos.map((video: any) => {
-                video.thumbnail = this.Youtube.thumb('http://www.youtube.com/watch?v='+video.video_id, 'small');
                 return video;
             });
             this.setState({videos: thumbnail_videos})
@@ -113,10 +68,7 @@ class VideoPage extends React.Component<Props> {
                 {this.state.videos.map((video) => (
                   <TestVideoComp key={video.video_id} m={1}>
                     {video.video_title}
-                    <img 
-                        src={video.thumbnail}
-                        alt="video"
-                    />
+                    <Thumbnail src={video.video_id}/>
                   </TestVideoComp>
                 ))}
           </Box>
