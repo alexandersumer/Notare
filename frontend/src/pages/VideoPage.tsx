@@ -9,6 +9,7 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { NoteType } from "../types";
 import { getVideos } from "../api/videos";
+import Link from '@material-ui/core/Link';
 
 const USER_ID = 1;
 
@@ -16,10 +17,9 @@ const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
 
-const TestVideoComp = materialStyled(Box)({
+const VideoStyledComponent = materialStyled(Box)({
   width: "400px",
-  height: "100px",
-  backgroundColor: PINK_COLOR
+  backgroundColor: PINK_COLOR,
 });
 
 const GreyFont = materialStyled(Box)({
@@ -42,8 +42,8 @@ class VideoPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const videos = await getVideos({ user_id: USER_ID });
-    this.setState({ videos });
+    const response = await getVideos({ user_id: USER_ID });
+    response && this.setState({ videos: response.videos });
   };
 
   componentDidMount() {
@@ -56,21 +56,15 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.videos.map(video => (
-            <TestVideoComp key={video.video_id} m={1}>
-              {video.video_title}
+            <VideoStyledComponent key={video.video_id} m={1} display="flex" flexDirection="column" alignItems="center">
               <Thumbnail video_id={video.video_id} />
-            </TestVideoComp>
+              <Box>{video.video_title}</Box>
+              <Link href={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
+            </VideoStyledComponent>
           ))}
         </Box>
       );
     }
-
-    const TryNotareBox = materialStyled(Box)({
-      width: "300px",
-      height: "60px",
-      backgroundColor: RED_COLOR,
-      color: "white"
-    });
 
     return (
       <GreyFont
