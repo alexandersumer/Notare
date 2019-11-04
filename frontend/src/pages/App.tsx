@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
+import VideoNotesPage from './VideoNotesPage';
 
 
 class App extends React.Component {
@@ -22,6 +23,7 @@ class App extends React.Component {
             <Route exact path="/Notes" component={NotePage} />
             <Route exact path="/Videos" component={VideoPage} />
             <Route exact path="/AboutUs" component={AboutUsPage} />
+            <Route exact path="/VideoNotes/:video_id" component={VideoNotesPage}/>
           </Switch>
         </div>
       </Router>
