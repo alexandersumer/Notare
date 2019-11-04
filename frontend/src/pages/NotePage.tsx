@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { styled as materialStyled } from '@material-ui/core/styles';
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from '../colorConstants';
-import Thumbnail from '../components/Thumbnail';
+import Note from '../components/Note';
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
@@ -32,15 +32,6 @@ class NotePage extends React.Component<Props> {
   }
 
   renderMain(){
-    const numNotes = 0; // TODO: change so we actually use number of notes
-    if (numNotes){
-      return (
-        <Box display="flex" flexWrap="wrap">
-              {[1,2,3,4,5,6,7,8,9,0].map(() => (<TestNoteComp m={1}>butts</TestNoteComp>))}
-        </Box>
-      )
-    }
-
     const TryNotareBox = materialStyled(Box)({
       width: '300px',
       height: '60px',

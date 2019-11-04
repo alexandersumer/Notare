@@ -7,12 +7,13 @@ interface Props {
   width?: number,
   height?: number,
 }
+
 const Thumbnail = (props: Props) => {
   const width = (props.width || 120);
   const height = (props.height || 80);
   return (
       <Box maxWidth="sm">
-        <img src={getThumbnail(props.video_id)} width={width+'px'} height={height+'px'} alt="new"/>
+        <img style={{borderRadius: '5px'}} src={getThumbnail(props.video_id)} width={width+'px'} height={height+'px'} alt="new"/>
       </Box>
   );
 }
