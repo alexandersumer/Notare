@@ -68,7 +68,7 @@ class VideoPage extends React.Component<Props> {
                 {this.state.videos.map((video) => (
                   <TestVideoComp key={video.video_id} m={1}>
                     {video.video_title}
-                    <Thumbnail src={video.video_id}/>
+                    <Thumbnail video_id={video.video_id}/>
                   </TestVideoComp>
                 ))}
           </Box>

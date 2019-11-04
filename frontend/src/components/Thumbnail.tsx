@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import { getThumbnail } from '../utils/YoutubeUtils';
 
 interface Props {
-  src: string,
+  video_id: string,
   width?: number,
   height?: number,
 }
@@ -12,7 +12,7 @@ const Thumbnail = (props: Props) => {
   const height = (props.height || 80);
   return (
       <Box maxWidth="sm">
-        <img src={getThumbnail(props.src)} width={width+'px'} height={height+'px'} alt="new"/>
+        <img src={getThumbnail(props.video_id)} width={width+'px'} height={height+'px'} alt="new"/>
       </Box>
   );
 }
