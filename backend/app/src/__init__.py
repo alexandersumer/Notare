@@ -10,28 +10,30 @@ import os
 import sqlite3
 
 notes = [
-    [1, "this is the note", 1, "https://www.youtube.com/watch?v=gSdG3FsMBq4", 2.5],
+    [1, "this is the note", 1, "LlW7Es7gStA", 2.5],
     [
         2,
         "this is the second note",
         1,
-        "https://www.youtube.com/watch?v=gSdG3FsMBq4",
+        "LlW7Es7gStA",
         4.5,
     ],
-    [3, "different video note", 1, "https://www.youtube.com/watch?v=AMwYoA1kvqc", 1.2],
+    [3, "different video note", 1, "QLx2WZWilBc", 1.2],
     [
         4,
         "different video differnt user note",
         2,
-        "https://www.youtube.com/watch?v=6C9hOtchZD8",
+        "hW_EEWVlVxE",
         43.2,
     ],
+    [5, "what a note", 1, "EdYT2GsBqNs", 44.5],
 ]
 
 videos = [
-    ["https://www.youtube.com/watch?v=gSdG3FsMBq4", 1, "racing cars", "comedy"],
-    ["https://www.youtube.com/watch?v=AMwYoA1kvqc", 1, "more racing cars", "romance"],
-    ["https://www.youtube.com/watch?v=6C9hOtchZD8", 2, "humpty dumpty", "physics"],
+    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", "comedy"],
+    ["QLx2WZWilBc", 1, "United States Grand Prix", "romance"],
+    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", "sci-fi"],
+    ["hW_EEWVlVxE", 2, "Building a Roller Coaster That Goes To Hell in Planet Coaster", "physics"],
 ]
 
 users = [[1, "mitchellshelton97@gmail.com"], [2, "mitchell_shelton@y7mail.com"]]
