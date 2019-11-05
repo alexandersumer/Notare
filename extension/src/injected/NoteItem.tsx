@@ -9,6 +9,7 @@ import { styled as materialStyled } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
+import EditIcon from '@material-ui/icons/Edit';
 
 import { Box, Paper, IconButton, Link } from '@material-ui/core';
 
@@ -21,7 +22,7 @@ const formatTimestamp = (seconds: number): string => {
 
 const StyledTextArea = styled.textarea`
     font-size: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: ${TEXT_COLOR};
     width: 100%;
     height: 100%;
@@ -45,6 +46,10 @@ const MyPaper = materialStyled(Paper)({
     borderRadius: 3,
     color: TEXT_COLOR,
     width: '100%',
+    cursor: 'pointer',
+    '&:hover': {
+        background: "#ffd5c2",
+    },
 });
 
 const MyIconButton = materialStyled(IconButton)({
@@ -64,12 +69,14 @@ interface State {
 }
 
 export default class NoteItem extends React.Component<Props, State> {
+    editTextBoxRef = React.createRef();
+
 	constructor(props){
 		super(props);
 		this.state = {
             inEditMode: false,
             textBoxValue: this.props.note.note,
-		};
+        };
     }
     
     onTimestampClick(){
@@ -104,7 +111,7 @@ export default class NoteItem extends React.Component<Props, State> {
         this.setState({inEditMode: false});
     }
 
-	handleDoubleClick(){
+	openEditMode(){
 		this.setState({inEditMode: true});
     }
 
@@ -138,7 +145,8 @@ export default class NoteItem extends React.Component<Props, State> {
                         maxLength={MAX_CHARS}
                         value={this.state.textBoxValue}
                         onChange={this.onTextBoxChange.bind(this)}
-                        onKeyDown={this.onTextBoxKeyDown.bind(this)}/>
+                        onKeyDown={this.onTextBoxKeyDown.bind(this)}
+                        onBlur={this.cancelEdit.bind(this)}/>
                 </Box>
             );
         }
@@ -148,7 +156,7 @@ export default class NoteItem extends React.Component<Props, State> {
             minWidth: 0,
         });
         return (
-            <MyTextDisplayBox display="flex" flexGrow={1} onDoubleClick={this.handleDoubleClick.bind(this)}>
+            <MyTextDisplayBox display="flex" flexGrow={1} onClick={this.openEditMode.bind(this)}>
                 {this.props.note.note}
             </MyTextDisplayBox>
 		);
@@ -165,7 +173,9 @@ export default class NoteItem extends React.Component<Props, State> {
             );
         }
         return (
-            <Box></Box>
+            <Box>
+                <MyIconButton aria-label="done" onClick={this.openEditMode.bind(this)}><EditIcon fontSize="small"/></MyIconButton>
+            </Box>
         );
     }
 
@@ -174,19 +184,21 @@ export default class NoteItem extends React.Component<Props, State> {
 
 	   return (
             <Box display="flex" mb={1}>
-                <MyPaper><Box display="flex" py={1} pr={1}>
-                    <Box display="flex" flexDirection="column" px={1} justifyContent="center">
-                        <Box>
-                            <Link component="button" onClick={this.onTimestampClick.bind(this)}>{formatTimestamp(timestamp)}</Link>
+                <MyPaper>
+                    <Box display="flex" py={1} pr={1}>
+                        <Box display="flex" flexDirection="column" px={1} justifyContent="center">
+                            <Box>
+                                <Link component="button" onClick={this.onTimestampClick.bind(this)}>{formatTimestamp(timestamp)}</Link>
+                            </Box>
+                        </Box>
+                        <Box display="flex" flexGrow={1}>
+                            {this.renderMainBox()}
+                        </Box>
+                        <Box pl={1}>
+                            {this.renderSideBar()}
                         </Box>
                     </Box>
-                    <Box display="flex" flexGrow={1}>
-                        {this.renderMainBox()}
-                    </Box>
-                    <Box pl={1}>
-                        {this.renderSideBar()}
-                    </Box>
-                </Box></MyPaper>
+                </MyPaper>
 			</Box>
 	   	);
    }
