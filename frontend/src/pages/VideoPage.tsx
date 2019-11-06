@@ -45,7 +45,7 @@ class VideoPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const response = await getVideos({ user_id: USER_ID });
+    const response = await getVideos({ sort: "-last_edited", user_id: USER_ID });
     response &&
       this.setState({
         videos: response.videos,
