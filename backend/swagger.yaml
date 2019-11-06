@@ -164,7 +164,7 @@ paths:
         - name: sort
           type: string
           in: query
-          enum: [+note_id, +note, +user_id, +video_id, +timestamp, +time_created, +last_edited -note_id, -note, -user_id, -video_id, -timestamp, -time_created, -last_edited]
+          enum: [+note_id, +note, +user_id, +video_id, +timestamp, +time_created, +last_edited, -note_id, -note, -user_id, -video_id, -timestamp, -time_created, -last_edited]
           default: "+timestamp"
         - name: note_id
           type: integer

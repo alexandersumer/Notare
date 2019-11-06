@@ -8,26 +8,25 @@ from flask_jwt_extended import JWTManager
 import v1
 import os
 import sqlite3
-
-notes = [
-    [1, "this is the note", 1, "LlW7Es7gStA", 2.5, 1573010001, 1573010001],
-    [2, "this is the second note", 1, "LlW7Es7gStA", 4.5, 1573010002, 1573010002],
-    [3, "different video note", 1, "QLx2WZWilBc", 1.2, 1573010003, 1573010003],
-    [4, "different video differnt user note", 2, "hW_EEWVlVxE", 43.2, 1573010004, 1573010004],
-    [5, "what a note", 1, "EdYT2GsBqNs", 44.5, 1573010005, 1573010005],
+notes = [                                          
+    [1, "this is the note", 1, "LlW7Es7gStA", 2.5, 1573010001000000, 1573010001000000],
+    [2, "this is the second note", 1, "LlW7Es7gStA", 4.5, 1573010002000000, 1573010004000000],
+    [3, "different video note", 1, "QLx2WZWilBc", 1.2, 1573010003000000, 1573010003000000],
+    [4, "different video differnt user note", 2, "hW_EEWVlVxE", 43.2, 1573010004000000, 1573010009000000],
+    [5, "what a note", 1, "EdYT2GsBqNs", 44.5, 1573010005000000, 1573010005000000],
 ]
 
 videos = [
-    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", "comedy", 1573010001, 1573010002],
-    ["QLx2WZWilBc", 1, "United States Grand Prix", "romance", 1573010003, 1573010003],
-    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", "sci-fi", 1573010005, 1573010005],
+    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", "comedy", 1573010001000000, 1573010004000000],
+    ["QLx2WZWilBc", 1, "United States Grand Prix", "romance", 1573010003000000, 1573010003000000],
+    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", "sci-fi", 1573010005000000, 1573010005000000],
     [
         "hW_EEWVlVxE",
         2,
         "Building a Roller Coaster That Goes To Hell in Planet Coaster",
         "physics",
-        1573010004,
-        1573010004,
+        1573010004000000,
+        1573010009000000,
     ],
 ]
 
