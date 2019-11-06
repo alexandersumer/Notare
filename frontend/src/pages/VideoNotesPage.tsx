@@ -9,6 +9,7 @@ import { getVideos } from "../api/videos";
 import { getNotes } from "../api/notes";
 import { VideoType, NoteType } from "../types";
 import { RouteComponentProps } from "react-router-dom"
+import Search from "../components/Search";
 
 const USER_ID = 1;
 
@@ -25,6 +26,8 @@ interface Props extends RouteComponentProps<MatchParams> {}
 interface State {
   video: VideoType | void,
   notes: NoteType[],
+  searched_notes: Array<NoteType>
+
 }
 
 class VideoNotesPage extends React.Component<Props, State> {
@@ -33,6 +36,7 @@ class VideoNotesPage extends React.Component<Props, State> {
       this.state = {
         video: undefined,
         notes: [],
+        searched_notes: []
       }
     }
     
@@ -41,9 +45,13 @@ class VideoNotesPage extends React.Component<Props, State> {
       if (response && response.num_videos) this.setState({ video: response.videos[0] });
     }
 
+    updateSearchedNotes(searched_notes: Array<NoteType>) {
+      this.setState({searched_notes: searched_notes});
+    }
+
     async getNotes(video_id: string) {
       const response = await getNotes({ user_id: USER_ID, video_id: video_id });
-      if (response) this.setState({ notes: response.notes });
+      if (response) this.setState({ notes: response.notes, searched_notes: response.notes });
     }
 
      async componentDidMount() {
@@ -54,7 +62,7 @@ class VideoNotesPage extends React.Component<Props, State> {
     }
 
     render(){
-      const { video, notes } = this.state;
+      const { video, notes, searched_notes } = this.state;
 
       if (!video){
         return (
@@ -67,6 +75,7 @@ class VideoNotesPage extends React.Component<Props, State> {
       }
       return (
         <FontStyleComponent p={3} display="flex" flexDirection="column" flexGrow={1}>
+          <Search components={this.state.notes} updateSearchedComponents={this.updateSearchedNotes.bind(this)} searchType="notes" />
           <Box display="flex" flexDirection="row">
             <h3 style={{ color: RED_COLOR }}>My Notes for: </h3>
             <Box mr={1}/>
@@ -80,7 +89,7 @@ class VideoNotesPage extends React.Component<Props, State> {
             </Box>
 
             <Box display="flex" flexDirection="column" flexGrow={1}>
-              {notes.map(n => (<Note noteData={n} thumbNail={false} allNotesLink={false}/>))}
+              {searched_notes.map(n => (<Note noteData={n} thumbNail={false} allNotesLink={false}/>))}
             </Box>
           </Box>
         </FontStyleComponent>
