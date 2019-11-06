@@ -28,7 +28,6 @@ export default class Search extends React.Component<Props, State> {
         console.log(props);
         this.state = {
             searchBarText: '',
-            //myComponents: ['Guy likes butts', 'Daniel likes coconuts', 'Alex loves rust'],
             myComponents: props.components
         }
     }
@@ -40,12 +39,6 @@ export default class Search extends React.Component<Props, State> {
      }
 
     onChange(event: any){ // TODO: Add type
-        console.log(this.state.myComponents);
-        // this.setState({
-        //     searchBarText: event.target.value,
-        // });
-        // console.log("search bar text: ", this.state.searchBarText);
-        console.log("event value: ", event.target.value);
         this.props.updateSearchedComponents(this.getResults(event.target.value));
     }
 
@@ -56,7 +49,7 @@ export default class Search extends React.Component<Props, State> {
 
     getResults(searchBarText: string){
         const { myComponents } = this.state;
-        // filter for notes that have searchbartext in them
+        // filter for notes, videos that have searchbartext in them
         if (searchBarText === '') return myComponents
         if (this.props.searchType === "notes") {
             return (myComponents as Array<NoteType>).filter(c => fuzzy_match(c.note.toLowerCase(), searchBarText.toLowerCase()));
@@ -80,8 +73,6 @@ export default class Search extends React.Component<Props, State> {
                     label={"Search by " + this.props.searchType}
                     onChange={this.onChange.bind(this)}
                 />
-                 {/* <input type="text" placeholder = "Search" onChange={this.onChange.bind(this)}/> */}
-                {/* <div>{this.getResults().map(res => (<div>{res}</div>))}</div> */}
             </Box>
         )
     }
