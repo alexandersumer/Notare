@@ -11,21 +11,9 @@ import sqlite3
 
 notes = [
     [1, "this is the note", 1, "LlW7Es7gStA", 2.5],
-    [
-        2,
-        "this is the second note",
-        1,
-        "LlW7Es7gStA",
-        4.5,
-    ],
+    [2, "this is the second note", 1, "LlW7Es7gStA", 4.5,],
     [3, "different video note", 1, "QLx2WZWilBc", 1.2],
-    [
-        4,
-        "different video differnt user note",
-        2,
-        "hW_EEWVlVxE",
-        43.2,
-    ],
+    [4, "different video differnt user note", 2, "hW_EEWVlVxE", 43.2,],
     [5, "what a note", 1, "EdYT2GsBqNs", 44.5],
 ]
 
@@ -33,7 +21,12 @@ videos = [
     ["LlW7Es7gStA", 1, "Pewdiepie is nuts", "comedy"],
     ["QLx2WZWilBc", 1, "United States Grand Prix", "romance"],
     ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", "sci-fi"],
-    ["hW_EEWVlVxE", 2, "Building a Roller Coaster That Goes To Hell in Planet Coaster", "physics"],
+    [
+        "hW_EEWVlVxE",
+        2,
+        "Building a Roller Coaster That Goes To Hell in Planet Coaster",
+        "physics",
+    ],
 ]
 
 users = [[1, "mitchellshelton97@gmail.com"], [2, "mitchell_shelton@y7mail.com"]]
@@ -116,7 +109,7 @@ def create_app():
     # )  # access tokens last for a day
     # app.config["JWT_BLACKLIST_ENABLED"] = True
     # app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
-    #jwt = JWTManager(app)
+    # jwt = JWTManager(app)
 
     # @jwt.token_in_blacklist_loader
     # def check_if_token_in_blacklist(decrypted_token):

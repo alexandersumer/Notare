@@ -1,14 +1,12 @@
 const webpack = require("webpack");
-const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
-const srcDir = '../src/';
-;
-
+const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+const srcDir = "../src/";
 module.exports = {
   entry: {
     popup: path.join(__dirname, "src/popup/index.tsx"),
     injected: path.join(__dirname, "src/injected/index.tsx"),
-    eventPage: path.join(__dirname, "src/eventPage.ts"),
+    eventPage: path.join(__dirname, "src/eventPage.ts")
   },
   output: {
     path: path.join(__dirname, "dist/js"),
@@ -44,10 +42,6 @@ module.exports = {
   plugins: [
     // exclude locale files in moment
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new CopyPlugin([
-        { from: '.', to: '../' }
-      ],
-      {context: 'public' }
-    ),
+    new CopyPlugin([{ from: ".", to: "../" }], { context: "public" })
   ]
 };
