@@ -106,21 +106,7 @@ class VideoPage extends React.Component<Props> {
   render() {
     return (
       <FontStyleComponent p={3}>
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Box mr={4}>
-            <h1>My Videos</h1>
-          </Box>
-          <Box mr={2}>
-            <SearchIcon />
-          </Box>
-          <TextField
-            style={{ width: "600px" }}
-            type="search"
-            margin="normal"
-            label="Search by video name..."
-          />
-          <Search components={this.state.videos} updateSearchedComponents={this.updateSearchedVideos.bind(this)} searchType="videos" />
-        </Box>
+        <Search components={this.state.videos} updateSearchedComponents={this.updateSearchedVideos.bind(this)} searchType="videos" />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
           {this.renderMain()}

@@ -99,18 +99,7 @@ class NotePage extends React.Component<Props, State> {
   render() {
     return (
       <FontStyleComponent p={3}>
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Box mr={2}>
-            <SearchIcon />
-          </Box>
-          <TextField
-            style={{ width: "600px" }}
-            type="search"
-            margin="normal"
-            label="Search by note text and video name..."
-          />
-          <Search components={this.state.notes} updateSearchedComponents={this.updateSearchedNotes.bind(this)} searchType="notes" />
-        </Box>
+        <Search components={this.state.notes} updateSearchedComponents={this.updateSearchedNotes.bind(this)} searchType="notes" />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}

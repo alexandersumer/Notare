@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { NoteType } from '../types';
 import { VideoType } from '../types';
+import Box from "@material-ui/core/Box";
+import SearchIcon from "@material-ui/icons/Search";
+import TextField from "@material-ui/core/TextField";
 
 
 interface Props {
@@ -66,11 +69,20 @@ export default class Search extends React.Component<Props, State> {
 
     render(){
         return (
-            <div>
-                <input type="text" placeholder = "Search" onChange={this.onChange.bind(this)}/>
+            <Box display="flex" flexDirection="row" alignItems="center">
+                <Box mr={2}>
+                    <SearchIcon />
+                </Box>
+                <TextField
+                    style={{ width: "600px" }}
+                    type="search"
+                    margin="normal"
+                    label={"Search by " + this.props.searchType}
+                    onChange={this.onChange.bind(this)}
+                />
+                 {/* <input type="text" placeholder = "Search" onChange={this.onChange.bind(this)}/> */}
                 {/* <div>{this.getResults().map(res => (<div>{res}</div>))}</div> */}
-            </div>
-
+            </Box>
         )
     }
 
