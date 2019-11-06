@@ -40,7 +40,7 @@ class VideoNotesPage extends React.Component<Props, State> {
   }
 
   async getVideos(video_id: string) {
-    const response = await getVideos({ user_id: USER_ID, video_id });
+    const response = await getVideos({ sort: "-last_edited", user_id: USER_ID, video_id });
     if (response && response.num_videos)
       this.setState({ video: response.videos[0] });
   }

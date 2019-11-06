@@ -92,7 +92,7 @@ class NotePage extends React.Component<Props, State> {
 
   async getNotes(): Promise<void | NoteType[]> {
     const response = await getNotes({
-      sort: "-timestamp",
+      sort: "-last_edited",
       user_id: USER_ID
     });
     if (response) return response.notes;
