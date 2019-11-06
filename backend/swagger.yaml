@@ -36,10 +36,16 @@ definitions:
         example: 1
       video_id:
         type: string
-        example: "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+        example: "gSdG3FsMBq4"
       timestamp:
         type: number
         example: 2.5
+      time_created:
+        type: integer
+        example: 1573010015
+      last_edited:
+        type: integer
+        example: 1573010015
         
   video:
     type: object
@@ -58,6 +64,12 @@ definitions:
         items: 
           type: string
         example: ["education", "comedy"]
+      time_created:
+        type: integer
+        example: 1573010015
+      last_edited:
+        type: integer
+        example: 1573010015
       notes_ids:
         type: array
         items:
@@ -152,7 +164,7 @@ paths:
         - name: sort
           type: string
           in: query
-          enum: [+note_id, +note, +user_id, +video_id, +timestamp, -note_id, -note, -user_id, -video_id, -timestamp]
+          enum: [+note_id, +note, +user_id, +video_id, +timestamp, +time_created, +last_edited -note_id, -note, -user_id, -video_id, -timestamp, -time_created, -last_edited]
           default: "+timestamp"
         - name: note_id
           type: integer
@@ -168,6 +180,12 @@ paths:
           in: query
         - name: note
           type: string
+          in: query
+        - name: time_created
+          type: integer
+          in: query
+        - name: last_edited
+          type: integer
           in: query
       responses:
         200:
@@ -216,7 +234,10 @@ paths:
                 example: 1
               video_id:
                 type: string
-                example: "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+                example: "gSdG3FsMBq4"
+              video_title:
+                type: string
+                example: "How to code"
               timestamp:
                 type: number
                 example: 2.5
@@ -366,7 +387,7 @@ paths:
         - name: sort
           type: string
           in: query
-          enum: [+video_id, +user_id, -video_id, -user_id, +video_title, -video_title, +categories, -categories, +notes_count, -notes_count]
+          enum: [+video_id, +user_id, -video_id, -user_id, +video_title, -video_title, +categories, -categories, +notes_count, -notes_count, +time_created, -time_created, +last_edited, -last_edited]
           default: "+video_id"
         - name: video_id
           type: string
@@ -381,6 +402,12 @@ paths:
           type: string
           in: query #comedy,education
         - name: notes_count
+          type: integer
+          in: query
+        - name: time_created
+          type: integer
+          in: query
+        - name: last_edited
           type: integer
           in: query
       responses:

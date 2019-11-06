@@ -23,7 +23,7 @@ class Videos(Resource):
         # print(f"CURRENT USER: {current_user}")
         data = []
         query_ops = ""
-        for query_param in ["video_id", "user_id", "video_title", "categories"]:
+        for query_param in ["video_id", "user_id", "video_title", "categories", "time_created", "last_edited"]:
             if query_param in g.args:
                 if query_ops == "":
                     query_ops = f"WHERE {query_mapping.get(query_param, query_param)}=?"
@@ -54,6 +54,8 @@ class Videos(Resource):
                     "user_id": video[1],
                     "video_title": video[2],
                     "categories": [video[3]],
+                    "time_created": int(video[4]),
+                    "last_edited": int(video[5]),
                     "notes_ids": [note_id[0] for note_id in notes_entries],
                     "notes_count": len(notes_entries),
                 }
