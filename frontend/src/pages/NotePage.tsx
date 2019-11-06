@@ -9,6 +9,7 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import { getNotes } from "../api/notes";
 import { NoteType } from "../types";
 import Note from "../components/Note";
+import Search from "../components/Search";
 
 const USER_ID = 1;
 
@@ -20,6 +21,7 @@ interface Props {}
 
 interface State {
   notes: Array<NoteType>;
+  searched_notes: Array<NoteType>;
 }
 
 const GreyFont = materialStyled(Box)({
@@ -31,14 +33,15 @@ class NotePage extends React.Component<Props, State> {
     super(props, state);
 
     this.state = {
-      notes: []
+      notes: [],
+      searched_notes: []
     };
   }
 
   async componentDidMount() {
     const notes = await this.getNotes();
     if (notes) {
-      this.setState({ notes });
+      this.setState({ notes: notes, searched_notes: notes });
     }
   }
 
@@ -53,7 +56,7 @@ class NotePage extends React.Component<Props, State> {
     if (this.state.notes.length)
       return (
         <Box mr={4}>
-          {this.state.notes.map(n => (
+          {this.state.searched_notes.map(n => (
             <Note noteData={n} thumbNail allNotesLink />
           ))}
         </Box>
@@ -96,20 +99,18 @@ class NotePage extends React.Component<Props, State> {
     return undefined;
   }
 
+  updateSearchedNotes(searched_notes: Array<NoteType>) {
+    this.setState({ searched_notes: searched_notes });
+  }
+
   render() {
     return (
       <FontStyleComponent p={3}>
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Box mr={2}>
-            <SearchIcon />
-          </Box>
-          <TextField
-            style={{ width: "600px" }}
-            type="search"
-            margin="normal"
-            label="Search by note text and video name..."
-          />
-        </Box>
+        <Search
+          components={this.state.notes}
+          updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+          searchType="notes"
+        />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}

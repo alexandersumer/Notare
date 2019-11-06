@@ -1,10 +1,19 @@
 import * as React from "react";
+import { NoteType } from "../types";
+import { VideoType } from "../types";
+import Box from "@material-ui/core/Box";
+import SearchIcon from "@material-ui/icons/Search";
+import TextField from "@material-ui/core/TextField";
 
-interface Props {}
+interface Props {
+  components: Array<NoteType> | Array<VideoType>;
+  updateSearchedComponents: Function;
+  searchType: string;
+}
 
 interface State {
   searchBarText: string;
-  myNotes: string[];
+  myComponents: Array<NoteType> | Array<VideoType>;
 }
 
 function fuzzy_match(str: string, pattern: string): boolean {
@@ -17,17 +26,22 @@ function fuzzy_match(str: string, pattern: string): boolean {
 export default class Search extends React.Component<Props, State> {
   constructor(props: Props, state: State) {
     super(props, state);
+    console.log(props);
     this.state = {
       searchBarText: "",
-      myNotes: ["Guy likes butts", "Daniel likes coconuts", "Alex loves rust"]
+      myComponents: props.components
     };
+  }
+
+  componentDidUpdate(prevProps: any, prevState: any) {
+    if (prevProps.components !== this.props.components) {
+      this.setState({ myComponents: this.props.components });
+    }
   }
 
   onChange(event: any) {
     // TODO: Add type
-    this.setState({
-      searchBarText: event.target.value
-    });
+    this.props.updateSearchedComponents(this.getResults(event.target.value));
   }
 
   // Text box input
@@ -35,29 +49,36 @@ export default class Search extends React.Component<Props, State> {
   // Pull all notes from API
   // Filter matches based on textbox content
 
-  getResults() {
-    const { searchBarText, myNotes } = this.state;
-    // filter for notes that have searchbartext in them
-    if (searchBarText === "") return myNotes;
-    return myNotes.filter(n =>
-      fuzzy_match(n.toLowerCase(), searchBarText.toLowerCase())
-    );
+  getResults(searchBarText: string) {
+    const { myComponents } = this.state;
+    // filter for notes, videos that have searchbartext in them
+    if (searchBarText === "") return myComponents;
+    if (this.props.searchType === "notes") {
+      return (myComponents as Array<NoteType>).filter(c =>
+        fuzzy_match(c.note.toLowerCase(), searchBarText.toLowerCase())
+      );
+    } else if (this.props.searchType === "videos") {
+      return (myComponents as Array<VideoType>).filter(c =>
+        fuzzy_match(c.video_title.toLowerCase(), searchBarText.toLowerCase())
+      );
+    }
+    return null;
   }
 
   render() {
     return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box mr={2}>
+          <SearchIcon />
+        </Box>
+        <TextField
+          style={{ width: "600px" }}
+          type="search"
+          margin="normal"
+          label={"Search by " + this.props.searchType}
           onChange={this.onChange.bind(this)}
         />
-        <div>
-          {this.getResults().map(res => (
-            <div>{res}</div>
-          ))}
-        </div>
-      </div>
+      </Box>
     );
   }
 }
