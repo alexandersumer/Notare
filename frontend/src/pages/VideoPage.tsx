@@ -9,9 +9,8 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
-import Link from '@material-ui/core/Link';
+import Link from "@material-ui/core/Link";
 import Search from "../components/Search";
-
 
 const USER_ID = 1;
 
@@ -21,7 +20,7 @@ const FontStyleComponent = materialStyled(Box)({
 
 const VideoStyledComponent = materialStyled(Box)({
   width: "400px",
-  backgroundColor: PINK_COLOR,
+  backgroundColor: PINK_COLOR
 });
 
 const GreyFont = materialStyled(Box)({
@@ -47,7 +46,11 @@ class VideoPage extends React.Component<Props> {
 
   getVideos = async () => {
     const response = await getVideos({ user_id: USER_ID });
-    response && this.setState({ videos: response.videos, searched_videos: response.videos });
+    response &&
+      this.setState({
+        videos: response.videos,
+        searched_videos: response.videos
+      });
   };
 
   componentDidMount() {
@@ -55,7 +58,7 @@ class VideoPage extends React.Component<Props> {
   }
 
   updateSearchedVideos(searched_videos: Array<VideoType>) {
-    this.setState({searched_videos: searched_videos});
+    this.setState({ searched_videos: searched_videos });
   }
 
   renderMain() {
@@ -64,10 +67,18 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-            <VideoStyledComponent key={video.video_id} m={1} display="flex" flexDirection="column" alignItems="center">
+            <VideoStyledComponent
+              key={video.video_id}
+              m={1}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
               <Thumbnail video_id={video.video_id} />
               <Box>{video.video_title}</Box>
-              <Link href={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
+              <Link href={`/VideoNotes/${video.video_id}`}>
+                [View all notes]
+              </Link>
             </VideoStyledComponent>
           ))}
         </Box>
@@ -106,7 +117,11 @@ class VideoPage extends React.Component<Props> {
   render() {
     return (
       <FontStyleComponent p={3}>
-        <Search components={this.state.videos} updateSearchedComponents={this.updateSearchedVideos.bind(this)} searchType="videos" />
+        <Search
+          components={this.state.videos}
+          updateSearchedComponents={this.updateSearchedVideos.bind(this)}
+          searchType="videos"
+        />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
           {this.renderMain()}

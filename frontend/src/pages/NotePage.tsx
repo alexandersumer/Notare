@@ -53,7 +53,14 @@ class NotePage extends React.Component<Props, State> {
       color: "white"
     });
 
-    if (this.state.notes.length) return <Box mr={4}>{this.state.searched_notes.map(n => (<Note noteData={n} thumbNail allNotesLink/>))}</Box>
+    if (this.state.notes.length)
+      return (
+        <Box mr={4}>
+          {this.state.searched_notes.map(n => (
+            <Note noteData={n} thumbNail allNotesLink />
+          ))}
+        </Box>
+      );
     return (
       <GreyFont
         display="flex"
@@ -93,13 +100,17 @@ class NotePage extends React.Component<Props, State> {
   }
 
   updateSearchedNotes(searched_notes: Array<NoteType>) {
-    this.setState({searched_notes: searched_notes});
+    this.setState({ searched_notes: searched_notes });
   }
 
   render() {
     return (
       <FontStyleComponent p={3}>
-        <Search components={this.state.notes} updateSearchedComponents={this.updateSearchedNotes.bind(this)} searchType="notes" />
+        <Search
+          components={this.state.notes}
+          updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+          searchType="notes"
+        />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}
