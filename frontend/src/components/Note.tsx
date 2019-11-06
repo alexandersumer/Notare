@@ -4,7 +4,7 @@ import Thumbnail from "./Thumbnail";
 import { NoteType } from "../types";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { PINK_COLOR } from "../colorConstants";
-import Link from '@material-ui/core/Link';
+import Link from "@material-ui/core/Link";
 
 const formatTimestamp = (seconds: number): string => {
   let date = new Date(0);
@@ -13,8 +13,8 @@ const formatTimestamp = (seconds: number): string => {
   return date.toISOString().substr(14, 5);
 };
 
-const getYoutubeTimeLink = (video_id: string, timestamp: number) : string =>
-  (`https://youtu.be/${video_id}?t=${Math.floor(timestamp)}`)
+const getYoutubeTimeLink = (video_id: string, timestamp: number): string =>
+  `https://youtu.be/${video_id}?t=${Math.floor(timestamp)}`;
 
 const NoteStyle = materialStyled(Box)({
   height: "80px",
@@ -22,27 +22,38 @@ const NoteStyle = materialStyled(Box)({
   borderRadius: "5px"
 });
 
-interface Props { 
-  noteData: NoteType,
-  thumbNail: boolean,
-  allNotesLink: boolean,
+interface Props {
+  noteData: NoteType;
+  thumbNail: boolean;
+  allNotesLink: boolean;
 }
 
 const Note = (props: Props) => {
-  const { noteData, thumbNail, allNotesLink }  = props;
+  const { noteData, thumbNail, allNotesLink } = props;
   const YoutubeLink = (props: any) => (
-    <Link href={getYoutubeTimeLink(noteData.video_id, noteData.timestamp)}>{props.children}</Link>
+    <Link href={getYoutubeTimeLink(noteData.video_id, noteData.timestamp)}>
+      {props.children}
+    </Link>
   );
 
   const renderNotesLink = () => (
-    <Box m={2} display="flex" alignItems="center" style={{ whiteSpace: "nowrap"}} >
+    <Box
+      m={2}
+      display="flex"
+      alignItems="center"
+      style={{ whiteSpace: "nowrap" }}
+    >
       <Link href={`/VideoNotes/${noteData.video_id}`}>[View all notes]</Link>
     </Box>
-  )
+  );
 
   return (
     <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
-      {thumbNail && (<YoutubeLink><Thumbnail video_id={noteData.video_id}></Thumbnail></YoutubeLink>)}
+      {thumbNail && (
+        <YoutubeLink>
+          <Thumbnail video_id={noteData.video_id}></Thumbnail>
+        </YoutubeLink>
+      )}
       <NoteStyle ml display="flex" flexDirection="row" flexGrow={1}>
         <Box p={1} mr={1} display="flex" alignItems="center">
           <YoutubeLink>{formatTimestamp(noteData.timestamp)}</YoutubeLink>

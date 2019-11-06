@@ -9,7 +9,7 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { NoteType } from "../types";
 import { getVideos } from "../api/videos";
-import Link from '@material-ui/core/Link';
+import Link from "@material-ui/core/Link";
 
 const USER_ID = 1;
 
@@ -19,7 +19,7 @@ const FontStyleComponent = materialStyled(Box)({
 
 const VideoStyledComponent = materialStyled(Box)({
   width: "400px",
-  backgroundColor: PINK_COLOR,
+  backgroundColor: PINK_COLOR
 });
 
 const GreyFont = materialStyled(Box)({
@@ -56,10 +56,18 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.videos.map(video => (
-            <VideoStyledComponent key={video.video_id} m={1} display="flex" flexDirection="column" alignItems="center">
+            <VideoStyledComponent
+              key={video.video_id}
+              m={1}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
               <Thumbnail video_id={video.video_id} />
               <Box>{video.video_title}</Box>
-              <Link href={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
+              <Link href={`/VideoNotes/${video.video_id}`}>
+                [View all notes]
+              </Link>
             </VideoStyledComponent>
           ))}
         </Box>

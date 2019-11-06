@@ -50,7 +50,14 @@ class NotePage extends React.Component<Props, State> {
       color: "white"
     });
 
-    if (this.state.notes.length) return <Box mr={4}>{this.state.notes.map(n => (<Note noteData={n} thumbNail allNotesLink/>))}</Box>
+    if (this.state.notes.length)
+      return (
+        <Box mr={4}>
+          {this.state.notes.map(n => (
+            <Note noteData={n} thumbNail allNotesLink />
+          ))}
+        </Box>
+      );
     return (
       <GreyFont
         display="flex"
