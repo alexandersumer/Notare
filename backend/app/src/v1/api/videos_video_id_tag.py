@@ -6,11 +6,14 @@ from flask import request, g
 from . import Resource
 from .. import schemas
 from .notes import get_notes
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 
 import sqlite3
 
 class VideosVideoIdTag(Resource):
-
+    
+    @jwt_required
     def post(self, video_id):
         print(g.json)
         print(g.headers)

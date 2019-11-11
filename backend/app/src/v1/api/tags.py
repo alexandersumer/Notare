@@ -5,11 +5,14 @@ from flask import request, g
 
 from . import Resource
 from .. import schemas
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 
 import sqlite3
 
 class Tags(Resource):
 
+    @jwt_required
     def get(self):
         print(g.headers)
         print(g.args)
@@ -46,6 +49,7 @@ class Tags(Resource):
 
         return response, 200, None
 
+    @jwt_required
     def post(self):
         print(g.json)
         print(g.headers)
