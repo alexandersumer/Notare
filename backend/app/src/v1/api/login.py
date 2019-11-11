@@ -45,7 +45,7 @@ class Login(Resource):
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             SQL = f"INSERT INTO users (email, password) values (?, ?)"
-            c.execute(SQL, (g.json["email"],g.json["password"],))
+            c.execute(SQL, (g.json["email"],hashlib.sha256(g.json["password"].encode()).hexdigest(),))
             conn.commit()
             # get the user id last inserted
             SQL = f"SELECT last_insert_rowid();"
