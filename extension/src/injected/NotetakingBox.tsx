@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import NoteList from "./NoteList";
+import * as $ from "jquery";
 import { BACKGROUND_COLOR, NOTE_COLOR, TEXT_COLOR } from "../colorConstants";
 import { MAX_CHARS } from "../constants";
 import {
@@ -85,10 +86,13 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     const state = this.state;
     const video = this.props.video;
 
+    const videoTitle = $("#container > h1 > yt-formatted-string")[0].innerText;
+
     await addNote({
       note: state.textBoxValue,
       user_id: USER_ID,
       video_id: getCurrentYoutubeId(),
+      video_title: videoTitle,
       timestamp: video.currentTime
     });
 
