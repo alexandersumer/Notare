@@ -1,28 +1,48 @@
 import * as React from "react";
+import { BrowserRouter as Router, Route, Switch, RouteComponentProps, RouteProps, Redirect } from "react-router-dom";
 import { SyntheticEvent } from "react";
-import { BrowserRouter as Router, Route, Link, Switch, Redirect, RouteComponentProps, RouteProps } from "react-router-dom";
-import Home from "./Home";
-import Notes from "./Notes";
-import Videos from "./Videos";
-import backendapi from "../api/backendapi";
+import HomePage from "./HomePage";
+import AboutUsPage from "./AboutUsPage";
+import NotePage from "./NotePage";
+import VideoPage from "./VideoPage";
+import VideoNotesPage from "./VideoNotesPage";
+import Box from "@material-ui/core/Box";
+import { styled as materialStyled } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+import NotareWord from "../NotareWord.png";
+import { PINK_COLOR } from "../colorConstants";
+import { postLogin } from "../api/login";
+
+const FontStyleComponent = materialStyled(Box)({
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+});
+
+const NavBarStyledComponent = materialStyled(Box)({
+  backgroundColor: PINK_COLOR,
+  height: 70
+});
+
 
 export const AuthService = {
-  isAuthenticated: false,
-  accessToken: "",
-  refreshToken: "",
+  isAuthenticated: (localStorage.getItem('accessToken') === null || localStorage.getItem('accessToken') === undefined) ? false : true,
+  accessToken: (localStorage.getItem('accessToken') === null || localStorage.getItem('accessToken') === undefined) ? "" : localStorage.getItem("accessToken"),
+  userId: (localStorage.getItem('userId') === null || localStorage.getItem('userId') === undefined) ? -1 : parseInt(localStorage.getItem("userId") as string),
   async authenticate(email: string, password: string, cb: Function) {
-    const response = await backendapi.post('/login', {email, password})
+    const response = await postLogin({email: email, password: password})
     console.log(response);
-    if (response.status === 200) {
+    if (response) {
         this.isAuthenticated = true;
-        this.accessToken = response.data.accessToken;
-        localStorage.setItem('accessToken', response.data.accessToken)
+        this.accessToken = response.accessToken;
+        this.userId = response.user_id;
+        localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('userId',  response.user_id.toString());
     }
     setTimeout(cb, 100)
   },
   logout(cb: Function) {
     this.isAuthenticated = false
     localStorage.removeItem('accessToken')
+    localStorage.removeItem('userId')
     setTimeout(cb, 100)
   }
 };
@@ -30,6 +50,7 @@ export const AuthService = {
 interface PrivateRouteProps extends RouteProps {
   component: any;
   isAuthenticated: boolean;
+  userId: number;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
@@ -66,21 +87,23 @@ const PublicRoute = (props: RouteProps) => {
   );
 };
 
+
 class App extends React.Component {
-
-
   render() {
     return (
-        <Router>
-            <div>    
-                {/* <PrivateRoute path="/Notes"  /> */}
-                <PrivateRoute path="/Home" component={Home} isAuthenticated={AuthService.isAuthenticated} />
-                <PrivateRoute path="/Notes" component={Notes} isAuthenticated={AuthService.isAuthenticated} />
-                <PrivateRoute path="/Videos" component={Videos} isAuthenticated={AuthService.isAuthenticated} />
-                <PublicRoute exact path="/" />           
-            </div>
-        </Router>
-    )
+      <Router>
+        <div>
+          <Switch>
+            <PrivateRoute path="/Home" component={HomePage} isAuthenticated={AuthService.isAuthenticated} userId={AuthService.userId} />
+            <PrivateRoute path="/Notes" component={NotePage} isAuthenticated={AuthService.isAuthenticated} userId={AuthService.userId} />
+            <PrivateRoute path="/Videos" component={VideoPage} isAuthenticated={AuthService.isAuthenticated} userId={AuthService.userId} />
+            <PrivateRoute path="/AboutUs" component={AboutUsPage} isAuthenticated={AuthService.isAuthenticated} userId={AuthService.userId} />
+            <PrivateRoute path="/VideoNotes/:video_id" component={VideoNotesPage} isAuthenticated={AuthService.isAuthenticated} userId={AuthService.userId} />
+            <PublicRoute exact path="/" />   
+          </Switch>
+        </div>
+      </Router>
+    );
   }
 }
 

@@ -57,6 +57,14 @@
         "timestamp": {
           "type": "number",
           "example": 2.5
+        },
+        "time_created": {
+          "type": "integer",
+          "example": 1573010015
+        },
+        "last_edited": {
+          "type": "integer",
+          "example": 1573010015
         }
       }
     },
@@ -78,6 +86,14 @@
         "categories": {
           "type": "string",
           "example": "comedy"
+        },
+        "time_created": {
+          "type": "integer",
+          "example": 1573010015
+        },
+        "last_edited": {
+          "type": "integer",
+          "example": 1573010015
         },
         "notes_ids": {
           "type": "array",
@@ -215,11 +231,15 @@
               "+user_id",
               "+video_id",
               "+timestamp",
+              "+time_created",
+              "+last_edited",
               "-note_id",
               "-note",
               "-user_id",
               "-video_id",
-              "-timestamp"
+              "-timestamp",
+              "-time_created",
+              "-last_edited"
             ],
             "default": "+timestamp"
           },
@@ -246,6 +266,16 @@
           {
             "name": "note",
             "type": "string",
+            "in": "query"
+          },
+          {
+            "name": "time_created",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "last_edited",
+            "type": "integer",
             "in": "query"
           }
         ],
@@ -314,6 +344,10 @@
                 "video_id": {
                   "type": "string",
                   "example": "gSdG3FsMBq4"
+                },
+                "video_title": {
+                  "type": "string",
+                  "example": "How to code"
                 },
                 "timestamp": {
                   "type": "number",
@@ -537,7 +571,11 @@
               "+categories",
               "-categories",
               "+notes_count",
-              "-notes_count"
+              "-notes_count",
+              "+time_created",
+              "-time_created",
+              "+last_edited",
+              "-last_edited"
             ],
             "default": "+video_id"
           },
@@ -563,6 +601,16 @@
           },
           {
             "name": "notes_count",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "time_created",
+            "type": "integer",
+            "in": "query"
+          },
+          {
+            "name": "last_edited",
             "type": "integer",
             "in": "query"
           }
