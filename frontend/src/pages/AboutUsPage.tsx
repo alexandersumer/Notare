@@ -27,8 +27,7 @@ const names = [
 ];
 
 class AboutUsPage extends React.Component {
-
-  render () {
+  render() {
     return (
       <FontStyleComponent p={3}>
         <Navbar />
@@ -43,5 +42,5 @@ class AboutUsPage extends React.Component {
       </FontStyleComponent>
     );
   }
-};
+}
 export default AboutUsPage;

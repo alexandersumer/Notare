@@ -7,7 +7,6 @@ import { PINK_COLOR } from "../colorConstants";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 
-
 const formatTimestamp = (seconds: number): string => {
   let date = new Date(0);
   date.setSeconds(seconds);
@@ -45,7 +44,9 @@ const Note = (props: Props) => {
       alignItems="center"
       style={{ whiteSpace: "nowrap" }}
     >
-      <RouterLink to={`/VideoNotes/${noteData.video_id}`}>[View all notes]</RouterLink>
+      <RouterLink to={`/VideoNotes/${noteData.video_id}`}>
+        [View all notes]
+      </RouterLink>
     </Box>
   );
 

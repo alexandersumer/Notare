@@ -34,7 +34,7 @@ interface State {
   searched_videos: Array<VideoType>;
 }
 
-class VideoPage extends React.Component<Props> {
+class CollectionPage extends React.Component<Props> {
   state: State;
   constructor(props: Props) {
     super(props);
@@ -135,4 +135,4 @@ class VideoPage extends React.Component<Props> {
   }
 }
 
-export default VideoPage;
+export default CollectionPage;
