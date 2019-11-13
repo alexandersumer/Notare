@@ -30,6 +30,7 @@ type addNotesParams = {
   user_id: number;
   timestamp: number;
 };
+
 export const addNote = async (params: addNotesParams): Promise<void> =>
   postRequest("/notes", params);
 
