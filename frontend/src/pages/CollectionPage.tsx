@@ -9,10 +9,10 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { VideoType } from "../types";
 import { getCategories } from "../api/categories";
-import { Link } from "react-router-dom";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
 import { access } from "fs";
+import Folder from "../components/Folder";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -31,7 +31,6 @@ interface Props {}
 
 interface State {
   categories: Array<string>;
-  searched_videos: Array<VideoType>;
 }
 
 class CollectionPage extends React.Component<Props> {
@@ -39,8 +38,7 @@ class CollectionPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      categories: [],
-      searched_videos: []
+      categories: []
     };
   }
 
@@ -53,8 +51,9 @@ class CollectionPage extends React.Component<Props> {
     );
     response &&
       this.setState({
-        videos: response.categories,
-        searched_videos: response.categories
+        categories: response.tags.map((tag: any) => {
+          return tag.tag;
+        })
       });
   };
 
@@ -62,27 +61,13 @@ class CollectionPage extends React.Component<Props> {
     this.getCategories();
   }
 
-  updateSearchedVideos(searched_videos: Array<VideoType>) {
-    this.setState({ searched_videos: searched_videos });
-  }
-
   renderMain() {
     const numCategories = this.state.categories.length;
     if (numCategories) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.searched_videos.map(video => (
-            <VideoStyledComponent
-              key={video.video_id}
-              m={1}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-            >
-              <Thumbnail video_id={video.video_id} />
-              <Box>{video.video_title}</Box>
-              <Link to={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
-            </VideoStyledComponent>
+          {this.state.categories.map(category => (
+            <Folder category={category}/>
           ))}
         </Box>
       );
@@ -121,13 +106,8 @@ class CollectionPage extends React.Component<Props> {
     return (
       <FontStyleComponent p={3}>
         <Navbar />
-        <Search
-          components={this.state.categories}
-          updateSearchedComponents={this.updateSearchedVideos.bind(this)}
-          searchType="categories"
-        />
         <Box>
-          <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
+          <h3 style={{ color: RED_COLOR }}>Categories</h3>
           {this.renderMain()}
         </Box>
       </FontStyleComponent>

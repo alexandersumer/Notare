@@ -7,19 +7,20 @@ type getCategoriesParams = {
 };
 
 type getCategoriesResponse = {
-  categories: string[];
+  tags: any;
   num_categories: number;
-};
-
-type postCategoriesParams = {
-  tag?: string;
-  user_id?: number;
 };
 
 export const getCategories = async (
   params: getCategoriesParams,
   accessToken: string
-): Promise<getCategoriesResponse | void> => getRequest("/tags", params, accessToken);
+): Promise<getCategoriesResponse | void> =>
+  getRequest("/tags", params, accessToken);
+
+type postCategoriesParams = {
+  tag?: string;
+  user_id?: number;
+};
 
 export const addCategory = async (
   params: postCategoriesParams,
