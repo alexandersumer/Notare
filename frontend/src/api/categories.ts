@@ -21,7 +21,7 @@ export const getCategories = async (
   accessToken: string
 ): Promise<getCategoriesResponse | void> => getRequest("/tags", params, accessToken);
 
-export const postCategories = async (
+export const addCategory = async (
   params: postCategoriesParams,
   accessToken: string
 ): Promise<void> => postRequest("/tags", params, accessToken);
