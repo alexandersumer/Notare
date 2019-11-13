@@ -4,9 +4,12 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
-import { getCategories } from "../api/categories";
+import Thumbnail from "../components/Thumbnail";
+import { VideoType } from "../types";
+import { getVideos } from "../api/videos";
+import { Link } from "react-router-dom";
+import Search from "../components/Search";
 import Navbar from "../components/Navbar";
-import Folder from "../components/Folder";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -24,44 +27,61 @@ const GreyFont = materialStyled(Box)({
 interface Props {}
 
 interface State {
-  categories: Array<string>;
+  category: string
+  videos: Array<VideoType>;
+  category_videos: Array<VideoType>;
 }
 
-class CollectionPage extends React.Component<Props> {
+class CategoryVideosPage extends React.Component<Props> {
   state: State;
   constructor(props: Props) {
     super(props);
     this.state = {
-      categories: []
+      category: "",
+      videos: [],
+      category_videos: []
     };
   }
 
-  getCategories = async () => {
+  getVideos = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getCategories(
-      { user_id: userId },
+    const response = await getVideos(
+      { sort: "-last_edited", user_id: userId },
       accessToken as string
     );
     response &&
       this.setState({
-        categories: response.tags.map((item: any) => {
-          return item.tag;
-        })
+        videos: response.videos,
+        category_videos: response.videos
       });
   };
 
   componentDidMount() {
-    this.getCategories();
+    this.getVideos();
+  }
+
+  updateSearchedVideos(category_videos: Array<VideoType>) {
+    this.setState({ category_videos: category_videos });
   }
 
   renderMain() {
-    const numCategories = this.state.categories.length;
-    if (numCategories) {
+    const numVideos = this.state.videos.length;
+    if (numVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.categories.map(category => (
-            <Folder category={category}/>
+          {this.state.category_videos.map(video => (
+            <VideoStyledComponent
+              key={video.video_id}
+              m={1}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <Thumbnail video_id={video.video_id} />
+              <Box>{video.video_title}</Box>
+              <Link to={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
+            </VideoStyledComponent>
           ))}
         </Box>
       );
@@ -100,8 +120,13 @@ class CollectionPage extends React.Component<Props> {
     return (
       <FontStyleComponent p={3}>
         <Navbar />
+        <Search
+          components={this.state.videos}
+          updateSearchedComponents={this.updateSearchedVideos.bind(this)}
+          searchType="videos"
+        />
         <Box>
-          <h3 style={{ color: RED_COLOR }}>Categories</h3>
+          <h3 style={{ color: RED_COLOR }}>Videos</h3>
           {this.renderMain()}
         </Box>
       </FontStyleComponent>
@@ -109,4 +134,4 @@ class CollectionPage extends React.Component<Props> {
   }
 }
 
-export default CollectionPage;
+export default CategoryVideosPage;
