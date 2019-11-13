@@ -14,6 +14,7 @@ import Navbar from "../components/Navbar";
 import { access } from "fs";
 import Folder from "../components/Folder";
 
+
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
@@ -31,6 +32,7 @@ interface Props {}
 
 interface State {
   categories: Array<string>;
+  searched_categories: Array<string>;
 }
 
 class CollectionPage extends React.Component<Props> {
@@ -38,7 +40,8 @@ class CollectionPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      categories: []
+      categories: [],
+      searched_categories: []
     };
   }
 
@@ -49,13 +52,20 @@ class CollectionPage extends React.Component<Props> {
       { user_id: userId },
       accessToken as string
     );
-    response &&
+    if (response) {
+      const categories = response.tags.map((tag: any) => {
+        return tag.tag;
+      })
       this.setState({
-        categories: response.tags.map((tag: any) => {
-          return tag.tag;
-        })
-      });
+        categories: categories,
+        searched_categories: categories
+      })
+    }
   };
+
+  updateSearchedCategories(searched_categories: Array<string>) {
+    this.setState({ searched_categories: searched_categories });
+  }
 
   componentDidMount() {
     this.getCategories();
@@ -66,7 +76,7 @@ class CollectionPage extends React.Component<Props> {
     if (numCategories) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.categories.map(category => (
+          {this.state.searched_categories.map(category => (
             <Folder category={category}/>
           ))}
         </Box>
@@ -106,6 +116,11 @@ class CollectionPage extends React.Component<Props> {
     return (
       <FontStyleComponent p={3}>
         <Navbar />
+        <Search
+          components={this.state.categories}
+          updateSearchedComponents={this.updateSearchedCategories.bind(this)}
+          searchType="tags"
+        />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Categories</h3>
           {this.renderMain()}
