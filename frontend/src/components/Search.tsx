@@ -60,7 +60,7 @@ export default class Search extends React.Component<Props, State> {
       return (myComponents as Array<VideoType>).filter(c =>
         fuzzy_match(c.video_title.toLowerCase(), searchBarText.toLowerCase())
       );
-    } else if (this.props.searchType === "tags") {
+    } else if (this.props.searchType === "categories") {
       return (myComponents as Array<string>).filter(c =>
         fuzzy_match(c.toLowerCase(), searchBarText.toLowerCase())
       );

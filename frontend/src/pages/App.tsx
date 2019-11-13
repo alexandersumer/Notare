@@ -20,6 +20,7 @@ import Link from "@material-ui/core/Link";
 import NotareWord from "../NotareWord.png";
 import { PINK_COLOR } from "../colorConstants";
 import { postLogin } from "../api/login";
+import CategoryVideosPage from "./CategoryVideosPage";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -137,6 +138,12 @@ class App extends React.Component {
             <PrivateRoute
               path="/VideoNotes/:video_id"
               component={VideoNotesPage}
+              isAuthenticated={AuthService.isAuthenticated}
+              userId={AuthService.userId}
+            />
+            <PrivateRoute
+              path="/CategoryVideos/:category"
+              component={CategoryVideosPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
             />

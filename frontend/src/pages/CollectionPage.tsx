@@ -7,6 +7,7 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import { getCategories } from "../api/categories";
 import Navbar from "../components/Navbar";
 import Folder from "../components/Folder";
+import Search from "../components/Search";
 
 
 const FontStyleComponent = materialStyled(Box)({
@@ -113,7 +114,7 @@ class CollectionPage extends React.Component<Props> {
         <Search
           components={this.state.categories}
           updateSearchedComponents={this.updateSearchedCategories.bind(this)}
-          searchType="tags"
+          searchType="categories"
         />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Categories</h3>

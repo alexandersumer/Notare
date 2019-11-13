@@ -10,6 +10,7 @@ import { getVideos } from "../api/videos";
 import { Link } from "react-router-dom";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
+import { RouteComponentProps } from "react-router-dom";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -24,12 +25,16 @@ const GreyFont = materialStyled(Box)({
   color: GREY_COLOR
 });
 
-interface Props {}
+interface MatchParams {
+    category: string;
+  }
+  
+interface Props extends RouteComponentProps<MatchParams> {}
 
 interface State {
   category: string
   videos: Array<VideoType>;
-  category_videos: Array<VideoType>;
+  searched_videos: Array<VideoType>;
 }
 
 class CategoryVideosPage extends React.Component<Props> {
@@ -39,7 +44,7 @@ class CategoryVideosPage extends React.Component<Props> {
     this.state = {
       category: "",
       videos: [],
-      category_videos: []
+      searched_videos: []
     };
   }
 
@@ -50,19 +55,25 @@ class CategoryVideosPage extends React.Component<Props> {
       { sort: "-last_edited", user_id: userId },
       accessToken as string
     );
-    response &&
+    
+    if (response) {
+    const { category } = this.props.match.params;
+      const videos = response.videos.filter((video)=>{
+          return video.categories === category
+      })
       this.setState({
-        videos: response.videos,
-        category_videos: response.videos
+        videos: videos,
+        searched_videos: videos
       });
+    }
   };
 
   componentDidMount() {
     this.getVideos();
   }
 
-  updateSearchedVideos(category_videos: Array<VideoType>) {
-    this.setState({ category_videos: category_videos });
+  updateSearchedVideos(searched_videos: Array<VideoType>) {
+    this.setState({ searched_videos: searched_videos });
   }
 
   renderMain() {
@@ -70,7 +81,7 @@ class CategoryVideosPage extends React.Component<Props> {
     if (numVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.category_videos.map(video => (
+          {this.state.searched_videos.map(video => (
             <VideoStyledComponent
               key={video.video_id}
               m={1}
@@ -117,6 +128,8 @@ class CategoryVideosPage extends React.Component<Props> {
   }
 
   render() {
+    const { category } = this.props.match.params;
+
     return (
       <FontStyleComponent p={3}>
         <Navbar />
@@ -126,7 +139,7 @@ class CategoryVideosPage extends React.Component<Props> {
           searchType="videos"
         />
         <Box>
-          <h3 style={{ color: RED_COLOR }}>Videos</h3>
+    <h3 style={{ color: RED_COLOR }}>Videos for {category}</h3>
           {this.renderMain()}
         </Box>
       </FontStyleComponent>
