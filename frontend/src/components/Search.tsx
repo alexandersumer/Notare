@@ -6,14 +6,14 @@ import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 
 interface Props {
-  components: Array<NoteType> | Array<VideoType>;
+  components: Array<NoteType> | Array<VideoType> | Array<string>;
   updateSearchedComponents: Function;
   searchType: string;
 }
 
 interface State {
   searchBarText: string;
-  myComponents: Array<NoteType> | Array<VideoType>;
+  myComponents: Array<NoteType> | Array<VideoType> | Array<string>;
 }
 
 function fuzzy_match(str: string, pattern: string): boolean {
@@ -59,6 +59,10 @@ export default class Search extends React.Component<Props, State> {
     } else if (this.props.searchType === "videos") {
       return (myComponents as Array<VideoType>).filter(c =>
         fuzzy_match(c.video_title.toLowerCase(), searchBarText.toLowerCase())
+      );
+    } else if (this.props.searchType === "tags") {
+      return (myComponents as Array<string>).filter(c =>
+        fuzzy_match(c.toLowerCase(), searchBarText.toLowerCase())
       );
     }
     return null;
