@@ -26,7 +26,6 @@ function fuzzy_match(str: string, pattern: string): boolean {
 export default class Search extends React.Component<Props, State> {
   constructor(props: Props, state: State) {
     super(props, state);
-    console.log(props);
     this.state = {
       searchBarText: "",
       myComponents: props.components

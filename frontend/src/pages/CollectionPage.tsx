@@ -8,7 +8,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { VideoType } from "../types";
-import { getVideos } from "../api/videos";
+import { getCategories } from "../api/categories";
 import { Link } from "react-router-dom";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
@@ -30,7 +30,7 @@ const GreyFont = materialStyled(Box)({
 interface Props {}
 
 interface State {
-  videos: Array<VideoType>;
+  categories: Array<string>;
   searched_videos: Array<VideoType>;
 }
 
@@ -39,27 +39,27 @@ class CollectionPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      videos: [],
+      categories: [],
       searched_videos: []
     };
   }
 
-  getVideos = async () => {
+  getCategories = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId },
+    const response = await getCategories(
+      { user_id: userId },
       accessToken as string
     );
     response &&
       this.setState({
-        videos: response.videos,
-        searched_videos: response.videos
+        videos: response.categories,
+        searched_videos: response.categories
       });
   };
 
   componentDidMount() {
-    this.getVideos();
+    this.getCategories();
   }
 
   updateSearchedVideos(searched_videos: Array<VideoType>) {
@@ -67,8 +67,8 @@ class CollectionPage extends React.Component<Props> {
   }
 
   renderMain() {
-    const numVideos = this.state.videos.length;
-    if (numVideos) {
+    const numCategories = this.state.categories.length;
+    if (numCategories) {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
@@ -122,9 +122,9 @@ class CollectionPage extends React.Component<Props> {
       <FontStyleComponent p={3}>
         <Navbar />
         <Search
-          components={this.state.videos}
+          components={this.state.categories}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}
-          searchType="videos"
+          searchType="categories"
         />
         <Box>
           <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
