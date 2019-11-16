@@ -173,7 +173,6 @@ class VideoPage extends React.Component<Props> {
   }
 
   render() {
-    const { categories } = this.state;
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
@@ -183,6 +182,7 @@ class VideoPage extends React.Component<Props> {
           components={this.state.videos}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}
           searchType="videos"
+          categorySearch={this.state.selectedCategories}
         />
         <Box>
           {this.renderCategoryLabels()}
