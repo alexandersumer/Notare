@@ -13,7 +13,7 @@ const VideoStyledComponent = materialStyled(Box)({
 
 interface Props {
     video: VideoType;
-    categories: string[];
+    categories: Array<string>;
 }
 
 interface State {
@@ -28,7 +28,7 @@ class VideoComponent extends React.Component<Props, State> {
         }
     }
     render(){
-        const { video, categories } = this.props;
+        const { video } = this.props;
 
         return(
             <VideoStyledComponent

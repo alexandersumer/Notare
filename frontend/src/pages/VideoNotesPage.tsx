@@ -73,6 +73,8 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   render() {
     const { video, notes, searched_notes } = this.state;
+    const email = localStorage.getItem("email") || "";
+    const username = email.substring(0, email.indexOf("@"));
 
     if (!video) {
       return (
@@ -96,7 +98,7 @@ class VideoNotesPage extends React.Component<Props, State> {
         flexDirection="column"
         flexGrow={1}
       >
-        <Navbar />
+        <Navbar username={username}/>
         <Search
           components={this.state.notes}
           updateSearchedComponents={this.updateSearchedNotes.bind(this)}
