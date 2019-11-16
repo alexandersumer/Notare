@@ -4,14 +4,11 @@ const backendapi = axios.create({
   baseURL: "http://127.0.0.1:5000/v1"
 });
 
-export const getRequest = async (
-  route: string,
-  params: any,
-) => {
+export const getRequest = async (route: string, params: any) => {
   const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
   const userId: number = parseInt(localStorage.getItem("userId") as string);
-  params.user_id = userId;;
+  params.user_id = userId;
   const response = await backendapi.get(route, { params });
 
   if (response.status === 200) {
@@ -47,16 +44,13 @@ export const logout = async (route: string) => {
   }
 };
 
-export const postRequest = async (
-  route: string,
-  params: any,
-) => {
+export const postRequest = async (route: string, params: any) => {
   console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 
   const userId: number = parseInt(localStorage.getItem("userId") as string);
-  params.user_id = userId;;
+  params.user_id = userId;
   const response = await backendapi.post(route, params);
 
   if (response.status === 200) {

@@ -104,7 +104,7 @@ class NotePage extends React.Component<Props, State> {
     const username = email.substring(0, email.indexOf("@"));
     return (
       <FontStyleComponent p={3}>
-        <Navbar username={username}/>
+        <Navbar username={username} />
         <Search
           components={this.state.notes}
           updateSearchedComponents={this.updateSearchedNotes.bind(this)}

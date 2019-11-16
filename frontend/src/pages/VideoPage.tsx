@@ -34,7 +34,7 @@ class VideoPage extends React.Component<Props> {
     this.state = {
       videos: [],
       searched_videos: [],
-      categories: [],
+      categories: []
     };
   }
 
@@ -49,14 +49,13 @@ class VideoPage extends React.Component<Props> {
 
   getCategories = async () => {
     const response = await getCategories();
-    response &&
-      this.setState({ categories: response.tags })
-  }
+    response && this.setState({ categories: response.tags });
+  };
 
-  onChangeCategory = async ( video_id: string, category: string) => {
-    await changeVideoCategory({tag: category}, video_id);
+  onChangeCategory = async (video_id: string, category: string) => {
+    await changeVideoCategory({ tag: category }, video_id);
     await this.getVideos();
-  }
+  };
 
   async componentDidMount() {
     await this.getVideos();
@@ -74,7 +73,12 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-            <VideoComponent key={video.video_id} video={video} categories={categories} onChangeCategory={this.onChangeCategory.bind(this)}/> // TODO: update to actually pull in data
+            <VideoComponent
+              key={video.video_id}
+              video={video}
+              categories={categories}
+              onChangeCategory={this.onChangeCategory.bind(this)}
+            /> // TODO: update to actually pull in data
           ))}
         </Box>
       );
@@ -114,7 +118,7 @@ class VideoPage extends React.Component<Props> {
     const username = email.substring(0, email.indexOf("@"));
     return (
       <FontStyleComponent p={3}>
-        <Navbar username={username}/>
+        <Navbar username={username} />
         <Search
           components={this.state.videos}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}

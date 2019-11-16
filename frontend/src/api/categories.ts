@@ -11,20 +11,22 @@ type getCategoriesResponse = {
   num_categories: number;
 };
 
-export const getCategories = async (params: getCategoriesParams = {}): Promise<getCategoriesResponse | void> => {
+export const getCategories = async (
+  params: getCategoriesParams = {}
+): Promise<getCategoriesResponse | void> => {
   const response = await getRequest("/tags", params);
   if (response != null) {
-    response.tags = response.tags.map((t:any) => t.tag);
+    response.tags = response.tags.map((t: any) => t.tag);
   }
   return response;
-}
-
+};
 
 type addCategoryParams = {
   tag?: string;
 };
 
-export const addCategory = async (params: addCategoryParams): Promise<void> => postRequest("/tags", params);
+export const addCategory = async (params: addCategoryParams): Promise<void> =>
+  postRequest("/tags", params);
 
 type changeVideoCategoryParams = {
   tag: string;
@@ -32,8 +34,8 @@ type changeVideoCategoryParams = {
 
 export const changeVideoCategory = async (
   params: changeVideoCategoryParams,
-  video_id: string,
+  video_id: string
 ): Promise<void> => {
   if (params.tag == NO_CATEGORY) params.tag = "No Tag";
   return postRequest("/videos/" + video_id + "/tag", params);
-}
+};

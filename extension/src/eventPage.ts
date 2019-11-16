@@ -6,8 +6,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let isResponseAsync = true;
 
   // handle all backend request types
-  if (request.login){
-    const {route, body } = request.login;
+  if (request.login) {
+    const { route, body } = request.login;
     loginRequest(route, body).then(response => {
       sendResponse(response);
     });

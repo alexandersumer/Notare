@@ -46,7 +46,7 @@ class CollectionPage extends React.Component<Props> {
     response &&
       this.setState({
         categories: response.tags,
-        searched_categories: response.tags,
+        searched_categories: response.tags
       });
   };
 
@@ -63,26 +63,28 @@ class CollectionPage extends React.Component<Props> {
     if (this.state.newCategoryText === "") return;
     const response = await addCategory({ tag: this.state.newCategoryText });
     await this.getCategories();
-  }
+  };
 
   handleCategoryChange = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    this.setState({ newCategoryText: (event.target as HTMLInputElement).value });
+    this.setState({
+      newCategoryText: (event.target as HTMLInputElement).value
+    });
   };
 
   createNewCategory() {
     return (
-        <Box>
-          Add New Collection:
-          <form onSubmit={this.postCategory}>
-                <input
-                  type="text"
-                  name="category"
-                  placeholder={this.state.newCategoryText}
-                  onChange={this.handleCategoryChange}
-                />
-          </form>
-        </Box>
+      <Box>
+        Add New Collection:
+        <form onSubmit={this.postCategory}>
+          <input
+            type="text"
+            name="category"
+            placeholder={this.state.newCategoryText}
+            onChange={this.handleCategoryChange}
+          />
+        </form>
+      </Box>
     );
   }
 
@@ -132,7 +134,7 @@ class CollectionPage extends React.Component<Props> {
     const username = email.substring(0, email.indexOf("@"));
     return (
       <FontStyleComponent p={3}>
-        <Navbar username={username}/>
+        <Navbar username={username} />
         <Search
           components={this.state.categories}
           updateSearchedComponents={this.updateSearchedCategories.bind(this)}
