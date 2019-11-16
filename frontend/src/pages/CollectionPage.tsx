@@ -106,7 +106,7 @@ class CollectionPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_categories.map(category => (
-            <Folder category={category} />
+            <Folder key={category} category={category} />
           ))}
         </Box>
       );
