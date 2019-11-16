@@ -43,18 +43,18 @@ class VideoPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId },
-      accessToken as string
-    );
+    const response = await getVideos({ sort: "-last_edited" });
     response &&
       this.setState({
         videos: response.videos,
         searched_videos: response.videos
       });
   };
+
+  onChangeCategory( video_id: string, category: string){
+    console.log("changing category for video: ", video_id, " to ", category);
+    // do backend shit
+  }
 
   componentDidMount() {
     this.getVideos();
@@ -70,7 +70,7 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-            <VideoComponent video={video} categories={[]}/> // TODO: update to actually pull in data
+            <VideoComponent video={video} categories={["comedy", "physics"]} onChangeCategory={this.onChangeCategory.bind(this)}/> // TODO: update to actually pull in data
           ))}
         </Box>
       );

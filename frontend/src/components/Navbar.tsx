@@ -43,9 +43,7 @@ class Navbar extends React.Component<Props> {
 
   logout = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const accessToken: string = localStorage.getItem("accessToken") as string;
-    console.log(accessToken);
-    Logout(accessToken); // backend logout
+    Logout(); // backend logout
     AuthService.logout(() => {}); //frontend logout
     this.setState({ logged_out: true });
   };

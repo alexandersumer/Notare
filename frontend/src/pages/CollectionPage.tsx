@@ -40,12 +40,7 @@ class CollectionPage extends React.Component<Props> {
   }
 
   getCategories = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getCategories(
-      { user_id: userId },
-      accessToken as string
-    );
+    const response = await getCategories();
     if (response) {
       const categories = response.tags.map((item: any) => {
         return item.tag;

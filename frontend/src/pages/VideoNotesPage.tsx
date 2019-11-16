@@ -39,12 +39,7 @@ class VideoNotesPage extends React.Component<Props, State> {
   }
 
   async getVideos(video_id: string) {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId, video_id },
-      accessToken as string
-    );
+    const response = await getVideos({ sort: "-last_edited", video_id });
     if (response && response.num_videos)
       this.setState({ video: response.videos[0] });
   }
@@ -54,12 +49,7 @@ class VideoNotesPage extends React.Component<Props, State> {
   }
 
   async getNotes(video_id: string) {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getNotes(
-      { user_id: userId, video_id: video_id },
-      accessToken as string
-    );
+    const response = await getNotes({ video_id: video_id });
     if (response)
       this.setState({ notes: response.notes, searched_notes: response.notes });
   }

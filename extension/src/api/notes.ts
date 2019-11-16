@@ -28,7 +28,6 @@ type addNotesParams = {
   video_id: string;
   video_title: string,
   timestamp: number;
-  video_title: string;
 };
 
 export const addNote = async (params: addNotesParams): Promise<void> =>

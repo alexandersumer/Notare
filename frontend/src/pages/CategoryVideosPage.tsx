@@ -46,12 +46,7 @@ class CategoryVideosPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId },
-      accessToken as string
-    );
+    const response = await getVideos({ sort: "-last_edited" });
 
     if (response) {
       const { category } = this.props.match.params;
@@ -66,12 +61,7 @@ class CategoryVideosPage extends React.Component<Props> {
   };
 
   getCategories = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getCategories(
-      { user_id: userId },
-      accessToken as string
-    );
+    const response = await getCategories();
     if (response) {
       const categories = response.tags.map((item: any) => {
         return item.tag;
@@ -91,13 +81,18 @@ class CategoryVideosPage extends React.Component<Props> {
     this.setState({ searched_videos: searched_videos });
   }
 
+  onChangeCategory( video_id: string, category: string){
+    console.log("IN CATEGORY PAGE changing category for video: ", video_id, " to ", category);
+    // do backend shit
+  }
+
   renderMain() {
     const numVideos = this.state.videos.length;
     if (numVideos) {
       return (
         <Box p={1} display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-              <VideoComponent video={video} categories={this.state.categories}/>
+              <VideoComponent video={video} categories={this.state.categories} onChangeCategory={this.onChangeCategory.bind(this)}/>
           ))}
         </Box>
       );

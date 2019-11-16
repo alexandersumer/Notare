@@ -5,6 +5,9 @@ import { PINK_COLOR } from "../colorConstants";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 const VideoStyledComponent = materialStyled(Box)({
     width: "400px",
@@ -14,6 +17,7 @@ const VideoStyledComponent = materialStyled(Box)({
 interface Props {
     video: VideoType;
     categories: string[];
+    onChangeCategory: (video_id: string, category: string) => void;
 }
 
 interface State {
@@ -47,7 +51,11 @@ class VideoComponent extends React.Component<Props, State> {
               <Box p={1} display="flex" flexWrap="wrap">
                 <Link to={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
               </Box>
-              <Box>In collection: {video.categories}</Box>
+              <Box m={1}>
+                <DropdownButton id="dropdown-button-drop-down" variant="secondary" size="sm" title={video.categories}>
+                    {categories.map(c => <Dropdown.Item onSelect={(e: any) => this.props.onChangeCategory(video.video_id, c)}>{c}</Dropdown.Item>)}
+                </DropdownButton>
+              </Box>
             </VideoStyledComponent>
         )
     }
