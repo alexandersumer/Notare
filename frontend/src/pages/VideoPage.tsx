@@ -4,21 +4,15 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
-import Thumbnail from "../components/Thumbnail";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
-import { Link } from "react-router-dom";
+import { getCategories, changeVideoCategory } from "../api/categories";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
 import VideoComponent from "../components/Video";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
-
-const VideoStyledComponent = materialStyled(Box)({
-  width: "400px",
-  backgroundColor: PINK_COLOR
 });
 
 const GreyFont = materialStyled(Box)({
@@ -30,6 +24,7 @@ interface Props {}
 interface State {
   videos: Array<VideoType>;
   searched_videos: Array<VideoType>;
+  categories: Array<string>;
 }
 
 class VideoPage extends React.Component<Props> {
@@ -38,7 +33,8 @@ class VideoPage extends React.Component<Props> {
     super(props);
     this.state = {
       videos: [],
-      searched_videos: []
+      searched_videos: [],
+      categories: [],
     };
   }
 
@@ -51,13 +47,20 @@ class VideoPage extends React.Component<Props> {
       });
   };
 
-  onChangeCategory( video_id: string, category: string){
-    console.log("changing category for video: ", video_id, " to ", category);
-    // do backend shit
+  getCategories = async () => {
+    const response = await getCategories();
+    response &&
+      this.setState({ categories: response.tags })
   }
 
-  componentDidMount() {
-    this.getVideos();
+  onChangeCategory = async ( video_id: string, category: string) => {
+    await changeVideoCategory({tag: category}, video_id);
+    await this.getVideos();
+  }
+
+  async componentDidMount() {
+    await this.getVideos();
+    await this.getCategories();
   }
 
   updateSearchedVideos(searched_videos: Array<VideoType>) {
@@ -65,12 +68,13 @@ class VideoPage extends React.Component<Props> {
   }
 
   renderMain() {
-    const numVideos = this.state.videos.length;
+    const { categories, videos } = this.state;
+    const numVideos = videos.length;
     if (numVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-            <VideoComponent video={video} categories={["comedy", "physics"]} onChangeCategory={this.onChangeCategory.bind(this)}/> // TODO: update to actually pull in data
+            <VideoComponent key={video.video_id} video={video} categories={categories} onChangeCategory={this.onChangeCategory.bind(this)}/> // TODO: update to actually pull in data
           ))}
         </Box>
       );

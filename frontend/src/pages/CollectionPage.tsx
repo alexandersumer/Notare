@@ -41,15 +41,11 @@ class CollectionPage extends React.Component<Props> {
 
   getCategories = async () => {
     const response = await getCategories();
-    if (response) {
-      const categories = response.tags.map((item: any) => {
-        return item.tag;
-      });
+    response &&
       this.setState({
-        categories: categories,
-        searched_categories: categories
+        categories: response.tags,
+        searched_categories: response.tags,
       });
-    }
   };
 
   updateSearchedCategories(searched_categories: Array<string>) {

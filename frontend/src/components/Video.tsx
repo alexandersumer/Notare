@@ -2,6 +2,7 @@ import { VideoType } from "../types";
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { PINK_COLOR } from "../colorConstants";
+import { NO_CATEGORY } from "../stringConstants";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
@@ -53,7 +54,7 @@ class VideoComponent extends React.Component<Props, State> {
               </Box>
               <Box m={1}>
                 <DropdownButton id="dropdown-button-drop-down" variant="secondary" size="sm" title={video.categories}>
-                    {categories.map(c => <Dropdown.Item onSelect={(e: any) => this.props.onChangeCategory(video.video_id, c)}>{c}</Dropdown.Item>)}
+                    {categories.concat(NO_CATEGORY).map(c => <Dropdown.Item key={c} onSelect={(e: any) => this.props.onChangeCategory(video.video_id, c)}>{c}</Dropdown.Item>)}
                 </DropdownButton>
               </Box>
             </VideoStyledComponent>

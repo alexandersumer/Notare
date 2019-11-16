@@ -57,7 +57,7 @@ export const postRequest = async (
 
   const userId: number = parseInt(localStorage.getItem("userId") as string);
   params.user_id = userId;;
-  const response = await backendapi.post(route, { params });
+  const response = await backendapi.post(route, params);
 
   if (response.status === 200) {
     return response.data;
