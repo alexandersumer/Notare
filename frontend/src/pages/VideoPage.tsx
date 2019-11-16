@@ -9,10 +9,11 @@ import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import Thumbnail from "../components/Thumbnail";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import Search from "../components/Search";
+import Navbar from "../components/Navbar";
+import { access } from "fs";
 
-const USER_ID = 1;
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -45,7 +46,9 @@ class VideoPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const response = await getVideos({ sort: "-last_edited", user_id: USER_ID });
+    const accessToken = localStorage.getItem("accessToken");
+    const userId: number = parseInt(localStorage.getItem("userId") as string);
+    const response = await getVideos({ sort: "-last_edited", user_id: userId }, accessToken as string);
     response &&
       this.setState({
         videos: response.videos,
@@ -76,7 +79,7 @@ class VideoPage extends React.Component<Props> {
             >
               <Thumbnail video_id={video.video_id} />
               <Box>{video.video_title}</Box>
-              <Link href={`/VideoNotes/${video.video_id}`}>
+              <Link to={`/VideoNotes/${video.video_id}`}>
                 [View all notes]
               </Link>
             </VideoStyledComponent>
@@ -117,6 +120,7 @@ class VideoPage extends React.Component<Props> {
   render() {
     return (
       <FontStyleComponent p={3}>
+        <Navbar />
         <Search
           components={this.state.videos}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}

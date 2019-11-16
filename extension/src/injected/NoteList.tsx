@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default class NoteList extends React.Component<Props> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
   }
 

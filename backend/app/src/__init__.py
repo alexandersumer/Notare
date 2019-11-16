@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 import v1
 import os
 import sqlite3
+import hashlib
 notes = [                                          
     [1, "this is the note", 1, "LlW7Es7gStA", 2.5, 1573010001000000, 1573010001000000],
     [2, "this is the second note", 1, "LlW7Es7gStA", 4.5, 1573010002000000, 1573010004000000],
@@ -30,7 +31,7 @@ videos = [
     ],
 ]
 
-users = [[1, "mitchellshelton97@gmail.com"], [2, "mitchell_shelton@y7mail.com"]]
+users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
 
 
 def create_db():
@@ -64,7 +65,8 @@ def create_db():
             );
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email VARCHAR
+                email VARCHAR,
+                password VARCHAR
             );
             CREATE TABLE blacklisted_access_tokens (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -84,7 +86,7 @@ def create_db():
                     video,
                 )
             for user in users:
-                cur.execute("INSERT INTO users (id, email) values (?,?)", user)
+                cur.execute("INSERT INTO users (id, email, password) values (?,?,?)", user)
 
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
@@ -107,25 +109,24 @@ def create_app():
     app = Flask(__name__, static_folder="static")
     app.register_blueprint(v1.bp, url_prefix="/v1")
     cors = CORS(app)
+    ONE_YEAR_IN_SECONDS = 31536000
     # Setup the Flask-JWT-Extended extension
-    # app.config["JWT_SECRET_KEY"] = "This key is super secret"
-    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
-    #     60 * 60 * 24
-    # )  # access tokens last for a day
-    # app.config["JWT_BLACKLIST_ENABLED"] = True
-    # app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
-    # jwt = JWTManager(app)
+    app.config["JWT_SECRET_KEY"] = "This key is super secret"
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ONE_YEAR_IN_SECONDS
+    app.config["JWT_BLACKLIST_ENABLED"] = True
+    app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
+    jwt = JWTManager(app)
 
-    # @jwt.token_in_blacklist_loader
-    # def check_if_token_in_blacklist(decrypted_token):
-    #     jti = decrypted_token["jti"]
-    #     conn = sqlite3.connect("database.db")
-    #     c = conn.cursor()
-    #     SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
-    #     c.execute(SQL, (jti,))
-    #     entries = c.fetchall()
-    #     conn.close()
-    #     return False if len(entries) == 0 else True
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token["jti"]
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM blacklisted_access_tokens WHERE access_token = ?;"
+        c.execute(SQL, (jti,))
+        entries = c.fetchall()
+        conn.close()
+        return False if len(entries) == 0 else True
 
     return app
 

@@ -5,6 +5,8 @@ import { NoteType } from "../types";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { PINK_COLOR } from "../colorConstants";
 import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from "react-router-dom";
+
 
 const formatTimestamp = (seconds: number): string => {
   let date = new Date(0);
@@ -43,7 +45,7 @@ const Note = (props: Props) => {
       alignItems="center"
       style={{ whiteSpace: "nowrap" }}
     >
-      <Link href={`/VideoNotes/${noteData.video_id}`}>[View all notes]</Link>
+      <RouterLink to={`/VideoNotes/${noteData.video_id}`}>[View all notes]</RouterLink>
     </Box>
   );
 

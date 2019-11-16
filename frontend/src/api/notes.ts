@@ -16,5 +16,6 @@ type getNotesResponse = {
 };
 
 export const getNotes = async (
-  params: getNotesParams
-): Promise<getNotesResponse | void> => getRequest("/notes", params);
+  params: getNotesParams,
+  accessToken: string
+): Promise<getNotesResponse | void> => getRequest("/notes", params, accessToken);
