@@ -1,10 +1,16 @@
+import { loginRequest } from "./api/backendapi";
+
 // Listen to messages sent from other parts of the extension.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // onMessage must return "true" if response is async.
-  let isResponseAsync = false;
+  let isResponseAsync = true;
 
-  if (request.popupMounted) {
-    console.log("eventPage notified that Popup.tsx has mounted.");
+  // handle all backend request types
+  if (request.login){
+    const {route, body } = request.login;
+    loginRequest(route, body).then(response => {
+      sendResponse(response);
+    });
   }
 
   return isResponseAsync;

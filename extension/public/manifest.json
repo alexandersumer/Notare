@@ -31,7 +31,7 @@
     },
 
     "permissions": [
-        "tabs"
+        "tabs", "storage", "*://*.youtube.com/*"
     ],
 
     "web_accessible_resources": [

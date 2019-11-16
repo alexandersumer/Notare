@@ -6,22 +6,7 @@ import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
-import Box from "@material-ui/core/Box";
-import { styled as materialStyled } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
-import NotareWord from "../NotareWord.png";
-import { PINK_COLOR } from "../colorConstants";
 import { postLogin } from "../api/login";
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
-
-const NavBarStyledComponent = materialStyled(Box)({
-  backgroundColor: PINK_COLOR,
-  height: 70
-});
-
 
 export const AuthService = {
   isAuthenticated: (localStorage.getItem('accessToken') === null || localStorage.getItem('accessToken') === undefined) ? false : true,
@@ -29,7 +14,6 @@ export const AuthService = {
   userId: (localStorage.getItem('userId') === null || localStorage.getItem('userId') === undefined) ? -1 : parseInt(localStorage.getItem("userId") as string),
   async authenticate(email: string, password: string, cb: Function) {
     const response = await postLogin({email: email, password: password})
-    console.log(response);
     if (response) {
         this.isAuthenticated = true;
         this.accessToken = response.accessToken;
@@ -55,8 +39,6 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute = (props: PrivateRouteProps) => {
   const { component: Component, ...rest } = props;
-  console.log("yo");
-  console.log(AuthService.isAuthenticated);
   return (
       <Route
           {...rest}
@@ -121,8 +103,6 @@ class Login extends React.Component<RouteComponentProps> {
       AuthService.authenticate(this.state.email, this.state.password, () => {
           this.setState({redirectToPreviousRoute: true});
       })
-      console.log(this.state.email);
-      console.log(this.state.password);
   };
 
   updateEmail = (event: SyntheticEvent) => {

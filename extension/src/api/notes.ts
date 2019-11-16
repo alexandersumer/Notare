@@ -11,7 +11,6 @@ type getNotesParams = {
   sort?: string;
   note_id?: number;
   video_id?: string;
-  user_id?: number;
   timestamp?: number;
 };
 
@@ -27,7 +26,7 @@ export const getNotes = async (
 type addNotesParams = {
   note: string;
   video_id: string;
-  user_id: number;
+  video_title: string,
   timestamp: number;
 };
 export const addNote = async (params: addNotesParams): Promise<void> =>
@@ -42,7 +41,8 @@ export type editNotesParams = {
   note: string;
   note_id: number;
   video_id: string;
-  user_id: number;
+  time_created: number,
+  last_edited: number,
   timestamp: number;
 };
 
