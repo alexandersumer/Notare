@@ -29,11 +29,11 @@ class VideosVideoIdTag(Resource):
         c.execute(SQL, (g.json["user_id"],g.json["tag"],))
         tags_entries = c.fetchall()
         conn.close()
-        if len(tags_entries) == 0:
+        if (g.json['tag'] != "No Tag" and len(tags_entries) == 0):
             print(f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}")
             return {"errorMessage": f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}"}, 400
-        
-        tag_id = tags_entries[0][0]
+
+        tag_id = tags_entries[0][0] if g.json['tag'] != "No Tag" else 0
         #if video not created, create video with that tag
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
