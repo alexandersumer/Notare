@@ -41,6 +41,7 @@ export const AuthService = {
       this.userId = response.user_id;
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("userId", response.user_id.toString());
+      localStorage.setItem("email", email);
     }
     setTimeout(cb, 100);
   },
@@ -48,6 +49,7 @@ export const AuthService = {
     this.isAuthenticated = false;
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
+    localStorage.removeItem("email");
     setTimeout(cb, 100);
   }
 };
