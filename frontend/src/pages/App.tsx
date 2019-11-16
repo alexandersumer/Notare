@@ -9,7 +9,7 @@ import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
 import CategoryVideosPage from "./CategoryVideosPage";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import DeveloperOutlinedIcon from '@material-ui/icons/DeveloperModeOutlined';
+import AddBoxOutlined from "@material-ui/icons/AddBoxOutlined";
 import {
   Avatar,
   Box,
@@ -359,7 +359,7 @@ class CreateAccount extends React.Component<RouteComponentProps> {
                 <Box p={1}>
                   {" "}
                   <Avatar>
-                    <DeveloperOutlinedIcon color="secondary" />
+                    <AddBoxOutlined />
                   </Avatar>
                 </Box>
                 <Box p={1}>
