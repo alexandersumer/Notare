@@ -129,12 +129,6 @@ class App extends React.Component {
         <div>
           <Switch>
             <PrivateRoute
-              path="/Home"
-              component={HomePage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
-            />
-            <PrivateRoute
               path="/Notes"
               component={NotePage}
               isAuthenticated={AuthService.isAuthenticated}
@@ -171,7 +165,8 @@ class App extends React.Component {
               userId={AuthService.userId}
             />
             <CreateAccountRoute exact path="/CreateAccount" />
-            <LoginRoute exact path="/" />
+            <LoginRoute exact path="/Login" />
+            <Route path="/" component={HomePage} />
           </Switch>
         </div>
       </Router>

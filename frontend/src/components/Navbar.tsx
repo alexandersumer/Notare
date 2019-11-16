@@ -41,11 +41,19 @@ class Navbar extends React.Component<Props> {
     this.setState({ logged_out: true });
   };
 
+  login = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    return <Redirect to={"/Login"} />;
+  };
+
   render() {
     const { username } = this.props;
 
+    var authButton;
     if (this.state.logged_out) {
-      return <Redirect to={"/"} />;
+      authButton = <button onClick={this.login}>Login</button>;
+    } else {
+      authButton = <button onClick={this.logout}>Logout</button>;
     }
 
     return (
@@ -78,7 +86,7 @@ class Navbar extends React.Component<Props> {
               {username}
             </Box>
             <Box mr={3} p={0.5}>
-              <button onClick={this.logout}>Logout</button>
+              {authButton}
             </Box>
           </Box>
         </NavBarStyledComponent>
