@@ -88,7 +88,7 @@ class VideoNotesPage extends React.Component<Props, State> {
         flexDirection="column"
         flexGrow={1}
       >
-        <Navbar username={username}/>
+        <Navbar username={username} />
         <Search
           components={this.state.notes}
           updateSearchedComponents={this.updateSearchedNotes.bind(this)}

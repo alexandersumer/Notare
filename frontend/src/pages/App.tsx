@@ -1,5 +1,16 @@
 import * as React from "react";
 import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Grid,
+  Link,
+  makeStyles,
+  TextField,
+  Typography
+} from "@material-ui/core";
+import {
   BrowserRouter as Router,
   Route,
   Switch,
@@ -16,6 +27,24 @@ import CollectionPage from "./CollectionPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin } from "../api/login";
 import CategoryVideosPage from "./CategoryVideosPage";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+
+const useStyles = makeStyles(theme => ({
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.primary.light
+    }
+  },
+  card: {
+    backgroundColor: theme.palette.background.paper,
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    borderRadius: theme.shape.borderRadius
+  }
+}));
 
 export const AuthService = {
   isAuthenticated:
@@ -179,43 +208,56 @@ class Login extends React.Component<RouteComponentProps> {
       return <Redirect to={from} />;
     }
 
-    return (
-      <div>
-        <div>
-          <h2>
-            <div>Log-in to your account</div>
-          </h2>
-          <form onSubmit={this.login}>
-            <div>
-              <div>
-                <div>
-                  <i></i>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="email"
-                    onChange={this.updateEmail}
-                  />
-                </div>
-              </div>
-              <div>
-                <div>
-                  <i></i>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={this.updatePassword}
-                  />
-                </div>
-              </div>
-              <button>Login</button>
-            </div>
+    const classes = useStyles();
 
-            <div></div>
+    return (
+      <Container component="main" maxWidth="sm">
+        <Box boxShadow={3} className={classes.card}>
+          <Avatar>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <form noValidate onSubmit={this.login}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              type="text"
+              autoFocus
+              onChange={this.updateEmail}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={this.updateEmail}
+            />
+            <Button type="submit" fullWidth variant="contained" color="primary">
+              Sign In
+            </Button>
+            <Grid container direction="column" alignItems="center">
+              <Grid item>
+                <br />
+                <Link href="/register" variant="body1">
+                  {"Don't have an account? Register"}
+                </Link>
+              </Grid>
+            </Grid>
           </form>
-        </div>
-      </div>
+        </Box>
+      </Container>
     );
   }
 }

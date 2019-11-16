@@ -5,10 +5,7 @@ import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
-import {
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Logout } from "../api/logout";
 
 const FontStyleComponent = materialStyled(Box)({
@@ -21,7 +18,7 @@ const NavBarStyledComponent = materialStyled(Box)({
 });
 
 interface Props {
-  username: string
+  username: string;
 }
 
 interface State {
@@ -78,7 +75,7 @@ class Navbar extends React.Component<Props> {
           </Box>
           <Box mr={3}>
             <Box mr={3} p={0.5}>
-              { username }
+              {username}
             </Box>
             <Box mr={3} p={0.5}>
               <button onClick={this.logout}>Logout</button>

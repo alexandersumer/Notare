@@ -14,5 +14,6 @@ type getVideosResponse = {
   num_videos: number;
 };
 
-export const getVideos = async (params: getVideoParams): Promise<getVideosResponse | void> =>
-  getRequest("/videos", params);
+export const getVideos = async (
+  params: getVideoParams
+): Promise<getVideosResponse | void> => getRequest("/videos", params);

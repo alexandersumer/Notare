@@ -64,8 +64,8 @@ class CategoryVideosPage extends React.Component<Props> {
     const response = await getCategories();
     response &&
       this.setState({
-        categories: response.tags,
-      })
+        categories: response.tags
+      });
   };
 
   componentDidMount() {
@@ -77,8 +77,8 @@ class CategoryVideosPage extends React.Component<Props> {
     this.setState({ searched_videos: searched_videos });
   }
 
-  async onChangeCategory( video_id: string, category: string){
-    await changeVideoCategory({tag: category}, video_id);
+  async onChangeCategory(video_id: string, category: string) {
+    await changeVideoCategory({ tag: category }, video_id);
     await this.getVideos();
   }
 
@@ -88,7 +88,12 @@ class CategoryVideosPage extends React.Component<Props> {
       return (
         <Box p={1} display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-              <VideoComponent key={video.video_id} video={video} categories={this.state.categories} onChangeCategory={this.onChangeCategory.bind(this)}/>
+            <VideoComponent
+              key={video.video_id}
+              video={video}
+              categories={this.state.categories}
+              onChangeCategory={this.onChangeCategory.bind(this)}
+            />
           ))}
         </Box>
       );
@@ -130,7 +135,7 @@ class CategoryVideosPage extends React.Component<Props> {
 
     return (
       <FontStyleComponent p={3}>
-        <Navbar username={username}/>
+        <Navbar username={username} />
         <Search
           components={this.state.videos}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}
