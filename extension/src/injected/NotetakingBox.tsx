@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import NoteList from "./NoteList";
+import * as $ from "jquery";
 import { BACKGROUND_COLOR, NOTE_COLOR, TEXT_COLOR } from "../colorConstants";
 import { MAX_CHARS } from "../constants";
 import {
@@ -12,16 +13,6 @@ import {
 } from "../api/notes";
 import Box from "@material-ui/core/Box";
 import { Note } from "./types";
-
-const USER_ID = 1; // for testing
-
-const StyledWrapper = styled.div`
-  background-color: ${BACKGROUND_COLOR};
-  font-size: 20px;
-  height: 500px;
-  width: 300px;
-  padding: 20px;
-`;
 
 const StyledTextArea = styled.textarea`
   padding: 10px;
@@ -74,7 +65,6 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
   async getVidNotes(): Promise<void | Note[]> {
     const response = await getNotes({
       sort: "-timestamp",
-      user_id: USER_ID,
       video_id: getCurrentYoutubeId()
     });
     if (response) return response.notes;
@@ -85,10 +75,12 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     const state = this.state;
     const video = this.props.video;
 
+    const videoTitle = $("#container > h1 > yt-formatted-string")[0].innerText;
+
     await addNote({
       note: state.textBoxValue,
-      user_id: USER_ID,
       video_id: getCurrentYoutubeId(),
+      video_title: videoTitle,
       timestamp: video.currentTime
     });
 
@@ -140,9 +132,6 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
   }
 
   async componentDidMount() {
-    // Example of how to send a message to eventPage.ts.
-    chrome.runtime.sendMessage({ popupMounted: true });
-
     const newNotes = await this.getVidNotes();
     if (newNotes) {
       this.setState({
@@ -155,24 +144,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
   render() {
     const { allNotes, textBoxValue } = this.state;
     return (
-      <StyledWrapper>
-        <Box display="flex" mb={1}>
-          <Box display="flex" justifyContent="left">
-            <img
-              width={"120px"}
-              height={"30px"}
-              src={chrome.runtime.getURL("NotareWord.png")}
-            ></img>
-          </Box>
-          <Box flexGrow={1} />
-          <Box display="flex" justifyContent="right">
-            <img
-              width={"30px"}
-              height={"30px"}
-              src={chrome.runtime.getURL("NotareCircleTransparent.png")}
-            ></img>
-          </Box>
-        </Box>
+      <Box>
         <StyledTextArea
           placeholder="Start typing here..."
           maxLength={MAX_CHARS}
@@ -187,7 +159,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
           onEditNote={this.onEditNote.bind(this)}
           onChangeVideoTime={this.onChangeVideoTime.bind(this)}
         />
-      </StyledWrapper>
+      </Box>
     );
   }
 }

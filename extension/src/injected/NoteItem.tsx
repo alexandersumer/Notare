@@ -104,7 +104,8 @@ export default class NoteItem extends React.Component<Props, State> {
         note: textBoxValue,
         note_id: note.note_id,
         video_id: note.video_id,
-        user_id: note.user_id,
+        time_created: note.time_created,
+        last_edited: note.last_edited,
         timestamp: note.timestamp
       });
     }

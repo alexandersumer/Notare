@@ -127,11 +127,10 @@ def create_app():
     app = Flask(__name__, static_folder="static")
     app.register_blueprint(v1.bp, url_prefix="/v1")
     cors = CORS(app)
+    ONE_YEAR_IN_SECONDS = 31536000
     # Setup the Flask-JWT-Extended extension
     app.config["JWT_SECRET_KEY"] = "This key is super secret"
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = (
-        60 * 60 * 24
-    )  # access tokens last for a day
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ONE_YEAR_IN_SECONDS
     app.config["JWT_BLACKLIST_ENABLED"] = True
     app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access"]
     jwt = JWTManager(app)

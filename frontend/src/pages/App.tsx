@@ -14,22 +14,8 @@ import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
 import CollectionPage from "./CollectionPage";
 import VideoNotesPage from "./VideoNotesPage";
-import Box from "@material-ui/core/Box";
-import { styled as materialStyled } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
-import NotareWord from "../NotareWord.png";
-import { PINK_COLOR } from "../colorConstants";
 import { postLogin } from "../api/login";
 import CategoryVideosPage from "./CategoryVideosPage";
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
-
-const NavBarStyledComponent = materialStyled(Box)({
-  backgroundColor: PINK_COLOR,
-  height: 70
-});
 
 export const AuthService = {
   isAuthenticated:

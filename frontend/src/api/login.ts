@@ -1,5 +1,4 @@
 import { login } from "./backendapi";
-import { NoteType } from "../types";
 
 // POST LOGIN
 type postLoginBody = {
