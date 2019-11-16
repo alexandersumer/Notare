@@ -8,7 +8,7 @@ export const getRequest = async (route: string, params: any, accessToken: string
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
   const response = await backendapi.get(route, { params });
 
-  if (response.status == 200) {
+  if (response.status === 200) {
     return response.data;
   } else {
     return undefined;
@@ -19,7 +19,7 @@ export const login = async (route: string, body: any) => {
   console.log(body);
   const response = await backendapi.post(route, { email: body.email, password: body.password } );
 
-  if (response.status == 200) {
+  if (response.status === 200) {
     return response.data;
   } else {
     return undefined;
@@ -30,7 +30,7 @@ export const logout = async (route: string, accessToken: string) => {
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
   const response = await backendapi.delete(route);
 
-  if (response.status == 200) {
+  if (response.status === 200) {
     return response.data;
   } else {
     return undefined;
@@ -42,7 +42,7 @@ export const postRequest = async (route: string, body: any, accessToken: string)
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
   const response = await backendapi.post(route, { body } );
 
-  if (response.status == 200) {
+  if (response.status === 200) {
     return response.data;
   } else {
     return undefined;
