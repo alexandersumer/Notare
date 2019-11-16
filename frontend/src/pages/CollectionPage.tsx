@@ -42,21 +42,12 @@ class CollectionPage extends React.Component<Props> {
   }
 
   getCategories = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getCategories(
-      { user_id: userId },
-      accessToken as string
-    );
-    if (response) {
-      const categories = response.tags.map((item: any) => {
-        return item.tag;
-      });
+    const response = await getCategories();
+    response &&
       this.setState({
-        categories: categories,
-        searched_categories: categories
+        categories: response.tags,
+        searched_categories: response.tags,
       });
-    }
   };
 
   updateSearchedCategories(searched_categories: Array<string>) {
@@ -70,12 +61,7 @@ class CollectionPage extends React.Component<Props> {
   postCategory = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     if (this.state.newCategoryText === "") return;
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await addCategory(
-      { tag: this.state.newCategoryText, user_id: userId,  },
-      accessToken as string
-    );
+    const response = await addCategory({ tag: this.state.newCategoryText });
     await this.getCategories();
   }
 
@@ -142,9 +128,11 @@ class CollectionPage extends React.Component<Props> {
   }
 
   render() {
+    const email = localStorage.getItem("email") || "";
+    const username = email.substring(0, email.indexOf("@"));
     return (
       <FontStyleComponent p={3}>
-        <Navbar />
+        <Navbar username={username}/>
         <Search
           components={this.state.categories}
           updateSearchedComponents={this.updateSearchedCategories.bind(this)}

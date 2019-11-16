@@ -7,9 +7,11 @@ const backendapi = axios.create({
 export const getRequest = async (
   route: string,
   params: any,
-  accessToken: string
 ) => {
+  const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
+  const userId: number = parseInt(localStorage.getItem("userId") as string);
+  params.user_id = userId;;
   const response = await backendapi.get(route, { params });
 
   if (response.status === 200) {
@@ -33,7 +35,8 @@ export const login = async (route: string, body: any) => {
   }
 };
 
-export const logout = async (route: string, accessToken: string) => {
+export const logout = async (route: string) => {
+  const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
   const response = await backendapi.delete(route);
 
@@ -46,12 +49,15 @@ export const logout = async (route: string, accessToken: string) => {
 
 export const postRequest = async (
   route: string,
-  body: any,
-  accessToken: string
+  params: any,
 ) => {
-  console.log(body);
+  console.log(params);
+  const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
-  const response = await backendapi.post(route, body);
+
+  const userId: number = parseInt(localStorage.getItem("userId") as string);
+  params.user_id = userId;;
+  const response = await backendapi.post(route, params);
 
   if (response.status === 200) {
     return response.data;
