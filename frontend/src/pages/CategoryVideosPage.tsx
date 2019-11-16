@@ -129,7 +129,7 @@ class CategoryVideosPage extends React.Component<Props> {
     const username = email.substring(0, email.indexOf("@"));
 
     return (
-      <FontStyleComponent p={3}>
+      <FontStyleComponent>
         <Navbar username={username}/>
         <Search
           components={this.state.videos}
