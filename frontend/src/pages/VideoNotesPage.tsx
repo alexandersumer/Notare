@@ -88,7 +88,7 @@ class VideoNotesPage extends React.Component<Props, State> {
         </FontStyleComponent>
       );
     }
-    
+
     return (
       <FontStyleComponent
         p={3}

@@ -12,10 +12,9 @@ const Folder = (props: Props) => {
   return (
     <Link to={`/CategoryVideos/${category}`}>
       <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
-          <Box p={1} mr={1} display="flex" alignItems="center">
-            {category}
-          </Box>
-          
+        <Box p={1} mr={1} display="flex" alignItems="center">
+          {category}
+        </Box>
       </Box>
     </Link>
   );

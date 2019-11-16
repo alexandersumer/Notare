@@ -9,7 +9,6 @@ import Navbar from "../components/Navbar";
 import Folder from "../components/Folder";
 import Search from "../components/Search";
 
-
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
@@ -50,11 +49,11 @@ class CollectionPage extends React.Component<Props> {
     if (response) {
       const categories = response.tags.map((item: any) => {
         return item.tag;
-      })
+      });
       this.setState({
         categories: categories,
         searched_categories: categories
-      })
+      });
     }
   };
 
@@ -72,7 +71,7 @@ class CollectionPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_categories.map(category => (
-            <Folder category={category}/>
+            <Folder category={category} />
           ))}
         </Box>
       );

@@ -1,8 +1,6 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import SearchIcon from "@material-ui/icons/Search";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
@@ -12,7 +10,7 @@ import { getVideos } from "../api/videos";
 import { Link } from "react-router-dom";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
-import { access } from "fs";
+import VideoComponent from "../components/Video";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -72,17 +70,7 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-            <VideoStyledComponent
-              key={video.video_id}
-              m={1}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-            >
-              <Thumbnail video_id={video.video_id} />
-              <Box>{video.video_title}</Box>
-              <Link to={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
-            </VideoStyledComponent>
+            <VideoComponent video={video} categories={[]}/> // TODO: update to actually pull in data
           ))}
         </Box>
       );

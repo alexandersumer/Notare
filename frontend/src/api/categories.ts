@@ -17,12 +17,24 @@ export const getCategories = async (
 ): Promise<getCategoriesResponse | void> =>
   getRequest("/tags", params, accessToken);
 
-type postCategoriesParams = {
+type addCategoryParams = {
   tag?: string;
   user_id?: number;
 };
 
 export const addCategory = async (
-  params: postCategoriesParams,
+  params: addCategoryParams,
   accessToken: string
 ): Promise<void> => postRequest("/tags", params, accessToken);
+
+type addVideoCategoryParams = {
+  user_id?: number;
+  tag?: string;
+};
+
+export const addVideoCategory = async (
+  params: addVideoCategoryParams,
+  video_id: string,
+  accessToken: string
+): Promise<void> =>
+  postRequest("/videos/" + video_id + "/tag", params, accessToken);
