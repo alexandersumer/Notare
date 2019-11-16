@@ -2,6 +2,10 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
+
+from . import Resource
+from .. import schemas
+
 from flask_jwt_extended import (
     JWTManager,
     jwt_required,
@@ -9,16 +13,14 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 
-from . import Resource
-from .. import schemas
-
 import sqlite3
 import requests
 import re
 import hashlib
 
 
-class Login(Resource):
+class Createaccount(Resource):
+
     def post(self):
         print(g.json)
 
@@ -30,6 +32,7 @@ class Login(Resource):
             return {"errorMessage": "Invalid Email"}, 400
 
         # check email if already in database
+        # if not create user with that password
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM users where email=?;"
@@ -38,14 +41,23 @@ class Login(Resource):
         conn.close()
         user_id = None
         if len(user) == 0:
-            print(f"No user with email {g.json['email']} in database")
-            return {"errorMessage": "Invalid Email or Password"}, 400
+            print(f"No user with email {g.json['email']} in database. creating")
+            # create the user
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            SQL = f"INSERT INTO users (email, password) values (?, ?)"
+            c.execute(SQL, (g.json["email"],hashlib.sha256(g.json["password"].encode()).hexdigest(),))
+            conn.commit()
+            # get the user id last inserted
+            SQL = f"SELECT last_insert_rowid();"
+            c.execute(SQL, ())
+            user_id = c.fetchall()[0][0]
+            conn.close()
+            print(f"Created with user id {user_id}")
         else:
-            # verify email and password
-            if hashlib.sha256(g.json["password"].encode()).hexdigest() != user[0][2]:
-                return {"errorMessage": "Invalid Email or Password"}, 400
-            user_id = user[0][0]
-            print(f"user {g.json['email']} exists with id {user_id}")
+            # user already exists
+            return {"errorMessage": "Invalid Email or Password"}, 400
+
 
         # create access token for the user
         access_token = create_access_token(identity=g.json["email"])
