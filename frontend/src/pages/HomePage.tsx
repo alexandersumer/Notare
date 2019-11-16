@@ -8,8 +8,6 @@ import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import Navbar from "../components/Navbar";
 
-
-
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
@@ -17,8 +15,6 @@ const FontStyleComponent = materialStyled(Box)({
 export const Home = () => <h1></h1>;
 
 interface Props {}
-
-
 
 const NavBarStyledComponent = materialStyled(Box)({
   backgroundColor: PINK_COLOR,
@@ -28,11 +24,9 @@ const NavBarStyledComponent = materialStyled(Box)({
 class HomePage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-  
   }
 
   render() {
-
     return (
       <FontStyleComponent p={3}>
         <Navbar />

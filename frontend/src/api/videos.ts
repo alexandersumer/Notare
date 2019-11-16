@@ -18,4 +18,5 @@ type getVideosResponse = {
 export const getVideos = async (
   params: getVideoParams,
   accessToken: string
-): Promise<getVideosResponse | void> => getRequest("/videos", params, accessToken);
+): Promise<getVideosResponse | void> =>
+  getRequest("/videos", params, accessToken);

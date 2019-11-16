@@ -1032,6 +1032,16 @@
   dependencies:
     "@babel/runtime" "^7.4.4"
 
+"@material-ui/lab@^4.0.0-alpha.32":
+  version "4.0.0-alpha.32"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-4.0.0-alpha.32.tgz#be339034db5ae0e75a83076e9e2ff93d52725a55"
+  integrity sha512-ONh2WLp8E11Gsl/HaLQ1CLfZadtuyt2cbEKDCAJ9G267zCrKzrc5T9Ij7UH5Z2jwmP9aDjpp8PoA1+zUSlGknw==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@material-ui/utils" "^4.5.2"
+    clsx "^1.0.4"
+    prop-types "^15.7.2"
+
 "@material-ui/styles@^4.5.2":
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.5.2.tgz#95ac4641a3daed5ee9cc91af1e224d39efafbecb"
@@ -1316,6 +1326,14 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/reactstrap@^8.0.6":
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/@types/reactstrap/-/reactstrap-8.0.6.tgz#3dee1608c3a52af01b13aeff0f18de76a596a00f"
+  integrity sha512-H4S9hg13q2gPLDcVIiow/hQ6Vahgwl9hs3wX5Kp481nJbG/dbx+sWAa3inLgktE5ESKcy6ww16sDfTt1s1Cgow==
+  dependencies:
+    "@types/react" "*"
+    popper.js "^1.14.1"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -2545,7 +2563,7 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-clsx@^1.0.2:
+clsx@^1.0.2, clsx@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.0.4.tgz#0c0171f6d5cb2fe83848463c15fcc26b4df8c2ec"
   integrity sha512-1mQ557MIZTrL/140j+JVdRM6e31/OA4vTYxXgqIIZlndyfjHpyawKZia1Im05Vp9BWmImkcNrNtFYQMyFcgJDg==

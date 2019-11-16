@@ -89,7 +89,7 @@ class Notes(Resource):
                     g.json["video_id"],
                     g.json["user_id"],
                     g.json["video_title"],
-                    "GET VIDEO CATEGORY",
+                    0, #No Tag
                     current_time,
                     current_time
                 ),

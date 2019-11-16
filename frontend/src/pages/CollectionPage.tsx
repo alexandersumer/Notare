@@ -4,13 +4,10 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
-import Thumbnail from "../components/Thumbnail";
-import { VideoType } from "../types";
-import { getVideos } from "../api/videos";
-import { Link } from "react-router-dom";
-import Search from "../components/Search";
+import { getCategories } from "../api/categories";
 import Navbar from "../components/Navbar";
-import VideoComponent from "../components/Video";
+import Folder from "../components/Folder";
+import Search from "../components/Search";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -28,49 +25,53 @@ const GreyFont = materialStyled(Box)({
 interface Props {}
 
 interface State {
-  videos: Array<VideoType>;
-  searched_videos: Array<VideoType>;
+  categories: Array<string>;
+  searched_categories: Array<string>;
 }
 
-class VideoPage extends React.Component<Props> {
+class CollectionPage extends React.Component<Props> {
   state: State;
   constructor(props: Props) {
     super(props);
     this.state = {
-      videos: [],
-      searched_videos: []
+      categories: [],
+      searched_categories: []
     };
   }
 
-  getVideos = async () => {
+  getCategories = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId },
+    const response = await getCategories(
+      { user_id: userId },
       accessToken as string
     );
-    response &&
-      this.setState({
-        videos: response.videos,
-        searched_videos: response.videos
+    if (response) {
+      const categories = response.tags.map((item: any) => {
+        return item.tag;
       });
+      this.setState({
+        categories: categories,
+        searched_categories: categories
+      });
+    }
   };
 
-  componentDidMount() {
-    this.getVideos();
+  updateSearchedCategories(searched_categories: Array<string>) {
+    this.setState({ searched_categories: searched_categories });
   }
 
-  updateSearchedVideos(searched_videos: Array<VideoType>) {
-    this.setState({ searched_videos: searched_videos });
+  componentDidMount() {
+    this.getCategories();
   }
 
   renderMain() {
-    const numVideos = this.state.videos.length;
-    if (numVideos) {
+    const numCategories = this.state.categories.length;
+    if (numCategories) {
       return (
         <Box display="flex" flexWrap="wrap">
-          {this.state.searched_videos.map(video => (
-            <VideoComponent video={video} categories={[]}/> // TODO: update to actually pull in data
+          {this.state.searched_categories.map(category => (
+            <Folder category={category} />
           ))}
         </Box>
       );
@@ -110,12 +111,12 @@ class VideoPage extends React.Component<Props> {
       <FontStyleComponent p={3}>
         <Navbar />
         <Search
-          components={this.state.videos}
-          updateSearchedComponents={this.updateSearchedVideos.bind(this)}
-          searchType="videos"
+          components={this.state.categories}
+          updateSearchedComponents={this.updateSearchedCategories.bind(this)}
+          searchType="categories"
         />
         <Box>
-          <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
+          <h3 style={{ color: RED_COLOR }}>Categories</h3>
           {this.renderMain()}
         </Box>
       </FontStyleComponent>
@@ -123,4 +124,4 @@ class VideoPage extends React.Component<Props> {
   }
 }
 
-export default VideoPage;
+export default CollectionPage;

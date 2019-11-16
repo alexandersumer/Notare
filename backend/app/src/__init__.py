@@ -18,21 +18,27 @@ notes = [
 ]
 
 videos = [
-    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", "comedy", 1573010001000000, 1573010004000000],
-    ["QLx2WZWilBc", 1, "United States Grand Prix", "romance", 1573010003000000, 1573010003000000],
-    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", "sci-fi", 1573010005000000, 1573010005000000],
+    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", 1, 1573010001000000, 1573010004000000],
+    ["QLx2WZWilBc", 1, "United States Grand Prix", 2, 1573010003000000, 1573010003000000],
+    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", 3, 1573010005000000, 1573010005000000],
     [
         "hW_EEWVlVxE",
         2,
         "Building a Roller Coaster That Goes To Hell in Planet Coaster",
-        "physics",
+        4,
         1573010004000000,
         1573010009000000,
     ],
 ]
 
 users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
-
+ 
+tags = [
+     [1, 1, "comedy"],
+     [2, 1, "romance"],
+     [3, 1, "physics"],
+     [4, 2, "scary"]
+ ]
 
 def create_db():
     """
@@ -58,10 +64,15 @@ def create_db():
                 id VARCHAR NOT NULL,
                 user_id INTEGER,
                 video_title VARCHAR,
-                categories VARCHAR,
+                categories INTEGER,
                 time_created INTEGER,
                 last_edited INTEGER,
                 PRIMARY KEY (id)
+            );
+            CREATE TABLE tags (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                user_id INTEGER,
+                tag VARCHAR
             );
             CREATE TABLE users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,6 +99,10 @@ def create_db():
             for user in users:
                 cur.execute("INSERT INTO users (id, email, password) values (?,?,?)", user)
 
+            for tag in tags:
+                cur.execute("INSERT INTO tags (id, user_id, tag) values (?,?,?)", tag)
+
+
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
             entries = cur.fetchall()
@@ -96,6 +111,9 @@ def create_db():
             entries = cur.fetchall()
             print(entries)
             cur.execute("""SELECT * FROM users""")
+            entries = cur.fetchall()
+            print(entries)
+            cur.execute("""SELECT * FROM tags""")
             entries = cur.fetchall()
             print(entries)
 
