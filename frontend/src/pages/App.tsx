@@ -108,7 +108,7 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-const PublicRoute = (props: RouteProps) => {
+const LoginRoute = (props: RouteProps) => {
   const { component: Component, ...rest } = props;
 
   return <Route {...rest} render={routeProps => <Login {...routeProps} />} />;
@@ -171,7 +171,7 @@ class App extends React.Component {
               userId={AuthService.userId}
             />
             <CreateAccountRoute exact path="/CreateAccount" />
-            <PublicRoute exact path="/" />
+            <LoginRoute exact path="/" />
           </Switch>
         </div>
       </Router>
