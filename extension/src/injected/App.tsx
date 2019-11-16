@@ -62,7 +62,7 @@ export default class NoteItem extends React.Component<Props, State> {
     onLogout = async () => {
         console.log("Logging out");
         try {
-            await logout(); // no await because we don't need to wait on logout to succeed.
+            await logout();
         }
         finally {
             await AuthService.logout(); // delete from storage
