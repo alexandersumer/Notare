@@ -6,7 +6,7 @@ import NotareWord from "../NotareWord.png";
 import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { Logout } from "../api/logout";
+import { Logout } from "../api/auth";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'

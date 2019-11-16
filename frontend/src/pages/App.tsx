@@ -1,4 +1,14 @@
 import * as React from "react";
+import { SyntheticEvent } from "react";
+import HomePage from "./HomePage";
+import AboutUsPage from "./AboutUsPage";
+import NotePage from "./NotePage";
+import VideoPage from "./VideoPage";
+import CollectionPage from "./CollectionPage";
+import VideoNotesPage from "./VideoNotesPage";
+import { postLogin, postCreateAccount } from "../api/auth";
+import CategoryVideosPage from "./CategoryVideosPage";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
   Box,
@@ -6,7 +16,6 @@ import {
   Container,
   Grid,
   Link,
-  makeStyles,
   TextField,
   Typography
 } from "@material-ui/core";
@@ -18,33 +27,6 @@ import {
   RouteProps,
   Redirect
 } from "react-router-dom";
-import { SyntheticEvent } from "react";
-import HomePage from "./HomePage";
-import AboutUsPage from "./AboutUsPage";
-import NotePage from "./NotePage";
-import VideoPage from "./VideoPage";
-import CollectionPage from "./CollectionPage";
-import VideoNotesPage from "./VideoNotesPage";
-import { postLogin } from "../api/login";
-import CategoryVideosPage from "./CategoryVideosPage";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
-const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.primary.light
-    }
-  },
-  card: {
-    backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    borderRadius: theme.shape.borderRadius
-  }
-}));
 
 export const AuthService = {
   isAuthenticated:
@@ -64,6 +46,21 @@ export const AuthService = {
       : parseInt(localStorage.getItem("userId") as string),
   async authenticate(email: string, password: string, cb: Function) {
     const response = await postLogin({ email: email, password: password });
+    if (response) {
+      this.isAuthenticated = true;
+      this.accessToken = response.accessToken;
+      this.userId = response.user_id;
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("userId", response.user_id.toString());
+      localStorage.setItem("email", email);
+    }
+    setTimeout(cb, 100);
+  },
+  async createAccount(email: string, password: string, cb: Function) {
+    const response = await postCreateAccount({
+      email: email,
+      password: password
+    });
     if (response) {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
@@ -116,6 +113,14 @@ const PublicRoute = (props: RouteProps) => {
   return <Route {...rest} render={routeProps => <Login {...routeProps} />} />;
 };
 
+const CreateAccountRoute = (props: RouteProps) => {
+  const { component: Component, ...rest } = props;
+
+  return (
+    <Route {...rest} render={routeProps => <CreateAccount {...routeProps} />} />
+  );
+};
+
 class App extends React.Component {
   render() {
     return (
@@ -164,6 +169,7 @@ class App extends React.Component {
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
             />
+            <CreateAccountRoute exact path="/CreateAccount" />
             <PublicRoute exact path="/" />
           </Switch>
         </div>
@@ -186,14 +192,14 @@ class Login extends React.Component<RouteComponentProps> {
     });
   };
 
-  updateEmail = (event: SyntheticEvent) => {
+  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
-    this.setState({ email: (event.target as HTMLInputElement).value });
+    this.setState({ email: event.target.value });
   };
 
-  updatePassword = (event: SyntheticEvent) => {
+  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
-    this.setState({ password: (event.target as HTMLInputElement).value });
+    this.setState({ password: event.target.value });
   };
 
   render() {
@@ -208,56 +214,208 @@ class Login extends React.Component<RouteComponentProps> {
       return <Redirect to={from} />;
     }
 
-    const classes = useStyles();
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid alignItems="center" justify="center" item xs={4}>
+          <Container component="main" maxWidth="sm">
+            <Box boxShadow={3} p={2}>
+              <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ minHeight: "1vh" }}
+              >
+                <Box p={1}>
+                  {" "}
+                  <Avatar>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                </Box>
+                <Box p={1}>
+                  {" "}
+                  <Typography component="h1" variant="h5">
+                    Login
+                  </Typography>
+                </Box>
+              </Grid>
+              <form noValidate onSubmit={this.login.bind(this)}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  type="text"
+                  autoFocus
+                  onChange={this.updateEmail.bind(this)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.updatePassword.bind(this)}
+                />
+                <Box p={1}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                  >
+                    Sign In
+                  </Button>
+                </Box>
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <br />
+                    <Link href="/CreateAccount" variant="body1">
+                      {"Don't have an account? Register"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </Box>
+          </Container>
+        </Grid>
+      </Grid>
+    );
+  }
+}
+
+class CreateAccount extends React.Component<RouteComponentProps> {
+  state = {
+    redirectToPreviousRoute: false,
+    email: "",
+    password: ""
+  };
+
+  login = (event: SyntheticEvent) => {
+    event.preventDefault();
+    AuthService.createAccount(this.state.email, this.state.password, () => {
+      this.setState({ redirectToPreviousRoute: true });
+    });
+  };
+
+  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+    this.setState({ email: event.target.value });
+  };
+
+  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+    this.setState({ password: event.target.value });
+  };
+
+  render() {
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    const { redirectToPreviousRoute } = this.state;
+
+    if (AuthService.isAuthenticated) {
+      return <Redirect to="/Home" />;
+    }
+
+    if (redirectToPreviousRoute) {
+      return <Redirect to={from} />;
+    }
 
     return (
-      <Container component="main" maxWidth="sm">
-        <Box boxShadow={3} className={classes.card}>
-          <Avatar>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
-          <form noValidate onSubmit={this.login}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              type="text"
-              autoFocus
-              onChange={this.updateEmail}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={this.updateEmail}
-            />
-            <Button type="submit" fullWidth variant="contained" color="primary">
-              Sign In
-            </Button>
-            <Grid container direction="column" alignItems="center">
-              <Grid item>
-                <br />
-                <Link href="/register" variant="body1">
-                  {"Don't have an account? Register"}
-                </Link>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid alignItems="center" justify="center" item xs={4}>
+          <Container component="main" maxWidth="sm">
+            <Box boxShadow={3} p={2}>
+              <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ minHeight: "1vh" }}
+              >
+                <Box p={1}>
+                  {" "}
+                  <Avatar>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                </Box>
+                <Box p={1}>
+                  {" "}
+                  <Typography component="h1" variant="h5">
+                    Create Account
+                  </Typography>
+                </Box>
               </Grid>
-            </Grid>
-          </form>
-        </Box>
-      </Container>
+              <form noValidate onSubmit={this.login.bind(this)}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  type="text"
+                  autoFocus
+                  onChange={this.updateEmail.bind(this)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.updatePassword.bind(this)}
+                />
+                <Box p={1}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                  >
+                    Register
+                  </Button>
+                </Box>
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                    <br />
+                    <Link href="/" variant="body1">
+                      {"Already have an account? Login"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </Box>
+          </Container>
+        </Grid>
+      </Grid>
     );
   }
 }
