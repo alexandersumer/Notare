@@ -4,7 +4,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
-import { getCategories } from "../api/categories";
+import { getCategories, addCategory } from "../api/categories";
 import Navbar from "../components/Navbar";
 import Folder from "../components/Folder";
 import Search from "../components/Search";
@@ -27,6 +27,7 @@ interface Props {}
 interface State {
   categories: Array<string>;
   searched_categories: Array<string>;
+  newCategoryText: string;
 }
 
 class CollectionPage extends React.Component<Props> {
@@ -35,7 +36,8 @@ class CollectionPage extends React.Component<Props> {
     super(props);
     this.state = {
       categories: [],
-      searched_categories: []
+      searched_categories: [],
+      newCategoryText: ""
     };
   }
 
@@ -63,6 +65,39 @@ class CollectionPage extends React.Component<Props> {
 
   componentDidMount() {
     this.getCategories();
+  }
+
+  postCategory = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    if (this.state.newCategoryText === "") return;
+    const accessToken = localStorage.getItem("accessToken");
+    const userId: number = parseInt(localStorage.getItem("userId") as string);
+    const response = await addCategory(
+      { tag: this.state.newCategoryText, user_id: userId,  },
+      accessToken as string
+    );
+    await this.getCategories();
+  }
+
+  handleCategoryChange = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    this.setState({ newCategoryText: (event.target as HTMLInputElement).value });
+  };
+
+  createNewCategory() {
+    return (
+        <Box>
+          Add New Collection:
+          <form onSubmit={this.postCategory}>
+                <input
+                  type="text"
+                  name="category"
+                  placeholder={this.state.newCategoryText}
+                  onChange={this.handleCategoryChange}
+                />
+          </form>
+        </Box>
+    );
   }
 
   renderMain() {
@@ -115,6 +150,7 @@ class CollectionPage extends React.Component<Props> {
           updateSearchedComponents={this.updateSearchedCategories.bind(this)}
           searchType="categories"
         />
+        {this.createNewCategory()}
         <Box>
           <h3 style={{ color: RED_COLOR }}>Categories</h3>
           {this.renderMain()}

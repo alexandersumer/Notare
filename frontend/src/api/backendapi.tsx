@@ -51,7 +51,7 @@ export const postRequest = async (
 ) => {
   console.log(body);
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
-  const response = await backendapi.post(route, { body });
+  const response = await backendapi.post(route, body);
 
   if (response.status === 200) {
     return response.data;
