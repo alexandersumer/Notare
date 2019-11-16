@@ -90,15 +90,7 @@ class NotePage extends React.Component<Props, State> {
   }
 
   async getNotes(): Promise<void | NoteType[]> {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getNotes(
-      {
-        sort: "-last_edited",
-        user_id: userId
-      },
-      accessToken as string
-    );
+    const response = await getNotes({ sort: "-last_edited" });
     if (response) return response.notes;
     return undefined;
   }

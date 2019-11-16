@@ -6,7 +6,6 @@ type getNotesParams = {
   sort?: string;
   note_id?: number;
   video_id?: string;
-  user_id?: number;
   timestamp?: number;
 };
 
@@ -15,8 +14,5 @@ type getNotesResponse = {
   num_notes: number;
 };
 
-export const getNotes = async (
-  params: getNotesParams,
-  accessToken: string
-): Promise<getNotesResponse | void> =>
-  getRequest("/notes", params, accessToken);
+export const getNotes = async (params: getNotesParams): Promise<getNotesResponse | void> =>
+  getRequest("/notes", params);

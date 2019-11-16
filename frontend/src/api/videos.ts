@@ -5,7 +5,6 @@ import { VideoType } from "../types";
 type getVideoParams = {
   sort?: string;
   video_id?: string;
-  user_id?: number;
   video_title?: string;
   categories?: string;
 };
@@ -15,8 +14,5 @@ type getVideosResponse = {
   num_videos: number;
 };
 
-export const getVideos = async (
-  params: getVideoParams,
-  accessToken: string
-): Promise<getVideosResponse | void> =>
-  getRequest("/videos", params, accessToken);
+export const getVideos = async (params: getVideoParams): Promise<getVideosResponse | void> =>
+  getRequest("/videos", params);

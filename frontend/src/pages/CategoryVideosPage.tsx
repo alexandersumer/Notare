@@ -8,7 +8,7 @@ import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
-import { getCategories } from "../api/categories";
+import { getCategories, changeVideoCategory } from "../api/categories";
 import { RouteComponentProps } from "react-router-dom";
 import VideoComponent from "../components/Video";
 
@@ -28,7 +28,7 @@ interface Props extends RouteComponentProps<MatchParams> {}
 
 interface State {
   categories: Array<string>;
-  category: string;
+  category: String;
   videos: Array<VideoType>;
   searched_videos: Array<VideoType>;
 }
@@ -46,12 +46,7 @@ class CategoryVideosPage extends React.Component<Props> {
   }
 
   getVideos = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getVideos(
-      { sort: "-last_edited", user_id: userId },
-      accessToken as string
-    );
+    const response = await getVideos({ sort: "-last_edited" });
 
     if (response) {
       const { category } = this.props.match.params;
@@ -66,20 +61,11 @@ class CategoryVideosPage extends React.Component<Props> {
   };
 
   getCategories = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userId: number = parseInt(localStorage.getItem("userId") as string);
-    const response = await getCategories(
-      { user_id: userId },
-      accessToken as string
-    );
-    if (response) {
-      const categories = response.tags.map((item: any) => {
-        return item.tag;
-      });
+    const response = await getCategories();
+    response &&
       this.setState({
-        categories: categories
-      });
-    }
+        categories: response.tags,
+      })
   };
 
   componentDidMount() {
@@ -91,13 +77,18 @@ class CategoryVideosPage extends React.Component<Props> {
     this.setState({ searched_videos: searched_videos });
   }
 
+  async onChangeCategory( video_id: string, category: string){
+    await changeVideoCategory({tag: category}, video_id);
+    await this.getVideos();
+  }
+
   renderMain() {
     const numVideos = this.state.videos.length;
     if (numVideos) {
       return (
         <Box p={1} display="flex" flexWrap="wrap">
           {this.state.searched_videos.map(video => (
-              <VideoComponent video={video} categories={this.state.categories}/>
+              <VideoComponent key={video.video_id} video={video} categories={this.state.categories} onChangeCategory={this.onChangeCategory.bind(this)}/>
           ))}
         </Box>
       );
