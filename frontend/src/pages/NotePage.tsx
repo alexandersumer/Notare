@@ -11,10 +11,7 @@ import { NoteType } from "../types";
 import Note from "../components/Note";
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
+import Container from "../components/Container";
 
 interface Props {}
 
@@ -56,7 +53,7 @@ class NotePage extends React.Component<Props, State> {
       return (
         <Box mr={4}>
           {this.state.searched_notes.map(n => (
-            <Note noteData={n} thumbNail allNotesLink />
+            <Note noteData={n} thumbNail youtubeLink />
           ))}
         </Box>
       );
@@ -75,15 +72,6 @@ class NotePage extends React.Component<Props, State> {
           justifyContent="center"
         >
           <Box>Looks like you have no notes yet!</Box>
-          <Box mt={4}>
-            Make sure to install the Chrome extension and head to Youtube to get
-            started.
-          </Box>
-          <Box mt={3}>
-            <Button variant="contained" color="secondary">
-              Try Notare Now <GetAppIcon />
-            </Button>
-          </Box>
         </Box>
       </GreyFont>
     );
@@ -103,18 +91,22 @@ class NotePage extends React.Component<Props, State> {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent p={3}>
-        <Navbar username={username} />
-        <Search
-          components={this.state.notes}
-          updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-          searchType="notes"
-        />
+      <Box>
+        <Navbar username={username}/>
+        <Container>
+        <Box display="flex" flexDirection="row">
+          <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Notes</h3></Box>
+          <Search
+            components={this.state.notes}
+            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+            searchType="notes"
+          />
+        </Box>
         <Box>
-          <h3 style={{ color: RED_COLOR }}>Recent Notes</h3>
           {this.renderMain()}
         </Box>
-      </FontStyleComponent>
+        </Container>
+      </Box>
     );
   }
 }

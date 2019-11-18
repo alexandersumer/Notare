@@ -5,10 +5,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { ORANGE_COLOR } from "../colorConstants";
 import Navbar from "../components/Navbar";
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
+import Container from "../components/Container";
 
 export const Home = () => <h1></h1>;
 
@@ -23,19 +20,20 @@ class HomePage extends React.Component<Props> {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent p={3}>
-        <Navbar username={username} />
-        <Box display="flex" flexDirection="column" alignItems="center">
+      <Box>
+        <Navbar username={username}/>
+        <Container>
+        <Box mt={5} display="flex" flexDirection="column" alignItems="center">
           <Box>
             <h1>
               What if you could take notes <i>on YouTube?</i>
             </h1>
           </Box>
-          <Box style={{ color: ORANGE_COLOR }}>
-            <h3>
+          <Box mt={3} style={{ color: ORANGE_COLOR }}>
+            <h4>
               Meet Notare, a free Google Chrome extension made by sutdents to
               help make learning online easier.
-            </h3>
+            </h4>
           </Box>
           <Box mt={3}>
             <Button variant="contained" color="secondary">
@@ -52,7 +50,8 @@ class HomePage extends React.Component<Props> {
             </b>
           </Box>
         </Box>
-      </FontStyleComponent>
+        </Container>
+      </Box>
     );
   }
 }

@@ -12,11 +12,7 @@ import Button from 'react-bootstrap/Button';
 import Search from "../components/Search";
 import Navbar from "../components/Navbar";
 import VideoComponent from "../components/Video";
-
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
+import Container from "../components/Container";
 
 const GreyFont = materialStyled(Box)({
   color: GREY_COLOR
@@ -109,7 +105,7 @@ class VideoPage extends React.Component<Props> {
     return (
       <Box>
         <Box display="flex" flexDirection="row">
-          <Box><h3 style={{ color: RED_COLOR }}>Your Categories</h3></Box>
+          <Box mb={1}><h4 style={{ color: GREY_COLOR }}>Your Categories</h4></Box>
           <Box ml={2}>
             <Button size="sm" variant={deleteMode ? "success" : "secondary"} onClick={this.onToggleDeleteMode.bind(this)}>
               {deleteMode ? "Finish Deleting" : "Delete Categories"}
@@ -162,10 +158,6 @@ class VideoPage extends React.Component<Props> {
           justifyContent="center"
         >
           <Box>Looks like you have no videos yet!</Box>
-          <Box mt={4}>
-            Make sure to install the Chrome extension and head to Youtube to get
-            started.
-          </Box>
         </Box>
       </GreyFont>
     );
@@ -175,20 +167,22 @@ class VideoPage extends React.Component<Props> {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent>
+      <Box>
         <Navbar username={username}/>
-        <Search
-          components={this.state.videos}
-          updateSearchedComponents={this.updateSearchedVideos.bind(this)}
-          searchType="videos"
-          categorySearch={this.state.selectedCategories}
-        />
-        <Box>
-          {this.renderCategoryLabels()}
-          <h3 style={{ color: RED_COLOR }}>Recent Videos</h3>
-          {this.renderMain()}
+      <Container>
+        <Box display="flex" flexDirection="row">
+          <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Videos</h3></Box>
+          <Search
+            components={this.state.videos}
+            updateSearchedComponents={this.updateSearchedVideos.bind(this)}
+            searchType="videos"
+            categorySearch={this.state.selectedCategories}
+          />
         </Box>
-      </FontStyleComponent>
+        {this.renderCategoryLabels()}
+        {this.renderMain()}
+        </Container>
+        </Box>
     );
   }
 }
