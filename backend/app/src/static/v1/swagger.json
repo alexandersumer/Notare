@@ -155,8 +155,62 @@
     "/login": {
       "post": {
         "operationId": "login",
-        "description": "this takes an email and password, creates a new user if that email doesn't exist in the database or verifies it against the existing email and returns a server generated access token from JWTs to the user",
+        "description": "this takes an email and password, verifies it against an existing email and returns a server generated access token from JWTs to the user",
         "summary": "login",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "mitchell_shelton@y7mail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "secret"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string",
+                  "example": "fuehfoeifjw"
+                },
+                "user_id": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/createAccount": {
+      "post": {
+        "operationId": "create account",
+        "description": "this takes an email and password, creates a new user and returns a server generated access token from JWTs to the user",
+        "summary": "create account",
         "tags": [
           "Auth"
         ],

@@ -3,25 +3,25 @@ import Message from "../utils/Message";
 
 // POST LOGIN
 type postLoginBody = {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 };
 
 type postLoginResponse = {
-  accessToken: string,
-  user_id: number
+  accessToken: string;
+  user_id: number;
 };
 
 export const login = async (
-  postLoginBody: postLoginBody,
+  postLoginBody: postLoginBody
 ): Promise<any | void> => {
-   const response = await Message.send({login: {route: "/login", body: postLoginBody}});
-   return response;
-}
-
-
-type LogoutResponse = {
-  
+  const response = await Message.send({
+    login: { route: "/login", body: postLoginBody }
+  });
+  return response;
 };
 
-export const logout = async (): Promise<LogoutResponse | void> => logoutRequest("/logout");
+type LogoutResponse = {};
+
+export const logout = async (): Promise<LogoutResponse | void> =>
+  logoutRequest("/logout");

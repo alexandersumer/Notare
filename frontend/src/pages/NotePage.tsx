@@ -103,8 +103,8 @@ class NotePage extends React.Component<Props, State> {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent>
-        <Navbar username={username}/>
+      <FontStyleComponent p={3}>
+        <Navbar username={username} />
         <Search
           components={this.state.notes}
           updateSearchedComponents={this.updateSearchedNotes.bind(this)}

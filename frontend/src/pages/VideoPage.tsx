@@ -56,14 +56,13 @@ class VideoPage extends React.Component<Props> {
 
   getCategories = async () => {
     const response = await getCategories();
-    response &&
-      this.setState({ categories: response.tags })
-  }
+    response && this.setState({ categories: response.tags });
+  };
 
-  onChangeCategory = async ( video_id: string, category: string) => {
-    await changeVideoCategory({tag: category}, video_id);
+  onChangeCategory = async (video_id: string, category: string) => {
+    await changeVideoCategory({ tag: category }, video_id);
     await this.getVideos();
-  }
+  };
 
   async componentDidMount() {
     await this.getVideos();

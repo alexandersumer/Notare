@@ -23,8 +23,8 @@ class HomePage extends React.Component<Props> {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent>
-        <Navbar username={username}/>
+      <FontStyleComponent p={3}>
+        <Navbar username={username} />
         <Box display="flex" flexDirection="column" alignItems="center">
           <Box>
             <h1>

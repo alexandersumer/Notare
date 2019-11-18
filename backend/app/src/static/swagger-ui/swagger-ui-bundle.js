@@ -17104,7 +17104,7 @@ object-assign
       e.exports = r;
     },
     function(e, t, n) {
-      "use strict"
+      "use strict";
       /**
        * Checks if an event is supported in the current execution environment.
        *
@@ -17118,7 +17118,7 @@ object-assign
        * @return {boolean} True if the event is supported.
        * @internal
        * @license Modernizr 3.0.0pre (Custom Build) | MIT
-       */;
+       */
       function r(e, t) {
         if (!o.canUseDOM || (t && !("addEventListener" in document))) return !1;
         var n = "on" + e,
