@@ -8,7 +8,6 @@ import Note from "../components/Note";
 import Container from "../components/Container";
 import Search from "../components/Search";
 
-
 interface Props {
   Navbar: any;
 }
@@ -90,17 +89,17 @@ class NotePage extends React.Component<Props, State> {
       <Box>
         {this.props.Navbar()}
         <Container>
-        <Box display="flex" flexDirection="row">
-          <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Notes</h3></Box>
-          <Search
-            components={this.state.notes}
-            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-            searchType="notes"
-          />
-        </Box>
-        <Box>
-          {this.renderMain()}
-        </Box>
+          <Box display="flex" flexDirection="row">
+            <Box mt={3} mr={4}>
+              <h3 style={{ color: RED_COLOR }}>My Notes</h3>
+            </Box>
+            <Search
+              components={this.state.notes}
+              updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+              searchType="notes"
+            />
+          </Box>
+          <Box>{this.renderMain()}</Box>
         </Container>
       </Box>
     );

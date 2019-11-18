@@ -11,7 +11,10 @@ interface Props {
 }
 
 const YoutubeLink = (props: Props) => (
-  <Link href={getYoutubeTimeLink(props.videoId, props.timestamp)} target="_blank">
+  <Link
+    href={getYoutubeTimeLink(props.videoId, props.timestamp)}
+    target="_blank"
+  >
     {props.children}
   </Link>
 );

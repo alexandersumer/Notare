@@ -26,7 +26,7 @@ interface Props {
 }
 
 class AboutUsPage extends React.Component<Props> {
-  constructor(props: Props){
+  constructor(props: Props) {
     super(props);
   }
   render() {

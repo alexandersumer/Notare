@@ -25,15 +25,18 @@ interface LoginState {
   password: string;
 }
 
-class Login extends React.Component<RouteComponentProps & LoginProps, LoginState> {
-  constructor(props: RouteComponentProps & LoginProps, state: LoginState){
+class Login extends React.Component<
+  RouteComponentProps & LoginProps,
+  LoginState
+> {
+  constructor(props: RouteComponentProps & LoginProps, state: LoginState) {
     super(props, state);
     this.state = {
       email: "",
       password: ""
     };
   }
-  
+
   login = (event: React.SyntheticEvent) => {
     event.preventDefault();
     this.props.onLogin(this.state.email, this.state.password);

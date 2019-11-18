@@ -4,11 +4,15 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
-import { addCategory, getCategories, changeVideoCategory } from "../api/categories";
+import {
+  addCategory,
+  getCategories,
+  changeVideoCategory
+} from "../api/categories";
 import { sortStringArray } from "../utils/stringUtils";
 import CategoryLabel from "../components/CategoryLabel";
 import AddCategory from "../components/AddCategory";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import Search from "../components/Search";
 import VideoComponent from "../components/Video";
 import Container from "../components/Container";
@@ -38,7 +42,7 @@ class VideoPage extends React.Component<Props> {
       searchedVideos: [],
       categories: [],
       selectedCategories: [],
-      deleteMode: false,
+      deleteMode: false
     };
   }
 
@@ -70,65 +74,73 @@ class VideoPage extends React.Component<Props> {
     this.setState({ searchedVideos: searchedVideos });
   }
 
-  onDeselectCategory(category: string){
+  onDeselectCategory(category: string) {
     this.setState((state: State) => {
       const newSelected = state.selectedCategories.filter(c => c !== category);
       return {
-        selectedCategories: newSelected,
-      }
-    })
+        selectedCategories: newSelected
+      };
+    });
   }
 
-  onSelectCategory(category: string){
-    if (!this.state.selectedCategories.includes(category)){
+  onSelectCategory(category: string) {
+    if (!this.state.selectedCategories.includes(category)) {
       this.setState((state: State) => {
         const newSelected = [...state.selectedCategories, category];
         return {
-          selectedCategories: newSelected,
-        }
-      })
+          selectedCategories: newSelected
+        };
+      });
     }
   }
 
   onToggleDeleteMode(e: any) {
     this.setState((state: State) => ({
-      deleteMode: !state.deleteMode,
+      deleteMode: !state.deleteMode
     }));
   }
 
-  async onAddNewCategory(category: string){
-    await addCategory({tag: category});
+  async onAddNewCategory(category: string) {
+    await addCategory({ tag: category });
     await this.getCategories();
   }
 
-  renderCategoryLabels(){
-    const { categories, selectedCategories, deleteMode } = this.state
+  renderCategoryLabels() {
+    const { categories, selectedCategories, deleteMode } = this.state;
     return (
       <Box>
         <Box display="flex" flexDirection="row">
-          <Box mb={1}><h4 style={{ color: GREY_COLOR }}>Your Categories</h4></Box>
+          <Box mb={1}>
+            <h4 style={{ color: GREY_COLOR }}>Your Categories</h4>
+          </Box>
           <Box ml={2}>
-            <Button size="sm" variant={deleteMode ? "success" : "secondary"} onClick={this.onToggleDeleteMode.bind(this)}>
+            <Button
+              size="sm"
+              variant={deleteMode ? "success" : "secondary"}
+              onClick={this.onToggleDeleteMode.bind(this)}
+            >
               {deleteMode ? "Finish Deleting" : "Delete Categories"}
             </Button>
-           </Box>
+          </Box>
         </Box>
 
-        
         <Box display="flex" flexDirection="row" alignItems="center">
-          {sortStringArray(categories).map(category =>
-            <CategoryLabel key={category} category={category}
-              deleteMode={deleteMode} 
+          {sortStringArray(categories).map(category => (
+            <CategoryLabel
+              key={category}
+              category={category}
+              deleteMode={deleteMode}
               selected={selectedCategories.includes(category)}
               onSelectCategory={this.onSelectCategory.bind(this)}
               onDeselectCategory={this.onDeselectCategory.bind(this)}
-          />)}
-           {!deleteMode && (<AddCategory onAdd={this.onAddNewCategory.bind(this)}/>)}
+            />
+          ))}
+          {!deleteMode && (
+            <AddCategory onAdd={this.onAddNewCategory.bind(this)} />
+          )}
         </Box>
-      
       </Box>
-    )
-
+    );
   }
 
   renderMain() {
@@ -138,7 +150,12 @@ class VideoPage extends React.Component<Props> {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searchedVideos.map(video => (
-            <VideoComponent key={video.video_id} video={video} categories={categories} onChangeCategory={this.onChangeCategory.bind(this)}/> // TODO: update to actually pull in data
+            <VideoComponent
+              key={video.video_id}
+              video={video}
+              categories={categories}
+              onChangeCategory={this.onChangeCategory.bind(this)}
+            /> // TODO: update to actually pull in data
           ))}
         </Box>
       );
@@ -168,20 +185,22 @@ class VideoPage extends React.Component<Props> {
     return (
       <Box>
         {this.props.Navbar()}
-      <Container>
-        <Box display="flex" flexDirection="row">
-          <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Videos</h3></Box>
-          <Search
-            components={this.state.videos}
-            updateSearchedComponents={this.updateSearchedVideos.bind(this)}
-            searchType="videos"
-            categorySearch={this.state.selectedCategories}
-          />
-        </Box>
-        {this.renderCategoryLabels()}
-        {this.renderMain()}
+        <Container>
+          <Box display="flex" flexDirection="row">
+            <Box mt={3} mr={4}>
+              <h3 style={{ color: RED_COLOR }}>My Videos</h3>
+            </Box>
+            <Search
+              components={this.state.videos}
+              updateSearchedComponents={this.updateSearchedVideos.bind(this)}
+              searchType="videos"
+              categorySearch={this.state.selectedCategories}
+            />
+          </Box>
+          {this.renderCategoryLabels()}
+          {this.renderMain()}
         </Container>
-        </Box>
+      </Box>
     );
   }
 }

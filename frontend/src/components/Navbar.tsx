@@ -5,7 +5,7 @@ import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -38,9 +38,19 @@ class Navbar extends React.Component<Props> {
 
     var authButton;
     if (isAuthenticated) {
-      authButton = <Button variant="contained" color="primary" onClick={this.logout}>Logout</Button>;
+      authButton = (
+        <Button variant="contained" color="primary" onClick={this.logout}>
+          Logout
+        </Button>
+      );
     } else {
-      authButton = <Link to={`/Login`}><Button variant="contained" color="primary">Login</Button></Link>;
+      authButton = (
+        <Link to={`/Login`}>
+          <Button variant="contained" color="primary">
+            Login
+          </Button>
+        </Link>
+      );
     }
 
     return (
@@ -56,8 +66,16 @@ class Navbar extends React.Component<Props> {
               <img width="120px" height="30px" src={NotareWord} />
             </Link>
           </Box>
-          {(this.props.isAuthenticated) && (<Box><Link to="/Notes">Notes</Link></Box>)}
-          {(this.props.isAuthenticated) && (<Box><Link to="/Videos">Videos</Link></Box>)}
+          {this.props.isAuthenticated && (
+            <Box>
+              <Link to="/Notes">Notes</Link>
+            </Box>
+          )}
+          {this.props.isAuthenticated && (
+            <Box>
+              <Link to="/Videos">Videos</Link>
+            </Box>
+          )}
           <Box mr={3}>
             <Link to="/AboutUs">About Us</Link>
           </Box>

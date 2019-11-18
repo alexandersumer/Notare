@@ -83,38 +83,38 @@ class VideoNotesPage extends React.Component<Props, State> {
     }
 
     return (
-     <Box>
+      <Box>
         {this.props.Navbar()}
         <Container>
-        <Box mt={3} display="flex" flexDirection="row">
-          <h3 style={{ color: RED_COLOR }}>Notes for: </h3>
-          <Box mr={1} />
-          <h3>{video.video_title}</h3>
-        </Box>
-        <Search
-          components={this.state.notes}
-          updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-          searchType="notes"
-        />
-        <Box display="flex" flexGrow={1}>
-          <Box mr={3} alignItems="center" style={{ width: 200 }}>
-            <Thumbnail height={130} width={200} video_id={video.video_id} />
-            <Box>
-              <YoutubeLink videoId={video.video_id} timestamp={0}>
-                <b>{video.video_title}</b>
-              </YoutubeLink>
-            </Box>
-            <Box>
-              {notes.length} {getPlural("note", notes.length)}
-            </Box>
+          <Box mt={3} display="flex" flexDirection="row">
+            <h3 style={{ color: RED_COLOR }}>Notes for: </h3>
+            <Box mr={1} />
+            <h3>{video.video_title}</h3>
           </Box>
+          <Search
+            components={this.state.notes}
+            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+            searchType="notes"
+          />
+          <Box display="flex" flexGrow={1}>
+            <Box mr={3} alignItems="center" style={{ width: 200 }}>
+              <Thumbnail height={130} width={200} video_id={video.video_id} />
+              <Box>
+                <YoutubeLink videoId={video.video_id} timestamp={0}>
+                  <b>{video.video_title}</b>
+                </YoutubeLink>
+              </Box>
+              <Box>
+                {notes.length} {getPlural("note", notes.length)}
+              </Box>
+            </Box>
 
-          <Box display="flex" flexDirection="column" flexGrow={1}>
-            {searched_notes.map(n => (
-              <Note noteData={n} thumbNail={false} youtubeLink/>
-            ))}
+            <Box display="flex" flexDirection="column" flexGrow={1}>
+              {searched_notes.map(n => (
+                <Note noteData={n} thumbNail={false} youtubeLink />
+              ))}
+            </Box>
           </Box>
-        </Box>
         </Container>
       </Box>
     );

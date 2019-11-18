@@ -10,7 +10,7 @@ import YoutubeLink from "./YoutubeLink";
 const formatTimestamp = (seconds: number): string => {
   let date = new Date(0);
   date.setSeconds(seconds);
-  if (seconds >= 60*60) return date.toISOString().substr(11, 8);
+  if (seconds >= 60 * 60) return date.toISOString().substr(11, 8);
   return date.toISOString().substr(14, 5);
 };
 
@@ -51,7 +51,12 @@ const Note = (props: Props) => {
       )}
       <NoteStyle ml display="flex" flexDirection="row" flexGrow={1}>
         <Box p={1} mr={1} display="flex" alignItems="center">
-          <YoutubeLink videoId={noteData.video_id} timestamp={noteData.timestamp}>{formatTimestamp(noteData.timestamp)}</YoutubeLink>
+          <YoutubeLink
+            videoId={noteData.video_id}
+            timestamp={noteData.timestamp}
+          >
+            {formatTimestamp(noteData.timestamp)}
+          </YoutubeLink>
         </Box>
         <Box p={1} display="flex" alignItems="center" flexGrow={1}>
           {noteData.note}

@@ -34,7 +34,6 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  email: localStorage.getItem("email") || "",
   async authenticate(email: string, password: string) {
     const response = await postLogin({ email: email, password: password });
     if (response) {
@@ -97,58 +96,54 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-
 interface State {
   isAuthenticated: boolean;
-  email: string; 
 }
 
 class App extends React.Component<{}, State> {
-  constructor(props: {}, state: State){
+  constructor(props: {}, state: State) {
     super(props, state);
     this.state = {
       isAuthenticated: false,
-      email: "",
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
-      email: AuthService.email,
-      isAuthenticated: AuthService.isAuthenticated,
-    })
+      isAuthenticated: AuthService.isAuthenticated
+    });
   }
 
   async onLogin(email: string, password: string) {
     await AuthService.authenticate(email, password);
-    this.setState ({
+    this.setState({
       isAuthenticated: AuthService.isAuthenticated,
-      email: AuthService.email,
-    })
+    });
   }
 
   async onCreateAccount(email: string, password: string) {
     await AuthService.createAccount(email, password);
-    this.setState ({
+    this.setState({
       isAuthenticated: AuthService.isAuthenticated,
-      email: AuthService.email,
-    })
+    });
   }
 
   async onLogout() {
     await AuthService.logout();
-    this.setState ({
+    this.setState({
       isAuthenticated: AuthService.isAuthenticated,
-      email: AuthService.email,
-    })
+    });
   }
 
   render() {
     const { isAuthenticated } = this.state;
-    const MyNavbar = () => (<Navbar 
-      email={this.state.email}
-      isAuthenticated={this.state.isAuthenticated}
-      onLogout={this.onLogout.bind(this)}/>)
+    const MyNavbar = () => (
+      <Navbar
+        email={localStorage.getItem("email") || ""}
+        isAuthenticated={this.state.isAuthenticated}
+        onLogout={this.onLogout.bind(this)}
+      />
+    );
     return (
       <Router>
         <div>
@@ -167,7 +162,13 @@ class App extends React.Component<{}, State> {
               userId={AuthService.userId}
               Navbar={MyNavbar}
             />
-            <Route exact path="/AboutUs" render={routeProps => <AboutUsPage {...routeProps} Navbar={MyNavbar}/>} />
+            <Route
+              exact
+              path="/AboutUs"
+              render={routeProps => (
+                <AboutUsPage {...routeProps} Navbar={MyNavbar} />
+              )}
+            />
             <PrivateRoute
               path="/VideoNotes/:video_id"
               component={VideoNotesPage}
@@ -175,10 +176,36 @@ class App extends React.Component<{}, State> {
               userId={AuthService.userId}
               Navbar={MyNavbar}
             />
-            <Route exact path="/Login" render={routeProps => <Login {...routeProps} onLogin={this.onLogin.bind(this)} isAuthenticated={isAuthenticated}/>} />;
-            <Route exact path="/CreateAccount" render={routeProps => <CreateAccount {...routeProps} onCreateAccount={this.onCreateAccount.bind(this)} isAuthenticated={isAuthenticated}/>} />
- 
-            <Route exact path="/" render={routeProps => <HomePage {...routeProps} Navbar={MyNavbar}/>} />
+            <Route
+              exact
+              path="/Login"
+              render={routeProps => (
+                <Login
+                  {...routeProps}
+                  onLogin={this.onLogin.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            ;
+            <Route
+              exact
+              path="/CreateAccount"
+              render={routeProps => (
+                <CreateAccount
+                  {...routeProps}
+                  onCreateAccount={this.onCreateAccount.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/"
+              render={routeProps => (
+                <HomePage {...routeProps} Navbar={MyNavbar} />
+              )}
+            />
           </Switch>
         </div>
       </Router>

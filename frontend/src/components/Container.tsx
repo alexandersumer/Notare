@@ -5,7 +5,7 @@ const MARGIN_SIZE = 150;
 const Container = materialStyled(Box)({
   marginLeft: MARGIN_SIZE,
   marginRight: MARGIN_SIZE,
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
 
 export default Container;

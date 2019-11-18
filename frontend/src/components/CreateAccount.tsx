@@ -25,12 +25,15 @@ interface CreateState {
   password: string;
 }
 
-class CreateAccount extends React.Component<RouteComponentProps & CreateProps, CreateState> {
-  constructor(props: RouteComponentProps & CreateProps, state: CreateState){
+class CreateAccount extends React.Component<
+  RouteComponentProps & CreateProps,
+  CreateState
+> {
+  constructor(props: RouteComponentProps & CreateProps, state: CreateState) {
     super(props, state);
     this.state = {
-        email: "",
-        password: "",
+      email: "",
+      password: ""
     };
   }
 

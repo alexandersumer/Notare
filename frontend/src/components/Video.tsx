@@ -10,9 +10,9 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
 const VideoStyledComponent = materialStyled(Box)({
-    width: 200,
-    // backgroundColor: PINK_COLOR
-  });
+  width: 200
+  // backgroundColor: PINK_COLOR
+});
 
 interface Props {
   video: VideoType;
@@ -37,29 +37,44 @@ class VideoComponent extends React.Component<Props, State> {
       video.categories === NO_TAG ? NO_CATEGORY : video.categories;
     const variant = category === NO_CATEGORY ? "secondary" : "info";
 
-    return(
-        <VideoStyledComponent
-          key={video.video_id}
-          m={1}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <Box display="flex" flexWrap="wrap">
-            <Link to={`/VideoNotes/${video.video_id}`}>
-                <Thumbnail width={200} height={130} video_id={video.video_id} />
-            </Link>
-          </Box>
-          <Box display="flex" flexWrap="wrap">
-            {video.video_title}
-          </Box>
-          <Box mt={0.5}>
-            <DropdownButton id="dropdown-button-drop-down" variant={variant} size="sm"CategoryVideosPage title={category}>
-                {categories.concat(NO_CATEGORY).map(c => <Dropdown.Item key={c} onSelect={(e: any) => this.props.onChangeCategory(video.video_id, c)}>{c}</Dropdown.Item>)}
-            </DropdownButton>
-          </Box>
-        </VideoStyledComponent>
-    )
+    return (
+      <VideoStyledComponent
+        key={video.video_id}
+        m={1}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <Box display="flex" flexWrap="wrap">
+          <Link to={`/VideoNotes/${video.video_id}`}>
+            <Thumbnail width={200} height={130} video_id={video.video_id} />
+          </Link>
+        </Box>
+        <Box display="flex" flexWrap="wrap">
+          {video.video_title}
+        </Box>
+        <Box mt={0.5}>
+          <DropdownButton
+            id="dropdown-button-drop-down"
+            variant={variant}
+            size="sm"
+            CategoryVideosPage
+            title={category}
+          >
+            {categories.concat(NO_CATEGORY).map(c => (
+              <Dropdown.Item
+                key={c}
+                onSelect={(e: any) =>
+                  this.props.onChangeCategory(video.video_id, c)
+                }
+              >
+                {c}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
+        </Box>
+      </VideoStyledComponent>
+    );
   }
 }
 
