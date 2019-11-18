@@ -859,6 +859,44 @@
             }
           }
         }
+      },
+      "delete": {
+        "operationId": "delete_tag",
+        "description": "this is used for deleting a tag",
+        "summary": "delete tag",
+        "tags": [
+          "Tag"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
       }
     }
   }
