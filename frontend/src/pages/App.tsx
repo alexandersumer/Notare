@@ -6,23 +6,12 @@ import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
 import CategoryVideosPage from "./CategoryVideosPage";
-import AddBoxOutlined from "@material-ui/icons/AddBoxOutlined";
 import Login from "../components/Login";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Link,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import CreateAccount from "../components/CreateAccount";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  RouteComponentProps,
   RouteProps,
   Redirect
 } from "react-router-dom";
@@ -54,7 +43,7 @@ export const AuthService = {
       localStorage.setItem("email", email);
     }
   },
-  async createAccount(email: string, password: string, cb: Function) {
+  async createAccount(email: string, password: string) {
     const response = await postCreateAccount({
       email: email,
       password: password
@@ -104,14 +93,6 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-const CreateAccountRoute = (props: RouteProps) => {
-  const { component: Component, ...rest } = props;
-
-  return (
-    <Route {...rest} render={routeProps => <CreateAccount {...routeProps} />} />
-  );
-};
-
 
 interface State {
   isAuthenticated: boolean;
@@ -127,6 +108,13 @@ class App extends React.Component<{}, State> {
 
   async onLogin(email: string, password: string) {
     await AuthService.authenticate(email, password);
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+    })
+  }
+
+  async onCreateAccount(email: string, password: string) {
+    await AuthService.createAccount(email, password);
     this.setState ({
       isAuthenticated: AuthService.isAuthenticated,
     })
@@ -168,128 +156,13 @@ class App extends React.Component<{}, State> {
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
             />
-            <CreateAccountRoute exact path="/CreateAccount" />
             <Route exact path="/Login" render={routeProps => <Login {...routeProps} onLogin={this.onLogin.bind(this)} isAuthenticated={isAuthenticated}/>} />;
+            <Route exact path="/CreateAccount" render={routeProps => <CreateAccount {...routeProps} onCreateAccount={this.onCreateAccount.bind(this)} isAuthenticated={isAuthenticated}/>} />
  
             <Route path="/" exact component={HomePage} />
           </Switch>
         </div>
       </Router>
-    );
-  }
-}
-
-class CreateAccount extends React.Component<RouteComponentProps> {
-  state = {
-    email: "",
-    password: "",
-  };
-
-  login = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    AuthService.createAccount(this.state.email, this.state.password, () => {
-      this.setState({ redirectToPreviousRoute: true });
-    });
-  };
-
-  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ email: event.target.value });
-  };
-
-  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ password: event.target.value });
-  };
-
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-
-    if (AuthService.isAuthenticated) {
-      return <Redirect to="/Notes" />;
-    }
-
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid alignItems="center" justify="center" item xs={4}>
-          <Container component="main" maxWidth="sm">
-            <Box boxShadow={3} p={2}>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: "1vh" }}
-              >
-                <Box p={1}>
-                  {" "}
-                  <Avatar>
-                    <AddBoxOutlined />
-                  </Avatar>
-                </Box>
-                <Box p={1}>
-                  {" "}
-                  <Typography component="h1" variant="h5">
-                    Create Account
-                  </Typography>
-                </Box>
-              </Grid>
-              <form noValidate onSubmit={this.login.bind(this)}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  type="text"
-                  autoFocus
-                  onChange={this.updateEmail.bind(this)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.updatePassword.bind(this)}
-                />
-                <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Register
-                  </Button>
-                </Box>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <br />
-                    <Link href="/Login" variant="body1">
-                      {"Already have an account? Login"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </Box>
-          </Container>
-        </Grid>
-      </Grid>
     );
   }
 }
