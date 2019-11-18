@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as $ from "jquery";
-import App from './App';
+import App from "./App";
 
 const secondary = $("#secondary");
 const injected = document.createElement("div");

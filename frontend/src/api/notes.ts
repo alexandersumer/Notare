@@ -14,5 +14,6 @@ type getNotesResponse = {
   num_notes: number;
 };
 
-export const getNotes = async (params: getNotesParams): Promise<getNotesResponse | void> =>
-  getRequest("/notes", params);
+export const getNotes = async (
+  params: getNotesParams
+): Promise<getNotesResponse | void> => getRequest("/notes", params);

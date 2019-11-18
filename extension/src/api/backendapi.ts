@@ -6,15 +6,15 @@ const backendapi = axios.create({
 });
 
 const setToken = async () => {
-  const accessToken = await LocalStorage.getItem('accessToken')
+  const accessToken = await LocalStorage.getItem("accessToken");
   console.log("token is:", accessToken);
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
-}
+};
 
 const getUserId = async () => {
-  const userId = await LocalStorage.getItem('userId');
+  const userId = await LocalStorage.getItem("userId");
   return userId ? parseInt(userId) : null;
-}
+};
 
 export const getRequest = async (route: string, params) => {
   await setToken();
@@ -68,10 +68,12 @@ export const deleteRequest = async (route: string) => {
   }
 };
 
-
 export const loginRequest = async (route: string, body: any) => {
   console.log("loginRequest body:", body);
-  const response = await backendapi.post(route, { email: body.email, password: body.password } );
+  const response = await backendapi.post(route, {
+    email: body.email,
+    password: body.password
+  });
 
   console.log("loginRequest response:", response);
   if (response.status == 200) {
