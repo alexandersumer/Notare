@@ -73,3 +73,19 @@ export const postRequest = async (route: string, params: any) => {
     return undefined;
   }
 };
+
+export const deleteRequest = async (route: string, params: any) => {
+  console.log(params);
+  const accessToken = localStorage.getItem("accessToken");
+  backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
+
+  const userId: number = parseInt(localStorage.getItem("userId") as string);
+  params.user_id = userId;
+  const response = await backendapi.delete(route, params);
+
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return undefined;
+  }
+};

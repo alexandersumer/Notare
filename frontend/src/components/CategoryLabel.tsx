@@ -10,6 +10,7 @@ interface Props {
   deleteMode: boolean;
   onSelectCategory: (category: string) => void;
   onDeselectCategory: (category: string) => void;
+  onDeleteCategory: (category: string) => void;
 }
 
 const getVariant = (selected: boolean, deleteMode: boolean) => {
@@ -22,6 +23,7 @@ const CategoryLabel = (props: Props) => {
     category,
     selected,
     onSelectCategory,
+    onDeleteCategory,
     onDeselectCategory,
     deleteMode
   } = props;
@@ -30,12 +32,18 @@ const CategoryLabel = (props: Props) => {
     props.selected ? onDeselectCategory(category) : onSelectCategory(category);
   };
 
+  const handleDelete = (e: any) => {
+    onDeleteCategory(category);
+  };
+
   const variant = getVariant(selected, deleteMode);
   return (
     <Box p={0.5} mr={0.5}>
       <Button variant={variant} size="sm" onClick={handleClick}>
         {category}
-        {deleteMode && <DeleteOutlineIcon fontSize="small" />}
+        {deleteMode && (
+          <DeleteOutlineIcon onClick={handleDelete} fontSize="small" />
+        )}
       </Button>
     </Box>
   );
