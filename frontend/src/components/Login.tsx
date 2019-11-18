@@ -51,7 +51,7 @@ class Login extends React.Component<RouteComponentProps & LoginProps, LoginState
 
   render() {
     if (this.props.isAuthenticated) {
-      return <Redirect to="/" />;
+      return <Redirect to="/Notes" />;
     }
 
     return (
