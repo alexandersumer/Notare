@@ -1,9 +1,14 @@
 # Notare - COMP4920 Group Project
 
-By Mitchell Shelton (z5113359), Alexander Jones (z), Daniel Brockwell (z), Guy Segev (z)
-
 Notare is a note-taking app for educational youtube videos. It consists of a google chrome
 extension and a companion website for the frontend which both communicate with a rest api in the backend
+
+### Contributors
+
+- Mitchell Shelton (z5113359)
+- Alexander Jones (z5114400) 
+- Daniel Brockwell (z5116823)
+- Guy Segev (z5114848)
 
 ### Run the app
 
