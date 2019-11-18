@@ -1,32 +1,22 @@
 import * as React from "react";
-import { SyntheticEvent } from "react";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
-import CategoryVideosPage from "./CategoryVideosPage";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import AddBoxOutlined from "@material-ui/icons/AddBoxOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  Link,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import Login from "../components/Login";
+import { Logout } from "../api/auth";
+import Navbar from "../components/Navbar";
+import CreateAccount from "../components/CreateAccount";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  RouteComponentProps,
   RouteProps,
   Redirect
 } from "react-router-dom";
+import { __RouterContext } from "react-router";
 
 export const AuthService = {
   isAuthenticated:
@@ -44,7 +34,8 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  async authenticate(email: string, password: string, cb: Function) {
+  email: localStorage.getItem("email") || "",
+  async authenticate(email: string, password: string) {
     const response = await postLogin({ email: email, password: password });
     if (response) {
       this.isAuthenticated = true;
@@ -54,9 +45,8 @@ export const AuthService = {
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
     }
-    setTimeout(cb, 100);
   },
-  async createAccount(email: string, password: string, cb: Function) {
+  async createAccount(email: string, password: string) {
     const response = await postCreateAccount({
       email: email,
       password: password
@@ -69,14 +59,13 @@ export const AuthService = {
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
     }
-    setTimeout(cb, 100);
   },
-  logout(cb: Function) {
+  async logout() {
+    await Logout();
     this.isAuthenticated = false;
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
-    setTimeout(cb, 100);
   }
 };
 
@@ -84,6 +73,7 @@ interface PrivateRouteProps extends RouteProps {
   component: any;
   isAuthenticated: boolean;
   userId: number;
+  Navbar: React.FC;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
@@ -107,22 +97,58 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-const LoginRoute = (props: RouteProps) => {
-  const { component: Component, ...rest } = props;
 
-  return <Route {...rest} render={routeProps => <Login {...routeProps} />} />;
-};
+interface State {
+  isAuthenticated: boolean;
+  email: string; 
+}
 
-const CreateAccountRoute = (props: RouteProps) => {
-  const { component: Component, ...rest } = props;
+class App extends React.Component<{}, State> {
+  constructor(props: {}, state: State){
+    super(props, state);
+    this.state = {
+      isAuthenticated: false,
+      email: "",
+    }
+  }
 
-  return (
-    <Route {...rest} render={routeProps => <CreateAccount {...routeProps} />} />
-  );
-};
+  componentDidMount(){
+    this.setState({
+      email: AuthService.email,
+      isAuthenticated: AuthService.isAuthenticated,
+    })
+  }
 
-class App extends React.Component {
+  async onLogin(email: string, password: string) {
+    await AuthService.authenticate(email, password);
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
+    })
+  }
+
+  async onCreateAccount(email: string, password: string) {
+    await AuthService.createAccount(email, password);
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
+    })
+  }
+
+  async onLogout() {
+    await AuthService.logout();
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
+    })
+  }
+
   render() {
+    const { isAuthenticated } = this.state;
+    const MyNavbar = () => (<Navbar 
+      email={this.state.email}
+      isAuthenticated={this.state.isAuthenticated}
+      onLogout={this.onLogout.bind(this)}/>)
     return (
       <Router>
         <div>
@@ -132,274 +158,30 @@ class App extends React.Component {
               component={NotePage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
             <PrivateRoute
               path="/Videos"
               component={VideoPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
+            <Route exact path="/AboutUs" render={routeProps => <AboutUsPage {...routeProps} Navbar={MyNavbar}/>} />
             <PrivateRoute
               path="/VideoNotes/:video_id"
               component={VideoNotesPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
-            <PrivateRoute
-              path="/CategoryVideos/:category"
-              component={CategoryVideosPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
-            />
-            <Route path="/" exact component={HomePage} />
-            <Route path="/AboutUs" exact component={AboutUsPage}/>
-            <CreateAccountRoute exact path="/CreateAccount" />
-            <LoginRoute exact path="/Login" />
+            <Route exact path="/Login" render={routeProps => <Login {...routeProps} onLogin={this.onLogin.bind(this)} isAuthenticated={isAuthenticated}/>} />;
+            <Route exact path="/CreateAccount" render={routeProps => <CreateAccount {...routeProps} onCreateAccount={this.onCreateAccount.bind(this)} isAuthenticated={isAuthenticated}/>} />
+ 
+            <Route exact path="/" render={routeProps => <HomePage {...routeProps} Navbar={MyNavbar}/>} />
           </Switch>
         </div>
       </Router>
-    );
-  }
-}
-
-class Login extends React.Component<RouteComponentProps> {
-  state = {
-    redirectToPreviousRoute: false,
-    email: "",
-    password: ""
-  };
-
-  login = (event: SyntheticEvent) => {
-    event.preventDefault();
-    AuthService.authenticate(this.state.email, this.state.password, () => {
-      this.setState({ redirectToPreviousRoute: true });
-    });
-  };
-
-  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ email: event.target.value });
-  };
-
-  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ password: event.target.value });
-  };
-
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
-
-    if (AuthService.isAuthenticated) {
-      return <Redirect to="/" />;
-    }
-
-    if (redirectToPreviousRoute) {
-      return <Redirect to={from} />;
-    }
-
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid alignItems="center" justify="center" item xs={4}>
-          <Container component="main" maxWidth="sm">
-            <Box boxShadow={3} p={2}>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: "1vh" }}
-              >
-                <Box p={1}>
-                  {" "}
-                  <Avatar>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                </Box>
-                <Box p={1}>
-                  {" "}
-                  <Typography component="h1" variant="h5">
-                    Login
-                  </Typography>
-                </Box>
-              </Grid>
-              <form noValidate onSubmit={this.login.bind(this)}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  type="text"
-                  autoFocus
-                  onChange={this.updateEmail.bind(this)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.updatePassword.bind(this)}
-                />
-                <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Sign In
-                  </Button>
-                </Box>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <br />
-                    <Link href="/CreateAccount" variant="body1">
-                      {"Don't have an account? Register"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </Box>
-          </Container>
-        </Grid>
-      </Grid>
-    );
-  }
-}
-
-class CreateAccount extends React.Component<RouteComponentProps> {
-  state = {
-    redirectToPreviousRoute: false,
-    email: "",
-    password: ""
-  };
-
-  login = (event: SyntheticEvent) => {
-    event.preventDefault();
-    AuthService.createAccount(this.state.email, this.state.password, () => {
-      this.setState({ redirectToPreviousRoute: true });
-    });
-  };
-
-  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ email: event.target.value });
-  };
-
-  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ password: event.target.value });
-  };
-
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
-
-    if (AuthService.isAuthenticated) {
-      return <Redirect to="/" />;
-    }
-
-    if (redirectToPreviousRoute) {
-      return <Redirect to={from} />;
-    }
-
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid alignItems="center" justify="center" item xs={4}>
-          <Container component="main" maxWidth="sm">
-            <Box boxShadow={3} p={2}>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: "1vh" }}
-              >
-                <Box p={1}>
-                  {" "}
-                  <Avatar>
-                    <AddBoxOutlined />
-                  </Avatar>
-                </Box>
-                <Box p={1}>
-                  {" "}
-                  <Typography component="h1" variant="h5">
-                    Create Account
-                  </Typography>
-                </Box>
-              </Grid>
-              <form noValidate onSubmit={this.login.bind(this)}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  type="text"
-                  autoFocus
-                  onChange={this.updateEmail.bind(this)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.updatePassword.bind(this)}
-                />
-                <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Register
-                  </Button>
-                </Box>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <br />
-                    <Link href="/Login" variant="body1">
-                      {"Already have an account? Login"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </Box>
-          </Container>
-        </Grid>
-      </Grid>
     );
   }
 }
