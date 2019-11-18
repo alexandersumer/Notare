@@ -1,10 +1,9 @@
 # BACKEND SETUP
 
-1. Install Python 3
-2. Install virtualenv
-3. From the project root folder run 
+1. Install Python 3 from this link https://www.python.org/downloads/
+2. Install virtualenv with `sudo pip3 install virtualenv`
+3. Make sure you are currently in the backend directory
 ```
-    cd backend
     virtualenv --python=`which python3` venv
     source ./venv/bin/activate
     pip install -r requirements.txt

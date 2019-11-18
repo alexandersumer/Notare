@@ -1,8 +1,7 @@
 # Frontend Setup
 
-1. From the project root run
+1. Make sure you are in the frontend directory. Run:
 ```
-cd frontend
 yarn
 yarn start
 ```
