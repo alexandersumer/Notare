@@ -4,7 +4,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Thumbnail from "../components/Thumbnail";
 import { getPlural } from "../utils/stringUtils";
 import Note from "../components/Note";
-import { RED_COLOR, GREY_COLOR } from "../colorConstants";
+import { RED_COLOR } from "../colorConstants";
 import { getVideos } from "../api/videos";
 import { getNotes } from "../api/notes";
 import { VideoType, NoteType } from "../types";
@@ -82,7 +82,6 @@ class VideoNotesPage extends React.Component<Props, State> {
 
     return (
       <FontStyleComponent
-        p={3}
         display="flex"
         flexDirection="column"
         flexGrow={1}

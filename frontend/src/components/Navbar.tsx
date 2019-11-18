@@ -5,7 +5,7 @@ import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Logout } from "../api/auth";
 import Button from '@material-ui/core/Button';
 
@@ -75,11 +75,8 @@ class Navbar extends React.Component<Props> {
           <Box>
             <Link to="/Videos">Videos</Link>
           </Box>
-          <Box>
-            <Link to="/Collections">Collections</Link>
-          </Box>
           <Box mr={3}>
-            <Link to="/AboutUs">About us</Link>
+            <Link to="/AboutUs">About Us</Link>
           </Box>
           <Box mr={3}>
             <Box mr={3} p={0.5}>

@@ -4,7 +4,6 @@ import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
-import CollectionPage from "./CollectionPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
 import CategoryVideosPage from "./CategoryVideosPage";
@@ -137,12 +136,6 @@ class App extends React.Component {
             <PrivateRoute
               path="/Videos"
               component={VideoPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
-            />
-            <PrivateRoute
-              path="/Collections"
-              component={CollectionPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
             />
