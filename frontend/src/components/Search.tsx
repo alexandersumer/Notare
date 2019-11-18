@@ -2,7 +2,6 @@ import * as React from "react";
 import { NoteType } from "../types";
 import { VideoType } from "../types";
 import Box from "@material-ui/core/Box";
-import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 
 interface Props {
@@ -83,10 +82,7 @@ export default class Search extends React.Component<Props, State> {
 
   render() {
     return (
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box mr={2}>
-          <SearchIcon />
-        </Box>
+      <Box display="flex" flexDirection="row" alignItems="center" mb={2}>
         <TextField
           style={{ width: "600px" }}
           type="search"
