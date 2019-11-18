@@ -1,25 +1,21 @@
 # BACKEND SETUP
-virtualenv --python=\`which python3\` venv <br/>
-source ./venv/bin/activate <br/>
-cd app <br/>
-pip install -r requirements.txt <br/>
-python3 src/__init__.py <br/>
-http://127.0.0.1:5000/static/swagger-ui/index.html <br/>
 
-# CHANGING API DESIGN
-### ONlY DO IF NEEDED TO CHANGE THE API DESIGN <br/> THIS WILL OVERWRITE EXISTING CODE, MAKE SURE TO BACKUP
-cp -R app oldapp <br/>
-cp swagger.yaml oldswagger.yaml <br/>
-copy new swagger design into swagger.yaml <br/>
-rm -rf app <br/>
-rm -rf venv <br/>
-virtualenv --python=\`which python3\` venv <br/>
-source ./venv/bin/activate <br/>
-pip3 install swagger-py-codegen <br/>
-swagger_py_codegen -s swagger.yaml app -p src --ui --spec <br/>
-cd app <br/>
-pip install -r requirements.txt <br/>
-Then copy relevant code from oldapp <br/>
-python3 src/__init__.py <br/>
-http://127.0.0.1:5000/static/swagger-ui/index.html <br/>
+1. Install Python 3 from this link https://www.python.org/downloads/
+2. Install virtualenv with `sudo pip3 install virtualenv`
+3. Make sure you are currently in the backend directory
+```
+    virtualenv --python=`which python3` venv
+    source ./venv/bin/activate
+    pip install -r requirements.txt
+    python3 src/__init__.py
+```
+4. The backend is now running, to see the api definition, navigate to http://127.0.0.1:5000/static/swagger-ui/index.html
+5. Now you can run the extension setup and the frontend setup.
+
+### Developer Note:
+
+Regenerate backend api definitions with
+
+`swagger_py_codegen -s swagger.yaml app -p src --ui --spec`
+
 
