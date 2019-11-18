@@ -131,11 +131,10 @@ class CategoryVideosPage extends React.Component<Props> {
   render() {
     const { category } = this.props.match.params;
     const email = localStorage.getItem("email") || "";
-    const username = email.substring(0, email.indexOf("@"));
 
     return (
       <FontStyleComponent p={3}>
-        <Navbar username={username} />
+        <Navbar email={email} />
         <Search
           components={this.state.videos}
           updateSearchedComponents={this.updateSearchedVideos.bind(this)}

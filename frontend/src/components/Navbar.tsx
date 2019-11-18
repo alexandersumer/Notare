@@ -7,6 +7,7 @@ import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Logout } from "../api/auth";
+import Button from '@material-ui/core/Button';
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -18,7 +19,7 @@ const NavBarStyledComponent = materialStyled(Box)({
 });
 
 interface Props {
-  username: string;
+  email: string;
 }
 
 interface State {
@@ -41,19 +42,18 @@ class Navbar extends React.Component<Props> {
     this.setState({ logged_out: true });
   };
 
-  login = async (event: SyntheticEvent) => {
-    event.preventDefault();
-    return <Redirect to={"/Login"} />;
-  };
-
   render() {
-    const { username } = this.props;
+    const { email } = this.props;
+    let displayEmail = "";
+    if (!this.state.logged_out) {
+      displayEmail = email
+    }
 
     var authButton;
     if (this.state.logged_out) {
-      authButton = <button onClick={this.login}>Login</button>;
+      authButton = <Link to={`/Login`}><Button variant="contained" color="primary">Login</Button></Link>;
     } else {
-      authButton = <button onClick={this.logout}>Logout</button>;
+      authButton = <Button variant="contained" color="primary" onClick={this.logout}>Logout</Button>;
     }
 
     return (
@@ -83,7 +83,7 @@ class Navbar extends React.Component<Props> {
           </Box>
           <Box mr={3}>
             <Box mr={3} p={0.5}>
-              {username}
+              {displayEmail}
             </Box>
             <Box mr={3} p={0.5}>
               {authButton}

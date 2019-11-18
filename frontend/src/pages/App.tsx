@@ -166,7 +166,7 @@ class App extends React.Component {
             />
             <CreateAccountRoute exact path="/CreateAccount" />
             <LoginRoute exact path="/Login" />
-            <Route path="/" component={HomePage} />
+            <Route path="/" exact component={HomePage} />
           </Switch>
         </div>
       </Router>
@@ -203,7 +203,7 @@ class Login extends React.Component<RouteComponentProps> {
     const { redirectToPreviousRoute } = this.state;
 
     if (AuthService.isAuthenticated) {
-      return <Redirect to="/Home" />;
+      return <Redirect to="/" />;
     }
 
     if (redirectToPreviousRoute) {
@@ -402,7 +402,7 @@ class CreateAccount extends React.Component<RouteComponentProps> {
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
                     <br />
-                    <Link href="/" variant="body1">
+                    <Link href="/Login" variant="body1">
                       {"Already have an account? Login"}
                     </Link>
                   </Grid>
