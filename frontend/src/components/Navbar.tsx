@@ -19,7 +19,7 @@ const NavBarStyledComponent = materialStyled(Box)({
 interface Props {
   email: string;
   isAuthenticated: boolean;
-  onLogout: ()=>Promise<void>;
+  onLogout: () => Promise<void>;
 }
 
 class Navbar extends React.Component<Props> {
