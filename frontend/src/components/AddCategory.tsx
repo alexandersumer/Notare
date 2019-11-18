@@ -24,13 +24,13 @@ export default class Search extends React.Component<Props, State> {
     super(props, state);
     this.state = {
       addMode: false,
-      textValue: "",
+      textValue: ""
     };
   }
-  
+
   onToggleAddMode(e: any) {
     this.setState((state: State) => ({
-      addMode: !state.addMode,
+      addMode: !state.addMode
     }));
   }
 
@@ -52,23 +52,37 @@ export default class Search extends React.Component<Props, State> {
     if (event.keyCode == 27) {
       this.setState({ addMode: false });
     }
-    
   }
 
-  render(){
+  render() {
     const { addMode } = this.state;
-    if (addMode) return (
-      <Badge variant="info"><Box >
-      <input type="text" 
-        onChange={this.onHandleChange.bind(this)} 
-        onKeyDown={this.onKeyDown.bind(this)}
-        onBlur={this.onToggleAddMode.bind(this)}/>
-      <MyIconButton aria-label="cancel" onClick={this.onToggleAddMode.bind(this)}>
-        <ClearIcon fontSize="small" />
-      </MyIconButton>
-    </Box></Badge>
-    )
-    return (<Button size="sm" variant="info" onClick={this.onToggleAddMode.bind(this)}>+ add new category</Button>) 
+    if (addMode)
+      return (
+        <Badge variant="info">
+          <Box>
+            <input
+              type="text"
+              onChange={this.onHandleChange.bind(this)}
+              onKeyDown={this.onKeyDown.bind(this)}
+              onBlur={this.onToggleAddMode.bind(this)}
+            />
+            <MyIconButton
+              aria-label="cancel"
+              onClick={this.onToggleAddMode.bind(this)}
+            >
+              <ClearIcon fontSize="small" />
+            </MyIconButton>
+          </Box>
+        </Badge>
+      );
+    return (
+      <Button
+        size="sm"
+        variant="info"
+        onClick={this.onToggleAddMode.bind(this)}
+      >
+        + add new category
+      </Button>
+    );
   }
-
 }

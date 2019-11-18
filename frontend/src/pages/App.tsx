@@ -1,20 +1,22 @@
 import * as React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  RouteComponentProps,
-  RouteProps,
-  Redirect
-} from "react-router-dom";
-import { SyntheticEvent } from "react";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
-import { postLogin } from "../api/login";
-import CategoryVideosPage from "./CategoryVideosPage";
+import { postLogin, postCreateAccount } from "../api/auth";
+import Login from "../components/Login";
+import { Logout } from "../api/auth";
+import Navbar from "../components/Navbar";
+import CreateAccount from "../components/CreateAccount";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  RouteProps,
+  Redirect
+} from "react-router-dom";
+import { __RouterContext } from "react-router";
 
 export const AuthService = {
   isAuthenticated:
@@ -32,7 +34,7 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  async authenticate(email: string, password: string, cb: Function) {
+  async authenticate(email: string, password: string) {
     const response = await postLogin({ email: email, password: password });
     if (response) {
       this.isAuthenticated = true;
@@ -42,14 +44,27 @@ export const AuthService = {
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
     }
-    setTimeout(cb, 100);
   },
-  logout(cb: Function) {
+  async createAccount(email: string, password: string) {
+    const response = await postCreateAccount({
+      email: email,
+      password: password
+    });
+    if (response) {
+      this.isAuthenticated = true;
+      this.accessToken = response.accessToken;
+      this.userId = response.user_id;
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("userId", response.user_id.toString());
+      localStorage.setItem("email", email);
+    }
+  },
+  async logout() {
+    await Logout();
     this.isAuthenticated = false;
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
-    setTimeout(cb, 100);
   }
 };
 
@@ -57,6 +72,7 @@ interface PrivateRouteProps extends RouteProps {
   component: any;
   isAuthenticated: boolean;
   userId: number;
+  Navbar: React.FC;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
@@ -80,135 +96,119 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-const PublicRoute = (props: RouteProps) => {
-  const { component: Component, ...rest } = props;
+interface State {
+  isAuthenticated: boolean;
+}
 
-  return <Route {...rest} render={routeProps => <Login {...routeProps} />} />;
-};
+class App extends React.Component<{}, State> {
+  constructor(props: {}, state: State) {
+    super(props, state);
+    this.state = {
+      isAuthenticated: false,
+    };
+  }
 
-class App extends React.Component {
+  componentDidMount() {
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated
+    });
+  }
+
+  async onLogin(email: string, password: string) {
+    await AuthService.authenticate(email, password);
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated,
+    });
+  }
+
+  async onCreateAccount(email: string, password: string) {
+    await AuthService.createAccount(email, password);
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated,
+    });
+  }
+
+  async onLogout() {
+    await AuthService.logout();
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated,
+    });
+  }
+
   render() {
+    const { isAuthenticated } = this.state;
+    const MyNavbar = () => (
+      <Navbar
+        email={localStorage.getItem("email") || ""}
+        isAuthenticated={this.state.isAuthenticated}
+        onLogout={this.onLogout.bind(this)}
+      />
+    );
     return (
       <Router>
         <div>
           <Switch>
             <PrivateRoute
-              path="/Home"
-              component={HomePage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
-            />
-            <PrivateRoute
               path="/Notes"
               component={NotePage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
             <PrivateRoute
               path="/Videos"
               component={VideoPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
-            <PrivateRoute
+            <Route
+              exact
               path="/AboutUs"
-              component={AboutUsPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
+              render={routeProps => (
+                <AboutUsPage {...routeProps} Navbar={MyNavbar} />
+              )}
             />
             <PrivateRoute
               path="/VideoNotes/:video_id"
               component={VideoNotesPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
-            <PrivateRoute
-              path="/CategoryVideos/:category"
-              component={CategoryVideosPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
+            <Route
+              exact
+              path="/Login"
+              render={routeProps => (
+                <Login
+                  {...routeProps}
+                  onLogin={this.onLogin.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
             />
-            <PublicRoute exact path="/" />
+            ;
+            <Route
+              exact
+              path="/CreateAccount"
+              render={routeProps => (
+                <CreateAccount
+                  {...routeProps}
+                  onCreateAccount={this.onCreateAccount.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/"
+              render={routeProps => (
+                <HomePage {...routeProps} Navbar={MyNavbar} />
+              )}
+            />
           </Switch>
         </div>
       </Router>
-    );
-  }
-}
-
-class Login extends React.Component<RouteComponentProps> {
-  state = {
-    redirectToPreviousRoute: false,
-    email: "",
-    password: ""
-  };
-
-  login = (event: SyntheticEvent) => {
-    event.preventDefault();
-    AuthService.authenticate(this.state.email, this.state.password, () => {
-      this.setState({ redirectToPreviousRoute: true });
-    });
-  };
-
-  updateEmail = (event: SyntheticEvent) => {
-    event.preventDefault();
-    this.setState({ email: (event.target as HTMLInputElement).value });
-  };
-
-  updatePassword = (event: SyntheticEvent) => {
-    event.preventDefault();
-    this.setState({ password: (event.target as HTMLInputElement).value });
-  };
-
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
-
-    if (AuthService.isAuthenticated) {
-      return <Redirect to="/Home" />;
-    }
-
-    if (redirectToPreviousRoute) {
-      return <Redirect to={from} />;
-    }
-
-    return (
-      <div>
-        <div>
-          <h2>
-            <div>Log-in to your account</div>
-          </h2>
-          <form onSubmit={this.login}>
-            <div>
-              <div>
-                <div>
-                  <i></i>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="email"
-                    onChange={this.updateEmail}
-                  />
-                </div>
-              </div>
-              <div>
-                <div>
-                  <i></i>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={this.updatePassword}
-                  />
-                </div>
-              </div>
-              <button>Login</button>
-            </div>
-
-            <div></div>
-          </form>
-        </div>
-      </div>
     );
   }
 }

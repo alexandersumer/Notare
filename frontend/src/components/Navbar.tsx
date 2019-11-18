@@ -3,10 +3,9 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
-import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { Logout } from "../api/logout";
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -18,34 +17,40 @@ const NavBarStyledComponent = materialStyled(Box)({
 });
 
 interface Props {
-  username: string;
-}
-
-interface State {
-  logged_out: boolean;
+  email: string;
+  isAuthenticated: boolean;
+  onLogout: () => Promise<void>;
 }
 
 class Navbar extends React.Component<Props> {
-  state: State;
   constructor(props: Props) {
     super(props);
-    this.state = {
-      logged_out: false
-    };
   }
 
   logout = async (event: SyntheticEvent) => {
     event.preventDefault();
-    Logout(); // backend logout
-    AuthService.logout(() => {}); //frontend logout
-    this.setState({ logged_out: true });
+    await this.props.onLogout();
   };
 
   render() {
-    const { username } = this.props;
+    const { email, isAuthenticated } = this.props;
+    let displayEmail = isAuthenticated ? email : "";
 
-    if (this.state.logged_out) {
-      return <Redirect to={"/"} />;
+    var authButton;
+    if (isAuthenticated) {
+      authButton = (
+        <Button variant="contained" color="primary" onClick={this.logout}>
+          Logout
+        </Button>
+      );
+    } else {
+      authButton = (
+        <Link to={`/Login`}>
+          <Button variant="contained" color="primary">
+            Login
+          </Button>
+        </Link>
+      );
     }
 
     return (
@@ -57,25 +62,29 @@ class Navbar extends React.Component<Props> {
           alignItems="center"
         >
           <Box ml={3}>
-            <Link to="/Home">
+            <Link to="/">
               <img width="120px" height="30px" src={NotareWord} />
             </Link>
           </Box>
-          <Box>
-            <Link to="/Notes">Notes</Link>
-          </Box>
-          <Box>
-            <Link to="/Videos">Videos</Link>
-          </Box>
+          {this.props.isAuthenticated && (
+            <Box>
+              <Link to="/Notes">Notes</Link>
+            </Box>
+          )}
+          {this.props.isAuthenticated && (
+            <Box>
+              <Link to="/Videos">Videos</Link>
+            </Box>
+          )}
           <Box mr={3}>
             <Link to="/AboutUs">About Us</Link>
           </Box>
           <Box mr={3}>
             <Box mr={3} p={0.5}>
-              {username}
+              {displayEmail}
             </Box>
             <Box mr={3} p={0.5}>
-              <button onClick={this.logout}>Logout</button>
+              {authButton}
             </Box>
           </Box>
         </NavBarStyledComponent>

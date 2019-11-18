@@ -4,5 +4,13 @@ export const getPlural = (singularForm: string, quantity: number) => {
 };
 
 export const sortStringArray = (arr: string[]): string[] => {
-  return arr.concat().sort((a, b) => a.toLowerCase() !== b.toLowerCase() ? a.toLowerCase() < b.toLowerCase() ? -1 : 1 : 0);
-}
+  return arr
+    .concat()
+    .sort((a, b) =>
+      a.toLowerCase() !== b.toLowerCase()
+        ? a.toLowerCase() < b.toLowerCase()
+          ? -1
+          : 1
+        : 0
+    );
+};

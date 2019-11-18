@@ -1,19 +1,16 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import SearchIcon from "@material-ui/icons/Search";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
+import { GREY_COLOR, RED_COLOR } from "../colorConstants";
 import { getNotes } from "../api/notes";
 import { NoteType } from "../types";
 import Note from "../components/Note";
-import Search from "../components/Search";
-import Navbar from "../components/Navbar";
 import Container from "../components/Container";
+import Search from "../components/Search";
 
-interface Props {}
+interface Props {
+  Navbar: any;
+}
 
 interface State {
   notes: Array<NoteType>;
@@ -88,23 +85,21 @@ class NotePage extends React.Component<Props, State> {
   }
 
   render() {
-    const email = localStorage.getItem("email") || "";
-    const username = email.substring(0, email.indexOf("@"));
     return (
       <Box>
-        <Navbar username={username}/>
+        {this.props.Navbar()}
         <Container>
-        <Box display="flex" flexDirection="row">
-          <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Notes</h3></Box>
-          <Search
-            components={this.state.notes}
-            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-            searchType="notes"
-          />
-        </Box>
-        <Box>
-          {this.renderMain()}
-        </Box>
+          <Box display="flex" flexDirection="row">
+            <Box mt={3} mr={4}>
+              <h3 style={{ color: RED_COLOR }}>My Notes</h3>
+            </Box>
+            <Search
+              components={this.state.notes}
+              updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+              searchType="notes"
+            />
+          </Box>
+          <Box>{this.renderMain()}</Box>
         </Container>
       </Box>
     );

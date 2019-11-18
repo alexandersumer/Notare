@@ -1,13 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { styled as materialStyled } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import Navbar from "../components/Navbar";
 import Container from "../components/Container";
-
-const FontStyleComponent = materialStyled(Box)({
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
-});
 
 const ProfileImage = (name: string) => {
   return (
@@ -27,13 +21,18 @@ const names = [
   "Mitchell Shelton"
 ];
 
-class AboutUsPage extends React.Component {
+interface Props {
+  Navbar: any;
+}
+
+class AboutUsPage extends React.Component<Props> {
+  constructor(props: Props) {
+    super(props);
+  }
   render() {
-    const email = localStorage.getItem("email") || "";
-    const username = email.substring(0, email.indexOf("@"));
     return (
       <Box>
-        <Navbar username={username}/>
+        {this.props.Navbar()}
         <Container>
           <Box mt={3} display="flex" flexDirection="column" alignItems="center">
             <Box>
