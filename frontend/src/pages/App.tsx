@@ -1,5 +1,4 @@
 import * as React from "react";
-import { SyntheticEvent } from "react";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
@@ -7,8 +6,8 @@ import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
 import CategoryVideosPage from "./CategoryVideosPage";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import AddBoxOutlined from "@material-ui/icons/AddBoxOutlined";
+import Login from "../components/Login";
 import {
   Avatar,
   Box,
@@ -180,136 +179,13 @@ class App extends React.Component<{}, State> {
   }
 }
 
-interface LoginProps {
-  onLogin: Function;
-  isAuthenticated: boolean;
-}
-interface LoginState {
-  email: string;
-  password: string;
-}
-
-class Login extends React.Component<RouteComponentProps & LoginProps, LoginState> {
-  constructor(props: RouteComponentProps & LoginProps, state: LoginState){
-    super(props, state);
-    this.state = {
-      email: "",
-      password: ""
-    };
-  }
-  
-  login = (event: SyntheticEvent) => {
-    event.preventDefault();
-    this.props.onLogin(this.state.email, this.state.password);
-  };
-
-  updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ email: event.target.value });
-  };
-
-  updatePassword = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    this.setState({ password: event.target.value });
-  };
-
-  render() {
-    if (this.props.isAuthenticated) {
-      return <Redirect to="/" />;
-    }
-
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid alignItems="center" justify="center" item xs={4}>
-          <Container component="main" maxWidth="sm">
-            <Box boxShadow={3} p={2}>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: "1vh" }}
-              >
-                <Box p={1}>
-                  {" "}
-                  <Avatar>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                </Box>
-                <Box p={1}>
-                  {" "}
-                  <Typography component="h1" variant="h5">
-                    Login
-                  </Typography>
-                </Box>
-              </Grid>
-              <form noValidate onSubmit={this.login.bind(this)}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  type="text"
-                  autoFocus
-                  onChange={this.updateEmail.bind(this)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.updatePassword.bind(this)}
-                />
-                <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Sign In
-                  </Button>
-                </Box>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <br />
-                    <Link href="/CreateAccount" variant="body1">
-                      {"Don't have an account? Register"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </Box>
-          </Container>
-        </Grid>
-      </Grid>
-    );
-  }
-}
-
 class CreateAccount extends React.Component<RouteComponentProps> {
   state = {
     email: "",
     password: "",
   };
 
-  login = (event: SyntheticEvent) => {
+  login = (event: React.SyntheticEvent) => {
     event.preventDefault();
     AuthService.createAccount(this.state.email, this.state.password, () => {
       this.setState({ redirectToPreviousRoute: true });
