@@ -7,7 +7,7 @@
     virtualenv --python=`which python3` venv
     source ./venv/bin/activate
     pip install -r requirements.txt
-    python3 src/__init__.py
+    python3 app/src/__init__.py
 ```
 4. The backend is now running, to see the api definition, navigate to http://127.0.0.1:5000/static/swagger-ui/index.html
 5. Now you can run the extension setup and the frontend setup.
