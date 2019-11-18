@@ -317,7 +317,7 @@ class CreateAccount extends React.Component<RouteComponentProps> {
     const { redirectToPreviousRoute } = this.state;
 
     if (AuthService.isAuthenticated) {
-      return <Redirect to="/Home" />;
+      return <Redirect to="/" />;
     }
 
     if (redirectToPreviousRoute) {

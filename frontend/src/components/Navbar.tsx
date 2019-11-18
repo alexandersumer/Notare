@@ -65,7 +65,7 @@ class Navbar extends React.Component<Props> {
           alignItems="center"
         >
           <Box ml={3}>
-            <Link to="/Home">
+            <Link to="/">
               <img width="120px" height="30px" src={NotareWord} />
             </Link>
           </Box>
