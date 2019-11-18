@@ -65,6 +65,7 @@ validators = {
     ('videos_video_id_tag', 'POST'): {'json': {'type': 'object', 'properties': {'user_id': {'type': 'integer', 'example': 2}, 'tag': {'type': 'string', 'example': 'comedy'}}}, 'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('tags', 'POST'): {'json': {'$ref': '#/definitions/tag'}, 'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
     ('tags', 'GET'): {'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}, 'args': {'required': [], 'properties': {'user_id': {'type': 'integer'}, 'tag': {'type': 'string'}}}},
+    ('tags', 'DELETE'): {'json': {'$ref': '#/definitions/tag'}, 'headers': {'required': ['Authorization'], 'properties': {'Authorization': {'type': 'string'}}}},
 }
 
 filters = {
@@ -80,6 +81,7 @@ filters = {
     ('videos_video_id_tag', 'POST'): {200: {'headers': None, 'schema': {'type': 'object', 'properties': {'videos': {'$ref': '#/definitions/video'}}}}, 400: {'headers': None, 'schema': {'$ref': '#/definitions/error'}}},
     ('tags', 'POST'): {200: {'headers': None, 'schema': {'type': 'object', 'properties': {'tag': {'$ref': '#/definitions/tag'}}}}, 400: {'headers': None, 'schema': {'$ref': '#/definitions/error'}}},
     ('tags', 'GET'): {200: {'headers': None, 'schema': {'type': 'object', 'properties': {'tags': {'type': 'array', 'items': {'$ref': '#/definitions/tag'}}, 'num_tags': {'type': 'integer', 'example': 1}}}}, 400: {'headers': None, 'schema': {'$ref': '#/definitions/error'}}},
+    ('tags', 'DELETE'): {200: {'headers': None, 'schema': {'type': 'object'}}, 400: {'headers': None, 'schema': {'$ref': '#/definitions/error'}}},
 }
 
 scopes = {

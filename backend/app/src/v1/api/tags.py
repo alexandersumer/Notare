@@ -84,3 +84,44 @@ class Tags(Resource):
         }
 
         return response, 200, None
+
+
+    @jwt_required
+    def delete(self):
+        print(g.json)
+        print(g.headers)
+
+        for param in ["tag", "user_id"]:
+            if param not in g.json:
+                return {"errorMessage": f"param {param} not in body"}, 400
+
+        # check if tag already created by user
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        SQL = f"SELECT * FROM tags where user_id=? and tag=?;"
+        c.execute(SQL, (g.json["user_id"],g.json["tag"],))
+        tags_entries = c.fetchall()
+        conn.close()
+        if len(tags_entries) == 0:
+            print(f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}")
+            return {"errorMessage": f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"}, 400
+
+        tag_id = tags_entries[0][0]
+        # delete tag
+        SQL = f"DELETE FROM tags WHERE id=?;"
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute(SQL, (tag_id,))
+        conn.commit()
+
+        # Set all videos that have that tag id for the user to 0 aka No Tag
+        SQL = f"UPDATE videos SET categories=? WHERE categories=? and user_id=?;"
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute(SQL, (0, g.json["tag"], g.json["user_id"],))
+        conn.commit()
+
+    
+        response = {}
+
+        return response, 200, None
