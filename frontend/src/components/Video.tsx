@@ -10,8 +10,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const VideoStyledComponent = materialStyled(Box)({
-    width: "400px",
-    backgroundColor: PINK_COLOR
+    width: 200,
+    // backgroundColor: PINK_COLOR
   });
 
 interface Props {
@@ -44,16 +44,15 @@ class VideoComponent extends React.Component<Props, State> {
               flexDirection="column"
               alignItems="center"
             >
-              <Box p={1} display="flex" flexWrap="wrap">
-                <Thumbnail video_id={video.video_id} />
+              <Box display="flex" flexWrap="wrap">
+                <Link to={`/VideoNotes/${video.video_id}`}>
+                    <Thumbnail width={200} height={130} video_id={video.video_id} />
+                </Link>
               </Box>
-              <Box p={1} display="flex" flexWrap="wrap">
+              <Box display="flex" flexWrap="wrap">
                 {video.video_title}
               </Box>
-              <Box p={1} display="flex" flexWrap="wrap">
-                <Link to={`/VideoNotes/${video.video_id}`}>[View all notes]</Link>
-              </Box>
-              <Box mb={1}>
+              <Box mt={0.5}>
                 <DropdownButton id="dropdown-button-drop-down" variant={variant} size="sm"CategoryVideosPage title={category}>
                     {categories.concat(NO_CATEGORY).map(c => <Dropdown.Item key={c} onSelect={(e: any) => this.props.onChangeCategory(video.video_id, c)}>{c}</Dropdown.Item>)}
                 </DropdownButton>
