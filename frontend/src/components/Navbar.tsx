@@ -67,11 +67,8 @@ class Navbar extends React.Component<Props> {
           <Box>
             <Link to="/Videos">Videos</Link>
           </Box>
-          <Box>
-            <Link to="/Collections">Collections</Link>
-          </Box>
           <Box mr={3}>
-            <Link to="/AboutUs">About us</Link>
+            <Link to="/AboutUs">About Us</Link>
           </Box>
           <Box mr={3}>
             <Box mr={3} p={0.5}>

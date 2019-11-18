@@ -83,7 +83,6 @@ class VideoNotesPage extends React.Component<Props, State> {
 
     return (
       <FontStyleComponent
-        p={3}
         display="flex"
         flexDirection="column"
         flexGrow={1}

@@ -31,8 +31,8 @@ class AboutUsPage extends React.Component {
     const email = localStorage.getItem("email") || "";
     const username = email.substring(0, email.indexOf("@"));
     return (
-      <FontStyleComponent p={3}>
-        <Navbar username={username} />
+      <FontStyleComponent>
+        <Navbar username={username}/>
         <Box display="flex" flexDirection="column" alignItems="center">
           <Box>
             <h1>Who the heck are these guys?</h1>
