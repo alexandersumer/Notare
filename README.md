@@ -5,10 +5,10 @@ extension and a companion website for the frontend which both communicate with a
 
 ### Contributors
 
-- Mitchell Shelton (z5113359)
-- Alexander Jones (z5114400) 
-- Daniel Brockwell (z5116823)
-- Guy Segev (z5114848)
+- Mitchell Shelton z5113359 (Frontend and Backend)
+- Alexander Jones z5114400 (Frontend and Backend)
+- Daniel Brockwell z5116823 (Frontend and UI/UX)
+- Guy Segev z5114848 (Frontend and Extension)
 
 ### Run the app
 
