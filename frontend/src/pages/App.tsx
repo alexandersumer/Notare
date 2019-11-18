@@ -44,7 +44,7 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  async authenticate(email: string, password: string, cb: Function) {
+  async authenticate(email: string, password: string) {
     const response = await postLogin({ email: email, password: password });
     if (response) {
       this.isAuthenticated = true;
@@ -54,7 +54,6 @@ export const AuthService = {
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
     }
-    setTimeout(cb, 100);
   },
   async createAccount(email: string, password: string, cb: Function) {
     const response = await postCreateAccount({
@@ -69,7 +68,6 @@ export const AuthService = {
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
     }
-    setTimeout(cb, 100);
   },
   logout(cb: Function) {
     this.isAuthenticated = false;
@@ -107,12 +105,6 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   );
 };
 
-const LoginRoute = (props: RouteProps) => {
-  const { component: Component, ...rest } = props;
-
-  return <Route {...rest} render={routeProps => <Login {...routeProps} />} />;
-};
-
 const CreateAccountRoute = (props: RouteProps) => {
   const { component: Component, ...rest } = props;
 
@@ -121,8 +113,28 @@ const CreateAccountRoute = (props: RouteProps) => {
   );
 };
 
-class App extends React.Component {
+
+interface State {
+  isAuthenticated: boolean;
+}
+
+class App extends React.Component<{}, State> {
+  constructor(props: {}, state: State){
+    super(props, state);
+    this.state = {
+      isAuthenticated: false,
+    }
+  }
+
+  async onLogin(email: string, password: string) {
+    await AuthService.authenticate(email, password);
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+    })
+  }
+
   render() {
+    const { isAuthenticated } = this.state;
     return (
       <Router>
         <div>
@@ -158,7 +170,8 @@ class App extends React.Component {
               userId={AuthService.userId}
             />
             <CreateAccountRoute exact path="/CreateAccount" />
-            <LoginRoute exact path="/Login" />
+            <Route exact path="/Login" render={routeProps => <Login {...routeProps} onLogin={this.onLogin.bind(this)} isAuthenticated={isAuthenticated}/>} />;
+ 
             <Route path="/" exact component={HomePage} />
           </Switch>
         </div>
@@ -167,18 +180,27 @@ class App extends React.Component {
   }
 }
 
-class Login extends React.Component<RouteComponentProps> {
-  state = {
-    redirectToPreviousRoute: false,
-    email: "",
-    password: ""
-  };
+interface LoginProps {
+  onLogin: Function;
+  isAuthenticated: boolean;
+}
+interface LoginState {
+  email: string;
+  password: string;
+}
 
+class Login extends React.Component<RouteComponentProps & LoginProps, LoginState> {
+  constructor(props: RouteComponentProps & LoginProps, state: LoginState){
+    super(props, state);
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
+  
   login = (event: SyntheticEvent) => {
     event.preventDefault();
-    AuthService.authenticate(this.state.email, this.state.password, () => {
-      this.setState({ redirectToPreviousRoute: true });
-    });
+    this.props.onLogin(this.state.email, this.state.password);
   };
 
   updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -192,15 +214,8 @@ class Login extends React.Component<RouteComponentProps> {
   };
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
-
-    if (AuthService.isAuthenticated) {
+    if (this.props.isAuthenticated) {
       return <Redirect to="/" />;
-    }
-
-    if (redirectToPreviousRoute) {
-      return <Redirect to={from} />;
     }
 
     return (
@@ -290,9 +305,8 @@ class Login extends React.Component<RouteComponentProps> {
 
 class CreateAccount extends React.Component<RouteComponentProps> {
   state = {
-    redirectToPreviousRoute: false,
     email: "",
-    password: ""
+    password: "",
   };
 
   login = (event: SyntheticEvent) => {
@@ -314,14 +328,9 @@ class CreateAccount extends React.Component<RouteComponentProps> {
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
 
     if (AuthService.isAuthenticated) {
-      return <Redirect to="/" />;
-    }
-
-    if (redirectToPreviousRoute) {
-      return <Redirect to={from} />;
+      return <Redirect to="/Notes" />;
     }
 
     return (
