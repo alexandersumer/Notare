@@ -10,7 +10,6 @@ import { getNotes } from "../api/notes";
 import { VideoType, NoteType } from "../types";
 import { RouteComponentProps } from "react-router-dom";
 import Search from "../components/Search";
-import Navbar from "../components/Navbar";
 import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
 
@@ -22,7 +21,9 @@ interface MatchParams {
   video_id: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> {
+  Navbar: any;
+}
 
 interface State {
   video: VideoType | void;
@@ -65,7 +66,6 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   render() {
     const { video, notes, searched_notes } = this.state;
-    const email = localStorage.getItem("email") || "";
 
     if (!video) {
       return (
@@ -84,7 +84,7 @@ class VideoNotesPage extends React.Component<Props, State> {
 
     return (
      <Box>
-        <Navbar email={email}/>
+        {this.props.Navbar()}
         <Container>
         <Box mt={3} display="flex" flexDirection="row">
           <h3 style={{ color: RED_COLOR }}>Notes for: </h3>

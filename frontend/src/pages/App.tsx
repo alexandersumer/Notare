@@ -5,8 +5,9 @@ import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
 import VideoNotesPage from "./VideoNotesPage";
 import { postLogin, postCreateAccount } from "../api/auth";
-import CategoryVideosPage from "./CategoryVideosPage";
 import Login from "../components/Login";
+import { Logout } from "../api/auth";
+import Navbar from "../components/Navbar";
 import CreateAccount from "../components/CreateAccount";
 import {
   BrowserRouter as Router,
@@ -15,6 +16,7 @@ import {
   RouteProps,
   Redirect
 } from "react-router-dom";
+import { __RouterContext } from "react-router";
 
 export const AuthService = {
   isAuthenticated:
@@ -32,6 +34,7 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
+  email: localStorage.getItem("email") || "",
   async authenticate(email: string, password: string) {
     const response = await postLogin({ email: email, password: password });
     if (response) {
@@ -57,12 +60,12 @@ export const AuthService = {
       localStorage.setItem("email", email);
     }
   },
-  logout(cb: Function) {
+  async logout() {
+    await Logout();
     this.isAuthenticated = false;
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("email");
-    setTimeout(cb, 100);
   }
 };
 
@@ -70,6 +73,7 @@ interface PrivateRouteProps extends RouteProps {
   component: any;
   isAuthenticated: boolean;
   userId: number;
+  Navbar: React.FC;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
@@ -96,6 +100,7 @@ const PrivateRoute = (props: PrivateRouteProps) => {
 
 interface State {
   isAuthenticated: boolean;
+  email: string; 
 }
 
 class App extends React.Component<{}, State> {
@@ -103,13 +108,22 @@ class App extends React.Component<{}, State> {
     super(props, state);
     this.state = {
       isAuthenticated: false,
+      email: "",
     }
+  }
+
+  componentDidMount(){
+    this.setState({
+      email: AuthService.email,
+      isAuthenticated: AuthService.isAuthenticated,
+    })
   }
 
   async onLogin(email: string, password: string) {
     await AuthService.authenticate(email, password);
     this.setState ({
       isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
     })
   }
 
@@ -117,11 +131,24 @@ class App extends React.Component<{}, State> {
     await AuthService.createAccount(email, password);
     this.setState ({
       isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
+    })
+  }
+
+  async onLogout() {
+    await AuthService.logout();
+    this.setState ({
+      isAuthenticated: AuthService.isAuthenticated,
+      email: AuthService.email,
     })
   }
 
   render() {
     const { isAuthenticated } = this.state;
+    const MyNavbar = () => (<Navbar 
+      email={this.state.email}
+      isAuthenticated={this.state.isAuthenticated}
+      onLogout={this.onLogout.bind(this)}/>)
     return (
       <Router>
         <div>
@@ -131,35 +158,27 @@ class App extends React.Component<{}, State> {
               component={NotePage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
             <PrivateRoute
               path="/Videos"
               component={VideoPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
-            <PrivateRoute
-              path="/AboutUs"
-              component={AboutUsPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
-            />
+            <Route exact path="/AboutUs" render={routeProps => <AboutUsPage {...routeProps} Navbar={MyNavbar}/>} />
             <PrivateRoute
               path="/VideoNotes/:video_id"
               component={VideoNotesPage}
               isAuthenticated={AuthService.isAuthenticated}
               userId={AuthService.userId}
-            />
-            <PrivateRoute
-              path="/CategoryVideos/:category"
-              component={CategoryVideosPage}
-              isAuthenticated={AuthService.isAuthenticated}
-              userId={AuthService.userId}
+              Navbar={MyNavbar}
             />
             <Route exact path="/Login" render={routeProps => <Login {...routeProps} onLogin={this.onLogin.bind(this)} isAuthenticated={isAuthenticated}/>} />;
             <Route exact path="/CreateAccount" render={routeProps => <CreateAccount {...routeProps} onCreateAccount={this.onCreateAccount.bind(this)} isAuthenticated={isAuthenticated}/>} />
  
-            <Route path="/" exact component={HomePage} />
+            <Route exact path="/" render={routeProps => <HomePage {...routeProps} Navbar={MyNavbar}/>} />
           </Switch>
         </div>
       </Router>

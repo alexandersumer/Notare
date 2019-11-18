@@ -2,14 +2,14 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { styled as materialStyled } from "@material-ui/core/styles";
 import { ORANGE_COLOR } from "../colorConstants";
-import Navbar from "../components/Navbar";
 import Container from "../components/Container";
 
 export const Home = () => <h1></h1>;
 
-interface Props {}
+interface Props {
+  Navbar: any;
+}
 
 class HomePage extends React.Component<Props> {
   constructor(props: Props) {
@@ -17,11 +17,9 @@ class HomePage extends React.Component<Props> {
   }
 
   render() {
-    const email = localStorage.getItem("email") || "";
-    
     return (
       <Box>
-        <Navbar email={email}/>
+        {this.props.Navbar()}
         <Container>
         <Box mt={5} display="flex" flexDirection="column" alignItems="center">
           <Box>

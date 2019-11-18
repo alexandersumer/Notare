@@ -3,10 +3,8 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
-import { AuthService } from "../pages/App";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
-import { Logout } from "../api/auth";
 import Button from '@material-ui/core/Button';
 
 const FontStyleComponent = materialStyled(Box)({
@@ -20,40 +18,29 @@ const NavBarStyledComponent = materialStyled(Box)({
 
 interface Props {
   email: string;
-}
-
-interface State {
-  logged_out: boolean;
+  isAuthenticated: boolean;
+  onLogout: ()=>Promise<void>;
 }
 
 class Navbar extends React.Component<Props> {
-  state: State;
   constructor(props: Props) {
     super(props);
-    this.state = {
-      logged_out: false
-    };
   }
 
   logout = async (event: SyntheticEvent) => {
     event.preventDefault();
-    Logout(); // backend logout
-    AuthService.logout(() => {}); //frontend logout
-    this.setState({ logged_out: true });
+    await this.props.onLogout();
   };
 
   render() {
-    const { email } = this.props;
-    let displayEmail = "";
-    if (!this.state.logged_out) {
-      displayEmail = email
-    }
+    const { email, isAuthenticated } = this.props;
+    let displayEmail = isAuthenticated ? email : "";
 
     var authButton;
-    if (this.state.logged_out) {
-      authButton = <Link to={`/Login`}><Button variant="contained" color="primary">Login</Button></Link>;
-    } else {
+    if (isAuthenticated) {
       authButton = <Button variant="contained" color="primary" onClick={this.logout}>Logout</Button>;
+    } else {
+      authButton = <Link to={`/Login`}><Button variant="contained" color="primary">Login</Button></Link>;
     }
 
     return (
@@ -69,12 +56,8 @@ class Navbar extends React.Component<Props> {
               <img width="120px" height="30px" src={NotareWord} />
             </Link>
           </Box>
-          <Box>
-            <Link to="/Notes">Notes</Link>
-          </Box>
-          <Box>
-            <Link to="/Videos">Videos</Link>
-          </Box>
+          {(this.props.isAuthenticated) && (<Box><Link to="/Notes">Notes</Link></Box>)}
+          {(this.props.isAuthenticated) && (<Box><Link to="/Videos">Videos</Link></Box>)}
           <Box mr={3}>
             <Link to="/AboutUs">About Us</Link>
           </Box>

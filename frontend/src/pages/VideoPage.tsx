@@ -10,7 +10,6 @@ import CategoryLabel from "../components/CategoryLabel";
 import AddCategory from "../components/AddCategory";
 import Button from 'react-bootstrap/Button';
 import Search from "../components/Search";
-import Navbar from "../components/Navbar";
 import VideoComponent from "../components/Video";
 import Container from "../components/Container";
 
@@ -18,7 +17,9 @@ const GreyFont = materialStyled(Box)({
   color: GREY_COLOR
 });
 
-interface Props {}
+interface Props {
+  Navbar: any;
+}
 
 interface State {
   videos: Array<VideoType>;
@@ -164,11 +165,9 @@ class VideoPage extends React.Component<Props> {
   }
 
   render() {
-    const email = localStorage.getItem("email") || "";
-
     return (
       <Box>
-        <Navbar email={email}/>
+        {this.props.Navbar()}
       <Container>
         <Box display="flex" flexDirection="row">
           <Box mt={3} mr={4}><h3 style={{ color: RED_COLOR }}>My Videos</h3></Box>
