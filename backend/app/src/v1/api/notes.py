@@ -71,15 +71,15 @@ class Notes(Resource):
 
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        SQL = f"SELECT * FROM videos where id=?;"
-        c.execute(SQL, (g.json["video_id"],))
+        SQL = f"SELECT * FROM videos where video_id=? and user_id=?;"
+        c.execute(SQL, (g.json["video_id"],g.json["user_id"]))
         video_entries = c.fetchall()
         conn.close()
         print(video_entries)
         current_time = int(str(time.time()).replace(".", ""))
         # if video not in videos table database create new video
         if len(video_entries) == 0:
-            SQL = f"INSERT INTO videos (id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?)"
+            SQL = f"INSERT INTO videos (video_id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?)"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             # TODO get video title from youtube api and category

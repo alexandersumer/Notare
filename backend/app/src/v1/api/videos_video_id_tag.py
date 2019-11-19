@@ -37,13 +37,13 @@ class VideosVideoIdTag(Resource):
         #if video not created, create video with that tag
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        SQL = f"SELECT * FROM videos where id=?;"
-        c.execute(SQL, (video_id,))
+        SQL = f"SELECT * FROM videos where video_id=? and user_id=?;"
+        c.execute(SQL, (video_id,g.json["user_id"]))
         videos_entries = c.fetchall()
         conn.close()
         if len(videos_entries) == 0:
             # create video
-            SQL = f"INSERT INTO videos (id, user_id, video_title, categories) values (?,?,?,?)"
+            SQL = f"INSERT INTO videos (video_id, user_id, video_title, categories) values (?,?,?,?)"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             # TODO get video title from youtube api and category
@@ -60,10 +60,10 @@ class VideosVideoIdTag(Resource):
             conn.close()
         else: # update the videos tag
             print(f"Updating {video_id} to {g.json['tag']}")
-            SQL = f"UPDATE videos SET categories=? WHERE id=?;"
+            SQL = f"UPDATE videos SET categories=? WHERE video_id=? and user_id=?;"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            c.execute(SQL, (tag_id, video_id,))
+            c.execute(SQL, (tag_id, video_id, g.json["user_id"]))
             conn.commit()
             conn.close()
             

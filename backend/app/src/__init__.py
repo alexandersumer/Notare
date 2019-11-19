@@ -18,10 +18,11 @@ notes = [
 ]
 
 videos = [
-    ["LlW7Es7gStA", 1, "Pewdiepie is nuts", 1, 1573010001000000, 1573010004000000],
-    ["QLx2WZWilBc", 1, "United States Grand Prix", 2, 1573010003000000, 1573010003000000],
-    ["EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", 3, 1573010005000000, 1573010005000000],
+    [0, "LlW7Es7gStA", 1, "Pewdiepie is nuts", 1, 1573010001000000, 1573010004000000],
+    [1, "QLx2WZWilBc", 1, "United States Grand Prix", 2, 1573010003000000, 1573010003000000],
+    [2, "EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", 3, 1573010005000000, 1573010005000000],
     [
+        3,
         "hW_EEWVlVxE",
         2,
         "Building a Roller Coaster That Goes To Hell in Planet Coaster",
@@ -61,13 +62,13 @@ def create_db():
                 last_edited INTEGER
             );
             CREATE TABLE videos (
-                id VARCHAR NOT NULL,
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                video_id VARCHAR,
                 user_id INTEGER,
                 video_title VARCHAR,
                 categories INTEGER,
                 time_created INTEGER,
-                last_edited INTEGER,
-                PRIMARY KEY (id)
+                last_edited INTEGER
             );
             CREATE TABLE tags (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -93,7 +94,7 @@ def create_db():
                 )
             for video in videos:
                 cur.execute(
-                    "INSERT INTO videos (id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?)",
+                    "INSERT INTO videos (id, video_id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?,?)",
                     video,
                 )
             for user in users:

@@ -88,10 +88,10 @@ class NotesNoteId(Resource):
         c.execute(SQL, (g.json["note"], time_edited, note_id,))
         conn.commit()
 
-        SQL = f"UPDATE videos SET last_edited=? WHERE id=?;"
+        SQL = f"UPDATE videos SET last_edited=? WHERE video_id=? and user_id=?;"
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        c.execute(SQL, (time_edited, g.json['video_id'],))
+        c.execute(SQL, (time_edited, g.json['video_id'],g.json['user_id']))
         conn.commit()
         conn.close()
 
@@ -122,10 +122,30 @@ class NotesNoteId(Resource):
         if len(current_note) == 0:
             return {"errorMessage": f"note id {note_id} not found"}, 404
 
+
+        SQL = f"SELECT * FROM notes where video_id=? and user_id=?;"
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        c.execute(SQL, (current_note[0][3],current_note[0][2],))
+        users_video_notes = c.fetchall()
+        conn.close()
+        
+        # if last note, delete video for user
+        if len(users_video_notes) == 1:
+            # delete the video
+            SQL = f"DELETE FROM videos WHERE video_id=? and user_id=?;"
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+            c.execute(SQL, (current_note[0][3],current_note[0][2],))
+            conn.commit()
+            conn.close()
+
         SQL = f"DELETE FROM notes WHERE id=?;"
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         c.execute(SQL, (note_id,))
         conn.commit()
+        conn.close()
+
 
         return None, 200, None
