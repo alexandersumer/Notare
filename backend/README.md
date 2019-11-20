@@ -17,5 +17,3 @@
 Regenerate backend api definitions with
 
 `swagger_py_codegen -s swagger.yaml app -p src --ui --spec`
-
-

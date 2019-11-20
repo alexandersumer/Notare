@@ -6,4 +6,3 @@ yarn
 yarn start
 ```
 2. The app will be running at http://localhost:3000
-
