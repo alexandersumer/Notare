@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import { PINK_COLOR } from "../colorConstants";
+import { LIGHT_PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ const FontStyleComponent = materialStyled(Box)({
 });
 
 const NavBarStyledComponent = materialStyled(Box)({
-  backgroundColor: PINK_COLOR,
+  backgroundColor: LIGHT_PINK_COLOR,
   height: 70
 });
 

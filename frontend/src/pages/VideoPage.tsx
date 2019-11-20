@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
+import { DARK_GREY_COLOR, RED_COLOR, LIGHT_PINK_COLOR } from "../colorConstants";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import {
@@ -19,7 +19,7 @@ import VideoComponent from "../components/Video";
 import Container from "../components/Container";
 
 const GreyFont = materialStyled(Box)({
-  color: GREY_COLOR
+  color: DARK_GREY_COLOR
 });
 
 interface Props {
@@ -118,7 +118,7 @@ class VideoPage extends React.Component<Props> {
       <Box>
         <Box display="flex" flexDirection="row">
           <Box mb={1}>
-            <h4 style={{ color: GREY_COLOR }}>Your Categories</h4>
+            <h4 style={{ color: DARK_GREY_COLOR }}>Your Categories</h4>
           </Box>
           <Box ml={2}>
             <Button
