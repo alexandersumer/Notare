@@ -1,8 +1,8 @@
 # Backend Setup
 
-```
-# Assuming you are in /backend
+Make sure you are in `Notare/backend/`
 
+```
 virtualenv --python=`which python3` venv
 
 source ./venv/bin/activate
@@ -18,15 +18,17 @@ http://127.0.0.1:5000/static/swagger-ui/index.html
 
 # Changing API Design
 
-```
-# Assuming you are in /backend
+Make sure you are in `Notare/backend/`
 
+```
 cp -R app oldapp
 
 cp swagger.yaml oldswagger.yaml
+```
 
-# Copy new swagger design into swagger.yaml
+Copy new swagger design into swagger.yaml
 
+```
 rm -rf app
 
 rm -rf venv
@@ -42,9 +44,11 @@ swagger_py_codegen -s swagger.yaml app -p src --ui --spec
 cd app
 
 pip install -r requirements.txt
+```
 
-# Copy relevant code from oldapp
+Copy relevant code from oldapp
 
+```
 python3 src/__init__.py
 
 http://127.0.0.1:5000/static/swagger-ui/index.html
