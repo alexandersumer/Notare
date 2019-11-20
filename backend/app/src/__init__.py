@@ -74,7 +74,7 @@ videos = [
 ]
 
 users = [
-    [1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()],
+    [1, "a@b.com", hashlib.sha256("password".encode()).hexdigest()],
     [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()],
 ]
 
