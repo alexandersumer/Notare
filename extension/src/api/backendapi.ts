@@ -1,8 +1,9 @@
 import axios from "axios";
 import LocalStorage from "../utils/LocalStorage";
+import { DOMAIN_URL } from "../constants";
 
 const backendapi = axios.create({
-  baseURL: "http://127.0.0.1:5000/v1"
+  baseURL: DOMAIN_URL + ":5000/v1"
 });
 
 const setToken = async () => {
