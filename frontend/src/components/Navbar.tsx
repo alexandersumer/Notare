@@ -3,6 +3,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
+import NotareCircle from "../NotareCircle.png";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -43,7 +44,9 @@ class Navbar extends React.Component<Props> {
     return (
       <Box ml={3}>
         <Link to={route} style={{ textDecoration: "none" }}>
-          <img width="120px" height="30px" src={NotareWord} />
+          <img width="35px" height="35px" src={NotareWord} />
+          <Box ml={2} />
+          <img width="96px" height="23px" src={NotareCircle} />
         </Link>
       </Box>
     );
