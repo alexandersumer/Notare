@@ -3,6 +3,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
+import NotareCircle from "../NotareCircle.png";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -41,11 +42,22 @@ class Navbar extends React.Component<Props> {
     const route = this.props.isAuthenticated ? "/Notes" : "/";
 
     return (
-      <Box ml={3}>
-        <Link to={route} style={{ textDecoration: "none" }}>
-          <img width="120px" height="30px" src={NotareWord} />
-        </Link>
-      </Box>
+      <Link to={route} style={{ textDecoration: "none" }}>
+        <Box
+          mr={3}
+          ml={3}
+          display="flex"
+          alignItems="center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          <Box>
+            <img width="35px" height="35px" src={NotareCircle} />
+          </Box>
+          <Box ml={2}>
+            <img width="96px" height="24px" src={NotareWord} />
+          </Box>
+        </Box>
+      </Link>
     );
   };
 
@@ -100,7 +112,7 @@ class Navbar extends React.Component<Props> {
         </Box>
       );
     }
-  }
+  };
 
   render() {
     const { email, isAuthenticated } = this.props;
