@@ -79,11 +79,27 @@ class Navbar extends React.Component<Props> {
       );
     } else {
       authButton = (
-        <Link to={`/Login`}>
-          <Button variant="contained" color="primary">
-            Login
-          </Button>
-        </Link>
+        <Box
+          mr={3}
+          display="flex"
+          alignItems="center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          <Box ml={3}>
+            <Link to={`/Login`}>
+              <Button variant="contained" color="primary">
+                Login
+              </Button>
+            </Link>
+          </Box>
+          <Box ml={3}>
+            <Link to={`/CreateAccount`}>
+              <Button variant="contained" color="secondary">
+                Signup
+              </Button>
+            </Link>
+          </Box>
+        </Box>
       );
     }
 
