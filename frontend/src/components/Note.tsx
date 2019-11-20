@@ -8,13 +8,6 @@ import { Link as RouterLink } from "react-router-dom";
 import YoutubeLink from "./YoutubeLink";
 import { formatTimestamp } from "../utils/stringUtils";
 
-// const formatTimestamp = (seconds: number): string => {
-//   let date = new Date(0);
-//   date.setSeconds(seconds);
-//   if (seconds >= 60 * 60) return date.toISOString().substr(11, 8);
-//   return date.toISOString().substr(14, 5);
-// };
-
 const NoteStyle = materialStyled(Box)({
   height: "80px",
   backgroundColor: PINK_COLOR,
