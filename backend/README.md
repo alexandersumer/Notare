@@ -1,12 +1,12 @@
 # BACKEND SETUP
 
 1. Install Python 3 from this link https://www.python.org/downloads/
-2. Install virtualenv with `sudo pip3 install virtualenv`
+2. Install virtualenv with `sudo python3 -m pip install virtualenv`
 3. Make sure you are currently in the backend directory
 ```
     virtualenv --python=`which python3` venv
     source ./venv/bin/activate
-    pip install -r requirements.txt
+    python3 -m pip install -r requirements.txt
     python3 app/src/__init__.py
 ```
 4. The backend is now running, to see the api definition, navigate to http://127.0.0.1:5000/static/swagger-ui/index.html
