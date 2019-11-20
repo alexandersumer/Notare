@@ -12,7 +12,6 @@ import { RouteComponentProps } from "react-router-dom";
 import Search from "../components/Search";
 import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
-import Button from "react-bootstrap/Button";
 import { formatTimestamp } from "../utils/stringUtils";
 import Dropdown from "react-bootstrap/Dropdown";
 
