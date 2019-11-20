@@ -35,10 +35,10 @@ interface AppProps {
 interface AppState {
   textBoxValue: string;
   allNotes: Note[];
-  youtubeId: string; 
+  youtubeId: string;
 }
 
-const getCurrentYoutubeId = () : string => {
+const getCurrentYoutubeId = (): string => {
   // gets the youtube id (no url!). e.g. EG29YjLC7aM
   var video_id = window.location.search.split("v=")[1];
   var ampersandPosition = video_id.indexOf("&");
@@ -54,7 +54,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
     this.state = {
       textBoxValue: "",
       allNotes: [],
-      youtubeId: "",
+      youtubeId: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
@@ -67,7 +67,7 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
   async getVidNotes(): Promise<void | Note[]> {
     const response = await getNotes({
       sort: "-timestamp",
-      video_id: getCurrentYoutubeId(),
+      video_id: getCurrentYoutubeId()
     });
     if (response) return response.notes;
     return undefined;
@@ -132,11 +132,11 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
       }
     }
   }
-  
-  async reload(){
+
+  async reload() {
     this.setState({
-      youtubeId: getCurrentYoutubeId(),
-    })
+      youtubeId: getCurrentYoutubeId()
+    });
     const newNotes = await this.getVidNotes();
     if (newNotes) {
       this.setState({
@@ -148,11 +148,11 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
 
   componentDidMount() {
     this.reload();
-    chrome.runtime.onMessage.addListener((request) => {
-      if (request.tabChanged){
+    chrome.runtime.onMessage.addListener(request => {
+      if (request.tabChanged) {
         this.reload();
       }
-    });;
+    });
   }
 
   render() {

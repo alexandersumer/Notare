@@ -25,8 +25,10 @@ class Login(Resource):
         for param in ["email", "password"]:
             if param not in g.json:
                 return {"errorMessage": f"param {param} not in body"}, 400
-       
-        if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", g.json['email']): 
+
+        if not re.match(
+            r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", g.json["email"]
+        ):
             return {"errorMessage": "Invalid Email"}, 400
 
         # check email if already in database

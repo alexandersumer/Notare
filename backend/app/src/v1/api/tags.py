@@ -10,8 +10,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 import sqlite3
 
-class Tags(Resource):
 
+class Tags(Resource):
     @jwt_required
     def get(self):
         print(g.headers)
@@ -35,15 +35,8 @@ class Tags(Resource):
         tags_entries = c.fetchall()
         conn.close()
 
-
         response = {
-            "tags": [
-                {
-                    "user_id": entry[1],
-                    "tag": entry[2]
-                }
-                for entry in tags_entries
-            ],
+            "tags": [{"user_id": entry[1], "tag": entry[2]} for entry in tags_entries],
             "num_tags": len(tags_entries),
         }
 
@@ -62,29 +55,28 @@ class Tags(Resource):
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM tags where user_id=? and tag=?;"
-        c.execute(SQL, (g.json["user_id"],g.json["tag"],))
+        c.execute(SQL, (g.json["user_id"], g.json["tag"]))
         tags_entries = c.fetchall()
         conn.close()
         if len(tags_entries) != 0:
             print(f"tag {g.json['tag']} already exists for user {g.json['user_id']}")
-            return {"errorMessage": f"tag {g.json['tag']} already exists for user {g.json['user_id']}"}, 400
+            return (
+                {
+                    "errorMessage": f"tag {g.json['tag']} already exists for user {g.json['user_id']}"
+                },
+                400,
+            )
 
         # create tag
         SQL = f"INSERT INTO tags (user_id, tag) values (?,?)"
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        c.execute(SQL,(g.json["user_id"],g.json["tag"],))
+        c.execute(SQL, (g.json["user_id"], g.json["tag"]))
         conn.commit()
-    
-        response = {
-            "tag": {
-                "tag": g.json["tag"],
-                "user_id": g.json["user_id"]
-            }
-        }
+
+        response = {"tag": {"tag": g.json["tag"], "user_id": g.json["user_id"]}}
 
         return response, 200, None
-
 
     @jwt_required
     def delete(self):
@@ -99,12 +91,19 @@ class Tags(Resource):
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM tags where user_id=? and tag=?;"
-        c.execute(SQL, (g.json["user_id"],g.json["tag"],))
+        c.execute(SQL, (g.json["user_id"], g.json["tag"]))
         tags_entries = c.fetchall()
         conn.close()
         if len(tags_entries) == 0:
-            print(f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}")
-            return {"errorMessage": f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"}, 400
+            print(
+                f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"
+            )
+            return (
+                {
+                    "errorMessage": f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"
+                },
+                400,
+            )
 
         tag_id = tags_entries[0][0]
         # delete tag
@@ -118,10 +117,9 @@ class Tags(Resource):
         SQL = f"UPDATE videos SET categories=? WHERE categories=? and user_id=?;"
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        c.execute(SQL, (0, g.json["tag"], g.json["user_id"],))
+        c.execute(SQL, (0, g.json["tag"], g.json["user_id"]))
         conn.commit()
 
-    
         response = {}
 
         return response, 200, None

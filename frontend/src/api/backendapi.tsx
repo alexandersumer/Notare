@@ -82,13 +82,10 @@ export const deleteRequest = async (route: string, params: any) => {
   const userId: number = parseInt(localStorage.getItem("userId") as string);
 
   params.user_id = userId;
-  const response = await backendapi.delete(
-    route,
-    {
-      headers: {Authorization},
-      data:params
-    }
-  );
+  const response = await backendapi.delete(route, {
+    headers: { Authorization },
+    data: params
+  });
 
   if (response.status === 200) {
     return response.data;

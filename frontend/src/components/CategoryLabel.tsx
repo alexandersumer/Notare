@@ -38,9 +38,7 @@ const CategoryLabel = (props: Props) => {
     <Box p={0.5} mr={0.5}>
       <Button variant={variant} size="sm" onClick={handleClick}>
         {category}
-        {deleteMode && (
-          <DeleteOutlineIcon fontSize="small" />
-        )}
+        {deleteMode && <DeleteOutlineIcon fontSize="small" />}
       </Button>
     </Box>
   );
