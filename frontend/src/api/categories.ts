@@ -48,4 +48,4 @@ export const deleteCategory = async (
   params: deleteCategoryParams
 ): Promise<void> => {
   return deleteRequest("/tags", params);
-}
+};

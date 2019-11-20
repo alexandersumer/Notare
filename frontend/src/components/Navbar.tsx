@@ -6,6 +6,7 @@ import NotareWord from "../NotareWord.png";
 import { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -14,6 +15,10 @@ const FontStyleComponent = materialStyled(Box)({
 const NavBarStyledComponent = materialStyled(Box)({
   backgroundColor: PINK_COLOR,
   height: 70
+});
+
+const NoOutlineButton = materialStyled(Button)({
+  fontSize: 17
 });
 
 interface Props {
@@ -30,6 +35,43 @@ class Navbar extends React.Component<Props> {
   logout = async (event: SyntheticEvent) => {
     event.preventDefault();
     await this.props.onLogout();
+  };
+
+  renderNavHome = () => {
+    if (this.props.isAuthenticated) {
+      return (
+        <Box ml={3}>
+          <Link to="/Notes" style={{ textDecoration: "none" }}>
+            <img width="120px" height="30px" src={NotareWord} />
+          </Link>
+        </Box>
+      );
+    } else {
+      return (
+        <Box ml={3}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <img width="120px" height="30px" src={NotareWord} />
+          </Link>
+        </Box>
+      );
+    }
+  };
+
+  renderNavLink = (
+    pathname: string,
+    text: string,
+    needsAuth: boolean = true
+  ) => {
+    const color =
+      window.location.pathname !== pathname ? "primary" : "secondary";
+    if (this.props.isAuthenticated || !needsAuth) {
+      return (
+        <Link to={pathname} style={{ textDecoration: "none" }}>
+          <NoOutlineButton color={color}>{text}</NoOutlineButton>
+        </Link>
+      );
+    }
+    return null;
   };
 
   render() {
@@ -61,31 +103,19 @@ class Navbar extends React.Component<Props> {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Box ml={3}>
-            <Link to="/">
-              <img width="120px" height="30px" src={NotareWord} />
-            </Link>
-          </Box>
-          {this.props.isAuthenticated && (
-            <Box>
-              <Link to="/Notes">Notes</Link>
-            </Box>
-          )}
-          {this.props.isAuthenticated && (
-            <Box>
-              <Link to="/Videos">Videos</Link>
-            </Box>
-          )}
-          <Box mr={3}>
-            <Link to="/AboutUs">About Us</Link>
-          </Box>
-          <Box mr={3}>
-            <Box mr={3} p={0.5}>
-              {displayEmail}
-            </Box>
-            <Box mr={3} p={0.5}>
-              {authButton}
-            </Box>
+          {this.renderNavHome()}
+          {this.renderNavLink("/Notes", "Notes")}
+          {this.renderNavLink("/Videos", "Videos")}
+          {this.renderNavLink("/AboutUs", "About Us", false)}
+
+          <Box
+            mr={3}
+            display="flex"
+            alignItems="center"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            <Typography color="textPrimary">{displayEmail}</Typography>
+            <Box ml={3}>{authButton}</Box>
           </Box>
         </NavBarStyledComponent>
       </FontStyleComponent>

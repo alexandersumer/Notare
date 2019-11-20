@@ -22,7 +22,16 @@ class Notes(Resource):
         print(f"CURRENT USER IN GET /NOTES {current_user}")
         # NOTE: cannot inject SQL :)
         query_ops = get_notes(
-            ["note_id", "video_id", "user_id", "timestamp", "note", "time_created", "last_edited"], g.args
+            [
+                "note_id",
+                "video_id",
+                "user_id",
+                "timestamp",
+                "note",
+                "time_created",
+                "last_edited",
+            ],
+            g.args,
         )
 
         conn = sqlite3.connect("database.db")
@@ -40,7 +49,7 @@ class Notes(Resource):
                     "video_id": entry[3],
                     "timestamp": entry[4],
                     "time_created": entry[5],
-                    "last_edited": entry[6]
+                    "last_edited": entry[6],
                 }
                 for entry in entries
             ],
@@ -72,7 +81,7 @@ class Notes(Resource):
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM videos where video_id=? and user_id=?;"
-        c.execute(SQL, (g.json["video_id"],g.json["user_id"]))
+        c.execute(SQL, (g.json["video_id"], g.json["user_id"]))
         video_entries = c.fetchall()
         conn.close()
         print(video_entries)
@@ -89,9 +98,9 @@ class Notes(Resource):
                     g.json["video_id"],
                     g.json["user_id"],
                     g.json["video_title"],
-                    0, #No Tag
+                    0,  # No Tag
                     current_time,
-                    current_time
+                    current_time,
                 ),
             )
             conn.commit()
@@ -109,7 +118,7 @@ class Notes(Resource):
                 g.json["video_id"],
                 g.json["timestamp"],
                 current_time,
-                current_time
+                current_time,
             ),
         )
         conn.commit()
@@ -126,7 +135,7 @@ class Notes(Resource):
             "video_id": g.json["video_id"],
             "timestamp": g.json["timestamp"],
             "time_created": current_time,
-            "last_edited": current_time
+            "last_edited": current_time,
         }
 
         return response, 201, None

@@ -11,8 +11,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 import sqlite3
 
+
 class VideosVideoIdTag(Resource):
-    
     @jwt_required
     def post(self, video_id):
         print(g.json)
@@ -26,19 +26,24 @@ class VideosVideoIdTag(Resource):
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM tags where user_id=? and tag=?;"
-        c.execute(SQL, (g.json["user_id"],g.json["tag"],))
+        c.execute(SQL, (g.json["user_id"], g.json["tag"]))
         tags_entries = c.fetchall()
         conn.close()
-        if (g.json['tag'] != "No Tag" and len(tags_entries) == 0):
+        if g.json["tag"] != "No Tag" and len(tags_entries) == 0:
             print(f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}")
-            return {"errorMessage": f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}"}, 400
+            return (
+                {
+                    "errorMessage": f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}"
+                },
+                400,
+            )
 
-        tag_id = tags_entries[0][0] if g.json['tag'] != "No Tag" else 0
-        #if video not created, create video with that tag
+        tag_id = tags_entries[0][0] if g.json["tag"] != "No Tag" else 0
+        # if video not created, create video with that tag
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM videos where video_id=? and user_id=?;"
-        c.execute(SQL, (video_id,g.json["user_id"]))
+        c.execute(SQL, (video_id, g.json["user_id"]))
         videos_entries = c.fetchall()
         conn.close()
         if len(videos_entries) == 0:
@@ -47,18 +52,10 @@ class VideosVideoIdTag(Resource):
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             # TODO get video title from youtube api and category
-            c.execute(
-                SQL,
-                (
-                    video_id,
-                    g.json["user_id"],
-                    "GET VIDEO TITLE",
-                    tag_id,
-                ),
-            )
+            c.execute(SQL, (video_id, g.json["user_id"], "GET VIDEO TITLE", tag_id))
             conn.commit()
             conn.close()
-        else: # update the videos tag
+        else:  # update the videos tag
             print(f"Updating {video_id} to {g.json['tag']}")
             SQL = f"UPDATE videos SET categories=? WHERE video_id=? and user_id=?;"
             conn = sqlite3.connect("database.db")
@@ -66,7 +63,6 @@ class VideosVideoIdTag(Resource):
             c.execute(SQL, (tag_id, video_id, g.json["user_id"]))
             conn.commit()
             conn.close()
-            
 
         print("successfuly set tag")
         response = {

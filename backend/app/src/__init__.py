@@ -9,18 +9,59 @@ import v1
 import os
 import sqlite3
 import hashlib
-notes = [                                          
+
+notes = [
     [1, "this is the note", 1, "LlW7Es7gStA", 2.5, 1573010001000000, 1573010001000000],
-    [2, "this is the second note", 1, "LlW7Es7gStA", 4.5, 1573010002000000, 1573010004000000],
-    [3, "different video note", 1, "QLx2WZWilBc", 1.2, 1573010003000000, 1573010003000000],
-    [4, "different video differnt user note", 2, "hW_EEWVlVxE", 43.2, 1573010004000000, 1573010009000000],
+    [
+        2,
+        "this is the second note",
+        1,
+        "LlW7Es7gStA",
+        4.5,
+        1573010002000000,
+        1573010004000000,
+    ],
+    [
+        3,
+        "different video note",
+        1,
+        "QLx2WZWilBc",
+        1.2,
+        1573010003000000,
+        1573010003000000,
+    ],
+    [
+        4,
+        "different video differnt user note",
+        2,
+        "hW_EEWVlVxE",
+        43.2,
+        1573010004000000,
+        1573010009000000,
+    ],
     [5, "what a note", 1, "EdYT2GsBqNs", 44.5, 1573010005000000, 1573010005000000],
 ]
 
 videos = [
     [0, "LlW7Es7gStA", 1, "Pewdiepie is nuts", 1, 1573010001000000, 1573010004000000],
-    [1, "QLx2WZWilBc", 1, "United States Grand Prix", 2, 1573010003000000, 1573010003000000],
-    [2, "EdYT2GsBqNs", 1, "The Flash: Fastest Speedsters Ranked", 3, 1573010005000000, 1573010005000000],
+    [
+        1,
+        "QLx2WZWilBc",
+        1,
+        "United States Grand Prix",
+        2,
+        1573010003000000,
+        1573010003000000,
+    ],
+    [
+        2,
+        "EdYT2GsBqNs",
+        1,
+        "The Flash: Fastest Speedsters Ranked",
+        3,
+        1573010005000000,
+        1573010005000000,
+    ],
     [
         3,
         "hW_EEWVlVxE",
@@ -32,14 +73,13 @@ videos = [
     ],
 ]
 
-users = [[1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()], [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()]]
- 
-tags = [
-     [1, 1, "comedy"],
-     [2, 1, "romance"],
-     [3, 1, "physics"],
-     [4, 2, "scary"]
- ]
+users = [
+    [1, "mitchellshelton97@gmail.com", hashlib.sha256("password".encode()).hexdigest()],
+    [2, "mitchell_shelton@y7mail.com", hashlib.sha256("secret".encode()).hexdigest()],
+]
+
+tags = [[1, 1, "comedy"], [2, 1, "romance"], [3, 1, "physics"], [4, 2, "scary"]]
+
 
 def create_db():
     """
@@ -98,11 +138,12 @@ def create_db():
                     video,
                 )
             for user in users:
-                cur.execute("INSERT INTO users (id, email, password) values (?,?,?)", user)
+                cur.execute(
+                    "INSERT INTO users (id, email, password) values (?,?,?)", user
+                )
 
             for tag in tags:
                 cur.execute("INSERT INTO tags (id, user_id, tag) values (?,?,?)", tag)
-
 
             conn.commit()
             cur.execute("""SELECT * FROM notes""")

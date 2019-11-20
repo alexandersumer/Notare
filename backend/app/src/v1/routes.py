@@ -2,8 +2,8 @@
 
 ###
 ### DO NOT CHANGE THIS FILE
-### 
-### The code is auto generated, your change will be overwritten by 
+###
+### The code is auto generated, your change will be overwritten by
 ### code generating.
 ###
 from __future__ import absolute_import
@@ -19,12 +19,16 @@ from .api.tags import Tags
 
 
 routes = [
-    dict(resource=Logout, urls=['/logout'], endpoint='logout'),
-    dict(resource=Login, urls=['/login'], endpoint='login'),
-    dict(resource=Createaccount, urls=['/createAccount'], endpoint='createAccount'),
-    dict(resource=Notes, urls=['/notes'], endpoint='notes'),
-    dict(resource=NotesNoteId, urls=['/notes/<int:note_id>'], endpoint='notes_note_id'),
-    dict(resource=Videos, urls=['/videos'], endpoint='videos'),
-    dict(resource=VideosVideoIdTag, urls=['/videos/<video_id>/tag'], endpoint='videos_video_id_tag'),
-    dict(resource=Tags, urls=['/tags'], endpoint='tags'),
+    dict(resource=Logout, urls=["/logout"], endpoint="logout"),
+    dict(resource=Login, urls=["/login"], endpoint="login"),
+    dict(resource=Createaccount, urls=["/createAccount"], endpoint="createAccount"),
+    dict(resource=Notes, urls=["/notes"], endpoint="notes"),
+    dict(resource=NotesNoteId, urls=["/notes/<int:note_id>"], endpoint="notes_note_id"),
+    dict(resource=Videos, urls=["/videos"], endpoint="videos"),
+    dict(
+        resource=VideosVideoIdTag,
+        urls=["/videos/<video_id>/tag"],
+        endpoint="videos_video_id_tag",
+    ),
+    dict(resource=Tags, urls=["/tags"], endpoint="tags"),
 ]

@@ -21,7 +21,14 @@ class Videos(Resource):
         print(f"CURRENT USER: {current_user}")
         data = []
         query_ops = ""
-        for query_param in ["video_id", "user_id", "video_title", "categories", "time_created", "last_edited"]:
+        for query_param in [
+            "video_id",
+            "user_id",
+            "video_title",
+            "categories",
+            "time_created",
+            "last_edited",
+        ]:
             if query_param in g.args:
                 if query_ops == "":
                     query_ops = f"WHERE {query_param}=?"

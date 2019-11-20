@@ -58,7 +58,6 @@ class VideoComponent extends React.Component<Props, State> {
             id="dropdown-button-drop-down"
             variant={variant}
             size="sm"
-            CategoryVideosPage
             title={category}
           >
             {categories.concat(NO_CATEGORY).map(c => (
