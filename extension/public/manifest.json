@@ -3,7 +3,7 @@
 
     "name": "Notare",
     "description":
-        "An extension for an enhanced Youtube notetaking experience.",
+        "An extension for an enhanced Youtube note-taking experience.",
     "version": "1.0.0",
 
     "browser_action": {
