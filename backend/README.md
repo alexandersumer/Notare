@@ -11,8 +11,6 @@ http://127.0.0.1:5000/static/swagger-ui/index.html
 
 # Changing API Design
 
-### ONlY DO IF NEEDED TO CHANGE THE API DESIGN <br/> THIS WILL OVERWRITE EXISTING CODE, MAKE SURE TO BACKUP
-
 ```
 cp -R app oldapp
 cp swagger.yaml oldswagger.yaml
