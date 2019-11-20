@@ -156,7 +156,6 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    console.log(this.state);
     const { allNotes, textBoxValue } = this.state;
     return (
       <Box>
