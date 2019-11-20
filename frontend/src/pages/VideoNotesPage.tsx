@@ -14,8 +14,7 @@ import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
 import Button from "react-bootstrap/Button";
 import { formatTimestamp } from "../utils/stringUtils";
-
-
+import Dropdown from "react-bootstrap/Dropdown";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -55,10 +54,12 @@ class VideoNotesPage extends React.Component<Props, State> {
     this.setState({ searched_notes: searched_notes });
   }
 
-  exportNotes() {
+  exportNotes(withTimestamps: boolean) {
     const { video, notes } = this.state;
-    const notes_text = notes.map((n)=>{
-        return (formatTimestamp(n.timestamp) + " " + n.note)
+    const notes_text = notes.map((n) => {
+      return withTimestamps
+        ? formatTimestamp(n.timestamp) + " " + n.note
+        : n.note
     }).join("\n");
     const exported_notes_text = (notes.length) ? ((video as VideoType).video_title  + "\n" + notes_text) : "";
     const element = document.createElement("a");
@@ -116,13 +117,16 @@ class VideoNotesPage extends React.Component<Props, State> {
               searchType="notes"
             />
             <Box ml={3} mt={4}>
-              <Button
-                size="sm"
-                variant={"success"}
-                onClick={this.exportNotes.bind(this)}
-              >
-                {"Export Notes"}
-              </Button>
+            <Dropdown>
+              <Dropdown.Toggle variant="info" id="dropdown-basic">
+                Export Notes as text
+              </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={()=>this.exportNotes(true)}>With Timestamps</Dropdown.Item>
+                  <Dropdown.Item onClick={()=>this.exportNotes(false)}>Without Timestamps</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> 
             </Box>
           </Box>
           <Box display="flex" flexGrow={1}>
