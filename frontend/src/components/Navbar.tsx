@@ -66,26 +66,45 @@ class Navbar extends React.Component<Props> {
     return null;
   };
 
-  render() {
-    const { email, isAuthenticated } = this.props;
-    let displayEmail = isAuthenticated ? email : "";
+  renderNavAuth = () => {
+    const route = this.props.isAuthenticated ? "/Notes" : "/";
 
-    var authButton;
-    if (isAuthenticated) {
-      authButton = (
+    if (this.props.isAuthenticated) {
+      return (
         <Button variant="contained" color="primary" onClick={this.logout}>
           Logout
         </Button>
       );
     } else {
-      authButton = (
-        <Link to={`/Login`}>
-          <Button variant="contained" color="primary">
-            Login
-          </Button>
-        </Link>
+      return (
+        <Box
+          mr={3}
+          display="flex"
+          alignItems="center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          <Box ml={3}>
+            <Link to={`/Login`}>
+              <Button variant="contained" color="primary">
+                Login
+              </Button>
+            </Link>
+          </Box>
+          <Box ml={3}>
+            <Link to={`/CreateAccount`}>
+              <Button variant="contained" color="secondary">
+                Signup
+              </Button>
+            </Link>
+          </Box>
+        </Box>
       );
     }
+  }
+
+  render() {
+    const { email, isAuthenticated } = this.props;
+    let displayEmail = isAuthenticated ? email : "";
 
     return (
       <FontStyleComponent>
@@ -107,7 +126,7 @@ class Navbar extends React.Component<Props> {
             style={{ whiteSpace: "nowrap" }}
           >
             <Typography color="textPrimary">{displayEmail}</Typography>
-            <Box ml={3}>{authButton}</Box>
+            <Box ml={3}>{this.renderNavAuth()}</Box>
           </Box>
         </NavBarStyledComponent>
       </FontStyleComponent>
