@@ -109,6 +109,7 @@ class VideoPage extends React.Component<Props> {
   async onDeleteCategory(category: string) {
     await deleteCategory({ tag: category });
     await this.getCategories();
+    await this.getVideos();
   }
 
   renderCategoryLabels() {

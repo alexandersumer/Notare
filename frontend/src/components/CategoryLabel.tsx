@@ -10,7 +10,7 @@ interface Props {
   deleteMode: boolean;
   onSelectCategory: (category: string) => void;
   onDeselectCategory: (category: string) => void;
-  onDeleteCategory: any;//({tag: string}) => void;
+  onDeleteCategory: (category: string) => void;
 }
 
 const getVariant = (selected: boolean, deleteMode: boolean) => {
