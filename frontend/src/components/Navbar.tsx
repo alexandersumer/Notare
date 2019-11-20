@@ -42,13 +42,21 @@ class Navbar extends React.Component<Props> {
     const route = this.props.isAuthenticated ? "/Notes" : "/";
 
     return (
-      <Box ml={3}>
-        <Link to={route} style={{ textDecoration: "none" }}>
-          <img width="35px" height="35px" src={NotareWord} />
-          <Box ml={2} />
-          <img width="96px" height="23px" src={NotareCircle} />
-        </Link>
-      </Box>
+      <Link to={route} style={{ textDecoration: "none" }}>
+        <Box
+          mr={3}
+          display="flex"
+          alignItems="center"
+          style={{ whiteSpace: "nowrap" }}
+        >
+          <Box p={2}>
+            <img width="35px" height="35px" src={NotareCircle} />
+          </Box>
+          <Box p={1}>
+            <img width="96px" height="24px" src={NotareWord} />
+          </Box>
+        </Box>
+      </Link>
     );
   };
 
@@ -103,7 +111,7 @@ class Navbar extends React.Component<Props> {
         </Box>
       );
     }
-  }
+  };
 
   render() {
     const { email, isAuthenticated } = this.props;
