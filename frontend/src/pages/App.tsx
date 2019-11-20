@@ -104,7 +104,7 @@ class App extends React.Component<{}, State> {
   constructor(props: {}, state: State) {
     super(props, state);
     this.state = {
-      isAuthenticated: false,
+      isAuthenticated: false
     };
   }
 
@@ -117,21 +117,21 @@ class App extends React.Component<{}, State> {
   async onLogin(email: string, password: string) {
     await AuthService.authenticate(email, password);
     this.setState({
-      isAuthenticated: AuthService.isAuthenticated,
+      isAuthenticated: AuthService.isAuthenticated
     });
   }
 
   async onCreateAccount(email: string, password: string) {
     await AuthService.createAccount(email, password);
     this.setState({
-      isAuthenticated: AuthService.isAuthenticated,
+      isAuthenticated: AuthService.isAuthenticated
     });
   }
 
   async onLogout() {
     await AuthService.logout();
     this.setState({
-      isAuthenticated: AuthService.isAuthenticated,
+      isAuthenticated: AuthService.isAuthenticated
     });
   }
 

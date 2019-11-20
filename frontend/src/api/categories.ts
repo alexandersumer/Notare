@@ -1,4 +1,4 @@
-import { getRequest, postRequest } from "./backendapi";
+import { getRequest, postRequest, deleteRequest } from "./backendapi";
 import { NO_CATEGORY } from "../stringConstants";
 
 // GET CATEGORIES
@@ -39,3 +39,13 @@ export const changeVideoCategory = async (
   if (params.tag == NO_CATEGORY) params.tag = "No Tag";
   return postRequest("/videos/" + video_id + "/tag", params);
 };
+
+type deleteCategoryParams = {
+  tag?: string;
+};
+
+export const deleteCategory = async (
+  params: deleteCategoryParams
+): Promise<void> => {
+  return deleteRequest("/tags", params);
+}

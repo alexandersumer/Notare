@@ -7,6 +7,7 @@ import { getVideos } from "../api/videos";
 import {
   addCategory,
   getCategories,
+  deleteCategory,
   changeVideoCategory
 } from "../api/categories";
 import { sortStringArray } from "../utils/stringUtils";
@@ -105,6 +106,12 @@ class VideoPage extends React.Component<Props> {
     await this.getCategories();
   }
 
+  async onDeleteCategory(category: string) {
+    await deleteCategory({ tag: category });
+    await this.getCategories();
+    await this.getVideos();
+  }
+
   renderCategoryLabels() {
     const { categories, selectedCategories, deleteMode } = this.state;
     return (
@@ -133,6 +140,7 @@ class VideoPage extends React.Component<Props> {
               selected={selectedCategories.includes(category)}
               onSelectCategory={this.onSelectCategory.bind(this)}
               onDeselectCategory={this.onDeselectCategory.bind(this)}
+              onDeleteCategory={this.onDeleteCategory.bind(this)}
             />
           ))}
           {!deleteMode && (
