@@ -6,7 +6,8 @@ module.exports = {
   entry: {
     popup: path.join(__dirname, "src/popup/index.tsx"),
     injected: path.join(__dirname, "src/injected/index.tsx"),
-    eventPage: path.join(__dirname, "src/eventPage.ts")
+    eventPage: path.join(__dirname, "src/eventPage.ts"),
+    background: path.join(__dirname, "src/background.ts")
   },
   output: {
     path: path.join(__dirname, "dist/js"),
