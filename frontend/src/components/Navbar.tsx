@@ -45,14 +45,15 @@ class Navbar extends React.Component<Props> {
       <Link to={route} style={{ textDecoration: "none" }}>
         <Box
           mr={3}
+          ml={3}
           display="flex"
           alignItems="center"
           style={{ whiteSpace: "nowrap" }}
         >
-          <Box p={2}>
+          <Box>
             <img width="35px" height="35px" src={NotareCircle} />
           </Box>
-          <Box p={1}>
+          <Box ml={2}>
             <img width="96px" height="24px" src={NotareWord} />
           </Box>
         </Box>
