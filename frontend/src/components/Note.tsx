@@ -4,17 +4,9 @@ import Thumbnail from "./Thumbnail";
 import { NoteType } from "../types";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { PINK_COLOR } from "../colorConstants";
-import Link from '@material-ui/core/Link';
-
-const formatTimestamp = (seconds: number): string => {
-  let date = new Date(0);
-  date.setSeconds(seconds);
-  if (seconds >= 60) return date.toISOString().substr(11, 8);
-  return date.toISOString().substr(14, 5);
-};
-
-const getYoutubeTimeLink = (video_id: string, timestamp: number) : string =>
-  (`https://youtu.be/${video_id}?t=${Math.floor(timestamp)}`)
+import { Link as RouterLink } from "react-router-dom";
+import YoutubeLink from "./YoutubeLink";
+import { formatTimestamp } from "../utils/stringUtils";
 
 const NoteStyle = materialStyled(Box)({
   height: "80px",
@@ -22,35 +14,48 @@ const NoteStyle = materialStyled(Box)({
   borderRadius: "5px"
 });
 
-interface Props { 
-  noteData: NoteType,
-  thumbNail: boolean,
-  allNotesLink: boolean,
+interface Props {
+  noteData: NoteType;
+  thumbNail: boolean;
+  youtubeLink: boolean;
 }
 
 const Note = (props: Props) => {
-  const { noteData, thumbNail, allNotesLink }  = props;
-  const YoutubeLink = (props: any) => (
-    <Link href={getYoutubeTimeLink(noteData.video_id, noteData.timestamp)}>{props.children}</Link>
-  );
+  const { noteData, thumbNail, youtubeLink } = props;
 
   const renderNotesLink = () => (
-    <Box m={2} display="flex" alignItems="center" style={{ whiteSpace: "nowrap"}} >
-      <Link href={`/VideoNotes/${noteData.video_id}`}>[View all notes]</Link>
+    <Box
+      m={2}
+      display="flex"
+      alignItems="center"
+      style={{ whiteSpace: "nowrap" }}
+    >
+      <YoutubeLink videoId={noteData.video_id} timestamp={noteData.timestamp}>
+        [Go to Video]
+      </YoutubeLink>
     </Box>
-  )
+  );
 
   return (
     <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
-      {thumbNail && (<YoutubeLink><Thumbnail video_id={noteData.video_id}></Thumbnail></YoutubeLink>)}
+      {thumbNail && (
+        <RouterLink to={`/VideoNotes/${noteData.video_id}`}>
+          <Thumbnail video_id={noteData.video_id}></Thumbnail>
+        </RouterLink>
+      )}
       <NoteStyle ml display="flex" flexDirection="row" flexGrow={1}>
         <Box p={1} mr={1} display="flex" alignItems="center">
-          <YoutubeLink>{formatTimestamp(noteData.timestamp)}</YoutubeLink>
+          <YoutubeLink
+            videoId={noteData.video_id}
+            timestamp={noteData.timestamp}
+          >
+            {formatTimestamp(noteData.timestamp)}
+          </YoutubeLink>
         </Box>
         <Box p={1} display="flex" alignItems="center" flexGrow={1}>
           {noteData.note}
         </Box>
-        {allNotesLink && renderNotesLink()}
+        {youtubeLink && renderNotesLink()}
       </NoteStyle>
     </Box>
   );

@@ -1,55 +1,19 @@
-# Backend Setup
+# BACKEND SETUP
 
-Make sure you are in `Notare/backend/`
-
+1. Install Python 3 from this link https://www.python.org/downloads/
+2. Install virtualenv with `sudo python3 -m pip install virtualenv`
+3. Make sure you are currently in the backend directory
 ```
-virtualenv --python=`which python3` venv
-
-source ./venv/bin/activate
-
-cd app
-
-python3 -m pip install -r requirements.txt
-
-python3 src/__init__.py
-
-http://127.0.0.1:5000/static/swagger-ui/index.html
+    virtualenv --python=`which python3` venv
+    source ./venv/bin/activate
+    python3 -m pip install -r requirements.txt
+    python3 app/src/__init__.py
 ```
+4. The backend is now running, to see the api definition, navigate to http://127.0.0.1:5000/static/swagger-ui/index.html
+5. Now you can run the extension setup and the frontend setup.
 
-# Changing API Design
+### Developer Note:
 
-Make sure you are in `Notare/backend/`
+Regenerate backend api definitions with
 
-```
-cp -R app oldapp
-
-cp swagger.yaml oldswagger.yaml
-```
-
-Copy new swagger design into swagger.yaml
-
-```
-rm -rf app
-
-rm -rf venv
-
-virtualenv --python=`which python3` venv
-
-source ./venv/bin/activate
-
-python3 -m pip install swagger-py-codegen
-
-swagger_py_codegen -s swagger.yaml app -p src --ui --spec
-
-cd app
-
-pip install -r requirements.txt
-```
-
-Copy relevant code from oldapp
-
-```
-python3 src/__init__.py
-
-http://127.0.0.1:5000/static/swagger-ui/index.html
-```
+`swagger_py_codegen -s swagger.yaml app -p src --ui --spec`

@@ -8,20 +8,30 @@ from . import Resource
 from .. import schemas
 
 import sqlite3
+import time
 
 query_mapping = {"note_id": "id"}
 
 
 class Notes(Resource):
-    #@jwt_required
+    @jwt_required
     def get(self):
         print(g.args)
         print(g.headers)
-        #current_user = get_jwt_identity()
-        #print(f"CURRENT USER IN GET /NOTES {current_user}")
+        current_user = get_jwt_identity()
+        print(f"CURRENT USER IN GET /NOTES {current_user}")
         # NOTE: cannot inject SQL :)
         query_ops = get_notes(
-            ["note_id", "video_id", "user_id", "timestamp", "note"], g.args
+            [
+                "note_id",
+                "video_id",
+                "user_id",
+                "timestamp",
+                "note",
+                "time_created",
+                "last_edited",
+            ],
+            g.args,
         )
 
         conn = sqlite3.connect("database.db")
@@ -38,6 +48,8 @@ class Notes(Resource):
                     "user_id": entry[2],
                     "video_id": entry[3],
                     "timestamp": entry[4],
+                    "time_created": entry[5],
+                    "last_edited": entry[6],
                 }
                 for entry in entries
             ],
@@ -51,31 +63,32 @@ class Notes(Resource):
             )
         return response, 200, None
 
-    #@jwt_required
+    @jwt_required
     def post(self):
         print(g.json)
         print(g.headers)
-        #current_user = get_jwt_identity()
-        #print(f"CURRENT USER: {current_user}")
+        current_user = get_jwt_identity()
+        print(f"CURRENT USER: {current_user}")
         # TODO mitch
         # TODO validate video_id with youtube api
         # TODO get video title
         # TODO leave video category for now
 
-        for param in ["note", "user_id", "video_id", "timestamp"]:
+        for param in ["note", "user_id", "video_id", "timestamp", "video_title"]:
             if param not in g.json:
                 return {"errorMessage": f"param {param} not in body"}, 400
 
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
-        SQL = f"SELECT * FROM videos where id=?;"
-        c.execute(SQL, (g.json["video_id"],))
+        SQL = f"SELECT * FROM videos where video_id=? and user_id=?;"
+        c.execute(SQL, (g.json["video_id"], g.json["user_id"]))
         video_entries = c.fetchall()
         conn.close()
         print(video_entries)
+        current_time = int(str(time.time()).replace(".", ""))
         # if video not in videos table database create new video
         if len(video_entries) == 0:
-            SQL = f"INSERT INTO videos (id, user_id, video_title, categories) values (?,?,?,?)"
+            SQL = f"INSERT INTO videos (video_id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?)"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
             # TODO get video title from youtube api and category
@@ -84,15 +97,17 @@ class Notes(Resource):
                 (
                     g.json["video_id"],
                     g.json["user_id"],
-                    "GET VIDEO TITLE",
-                    "GET VIDEO CATEGORY",
+                    g.json["video_title"],
+                    0,  # No Tag
+                    current_time,
+                    current_time,
                 ),
             )
             conn.commit()
             conn.close()
 
         # insert the note
-        SQL = f"INSERT INTO notes (note, user_id, video_id, timestamp) values (?,?,?,?)"
+        SQL = f"INSERT INTO notes (note, user_id, video_id, timestamp, time_created, last_edited) values (?,?,?,?,?,?)"
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         c.execute(
@@ -102,6 +117,8 @@ class Notes(Resource):
                 g.json["user_id"],
                 g.json["video_id"],
                 g.json["timestamp"],
+                current_time,
+                current_time,
             ),
         )
         conn.commit()
@@ -117,6 +134,8 @@ class Notes(Resource):
             "user_id": g.json["user_id"],
             "video_id": g.json["video_id"],
             "timestamp": g.json["timestamp"],
+            "time_created": current_time,
+            "last_edited": current_time,
         }
 
         return response, 201, None

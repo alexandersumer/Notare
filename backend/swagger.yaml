@@ -22,6 +22,16 @@ definitions:
         type: string
         example: "error message"
         
+  tag:
+    type: object
+    properties:
+      tag: 
+        type: string
+        example: "comedy"
+      user_id:
+        type: integer
+        example: 1
+      
   note:
     type: object
     properties:
@@ -36,17 +46,23 @@ definitions:
         example: 1
       video_id:
         type: string
-        example: "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+        example: "gSdG3FsMBq4"
       timestamp:
         type: number
         example: 2.5
+      time_created:
+        type: integer
+        example: 1573010015
+      last_edited:
+        type: integer
+        example: 1573010015
         
   video:
     type: object
     properties:
       video_id:
         type: string
-        example: "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+        example: "gSdG3FsMBq4"
       user_id:
         type: integer
         example: 1
@@ -54,10 +70,14 @@ definitions:
         type: string
         example: "physics 101"
       categories:
-        type: array
-        items: 
-          type: string
-        example: ["education", "comedy"]
+        type: string
+        example: "comedy"
+      time_created:
+        type: integer
+        example: 1573010015
+      last_edited:
+        type: integer
+        example: 1573010015
       notes_ids:
         type: array
         items:
@@ -69,13 +89,13 @@ definitions:
 
 paths:
 
-  /auth/google/logout:
+  /logout:
     delete:
-      operationId: auth_google_logout
-      description: logs a user out of their google account on the service
-      summary: auth google logout
+      operationId: logout
+      description: logs a user out of their account on the service
+      summary: logout
       tags:
-        - Google Auth
+        - Auth
       parameters:
         - name: Authorization
           type: string
@@ -97,13 +117,13 @@ paths:
         
             
 
-  /auth/google/login:
+  /login:
     post:
-      operationId: auth_google_login
-      description: this takes a google access token, verifies it and returns a server generated access token from JWTs to the user
-      summary: auth google login
+      operationId: login
+      description: this takes an email and password, verifies it against an existing email and returns a server generated access token from JWTs to the user
+      summary: login
       tags:
-        - Google Auth
+        - Auth
       parameters:
         - name: body
           in: body
@@ -111,12 +131,49 @@ paths:
           schema:
             type: object
             properties:
-              googleAccessToken:
-                type: string
-                example: "hfwfhw0fhw0f"
               email:
                 type: string
                 example: "mitchell_shelton@y7mail.com"
+              password:
+                type: string
+                example: "secret"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+                example: "fuehfoeifjw"
+              user_id:
+                type: integer
+                example: 1
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+            
+  /createAccount:
+    post:
+      operationId: create account
+      description: this takes an email and password, creates a new user and returns a server generated access token from JWTs to the user
+      summary: create account
+      tags:
+        - Auth
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: "mitchell_shelton@y7mail.com"
+              password:
+                type: string
+                example: "secret"
       responses:
         200:
           description: OK
@@ -152,7 +209,7 @@ paths:
         - name: sort
           type: string
           in: query
-          enum: [+note_id, +note, +user_id, +video_id, +timestamp, -note_id, -note, -user_id, -video_id, -timestamp]
+          enum: [+note_id, +note, +user_id, +video_id, +timestamp, +time_created, +last_edited, -note_id, -note, -user_id, -video_id, -timestamp, -time_created, -last_edited]
           default: "+timestamp"
         - name: note_id
           type: integer
@@ -168,6 +225,12 @@ paths:
           in: query
         - name: note
           type: string
+          in: query
+        - name: time_created
+          type: integer
+          in: query
+        - name: last_edited
+          type: integer
           in: query
       responses:
         200:
@@ -216,7 +279,10 @@ paths:
                 example: 1
               video_id:
                 type: string
-                example: "https://www.youtube.com/watch?v=gSdG3FsMBq4"
+                example: "gSdG3FsMBq4"
+              video_title:
+                type: string
+                example: "How to code"
               timestamp:
                 type: number
                 example: 2.5
@@ -366,7 +432,7 @@ paths:
         - name: sort
           type: string
           in: query
-          enum: [+video_id, +user_id, -video_id, -user_id, +video_title, -video_title, +categories, -categories, +notes_count, -notes_count]
+          enum: [+video_id, +user_id, -video_id, -user_id, +video_title, -video_title, +categories, -categories, +notes_count, -notes_count, +time_created, -time_created, +last_edited, -last_edited]
           default: "+video_id"
         - name: video_id
           type: string
@@ -381,6 +447,12 @@ paths:
           type: string
           in: query #comedy,education
         - name: notes_count
+          type: integer
+          in: query
+        - name: time_created
+          type: integer
+          in: query
+        - name: last_edited
           type: integer
           in: query
       responses:
@@ -404,6 +476,143 @@ paths:
           description: Unauthorized
         422:
           description: Unprocessable Entity
+          
+  /videos/{video_id}/tag:
+   
+    post:
+      operationId: set tag for a video
+      description: this is used for setting a tag for a video
+      summary: set tag for a video
+      tags:
+        - Videos
+      parameters:
+        - name: Authorization
+          type: string
+          in: header
+          required: true
+        - name: video_id
+          type: string
+          in: path
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                example: 2
+              tag:
+                type: string
+                example: "comedy"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              videos:
+                  $ref: '#/definitions/video'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      
+          
+  /tags:
+ 
+    post:
+      operationId: create_tag
+      description: this is used for creating a tag
+      summary: create tag
+      tags:
+        - Tag
+      parameters:
+        - name: Authorization
+          type: string
+          in: header
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tag'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              tag:
+                  $ref: '#/definitions/tag'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+ 
+    get:
+      operationId: get_tags
+      description: this is used for getting all tags
+      summary: get tags
+      tags:
+        - Tag
+      parameters:
+        - name: Authorization
+          type: string
+          in: header
+          required: true
+        - name: user_id
+          type: integer
+          in: query
+        - name: tag
+          type: string
+          in: query
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              tags:
+                type: array
+                items:
+                  $ref: '#/definitions/tag'
+              num_tags:
+                type: integer
+                example: 1
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+  
+    delete:
+      operationId: delete_tag
+      description: this is used for deleting a tag
+      summary: delete tag
+      tags:
+        - Tag
+      parameters:
+        - name: Authorization
+          type: string
+          in: header
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tag'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+            
+
                 
 
   

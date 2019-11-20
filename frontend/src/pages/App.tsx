@@ -1,45 +1,211 @@
 import * as React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomePage from "./HomePage";
 import AboutUsPage from "./AboutUsPage";
 import NotePage from "./NotePage";
 import VideoPage from "./VideoPage";
-import VideoNotesPage from './VideoNotesPage';
-import Box from '@material-ui/core/Box';
-import { styled as materialStyled } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import NotareWord from '../NotareWord.png';
-import { PINK_COLOR } from "../colorConstants";
+import VideoNotesPage from "./VideoNotesPage";
+import { postLogin, postCreateAccount } from "../api/auth";
+import Login from "../components/Login";
+import { Logout } from "../api/auth";
+import Navbar from "../components/Navbar";
+import CreateAccount from "../components/CreateAccount";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  RouteProps,
+  Redirect
+} from "react-router-dom";
+import { __RouterContext } from "react-router";
 
+export const AuthService = {
+  isAuthenticated:
+    localStorage.getItem("accessToken") === null ||
+    localStorage.getItem("accessToken") === undefined
+      ? false
+      : true,
+  accessToken:
+    localStorage.getItem("accessToken") === null ||
+    localStorage.getItem("accessToken") === undefined
+      ? ""
+      : localStorage.getItem("accessToken"),
+  userId:
+    localStorage.getItem("userId") === null ||
+    localStorage.getItem("userId") === undefined
+      ? -1
+      : parseInt(localStorage.getItem("userId") as string),
+  async authenticate(email: string, password: string) {
+    const response = await postLogin({ email: email, password: password });
+    if (response) {
+      this.isAuthenticated = true;
+      this.accessToken = response.accessToken;
+      this.userId = response.user_id;
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("userId", response.user_id.toString());
+      localStorage.setItem("email", email);
+    }
+  },
+  async createAccount(email: string, password: string) {
+    const response = await postCreateAccount({
+      email: email,
+      password: password
+    });
+    if (response) {
+      this.isAuthenticated = true;
+      this.accessToken = response.accessToken;
+      this.userId = response.user_id;
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("userId", response.user_id.toString());
+      localStorage.setItem("email", email);
+    }
+  },
+  async logout() {
+    await Logout();
+    this.isAuthenticated = false;
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("email");
+  }
+};
 
-const FontStyleComponent = materialStyled(Box)({ 
-  fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-});
+interface PrivateRouteProps extends RouteProps {
+  component: any;
+  isAuthenticated: boolean;
+  userId: number;
+  Navbar: React.FC;
+}
 
-const NavBarStyledComponent = materialStyled(Box)({ 
-  backgroundColor: PINK_COLOR,
-  height: 70,
-});
+const PrivateRoute = (props: PrivateRouteProps) => {
+  const { component: Component, ...rest } = props;
+  return (
+    <Route
+      {...rest}
+      render={routeProps =>
+        AuthService.isAuthenticated ? (
+          <Component {...rest} {...routeProps} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: routeProps.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+};
 
-class App extends React.Component {
+interface State {
+  isAuthenticated: boolean;
+}
+
+class App extends React.Component<{}, State> {
+  constructor(props: {}, state: State) {
+    super(props, state);
+    this.state = {
+      isAuthenticated: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated
+    });
+  }
+
+  async onLogin(email: string, password: string) {
+    await AuthService.authenticate(email, password);
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated
+    });
+  }
+
+  async onCreateAccount(email: string, password: string) {
+    await AuthService.createAccount(email, password);
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated
+    });
+  }
+
+  async onLogout() {
+    await AuthService.logout();
+    this.setState({
+      isAuthenticated: AuthService.isAuthenticated
+    });
+  }
+
   render() {
+    const { isAuthenticated } = this.state;
+    const MyNavbar = () => (
+      <Navbar
+        email={localStorage.getItem("email") || ""}
+        isAuthenticated={this.state.isAuthenticated}
+        onLogout={this.onLogout.bind(this)}
+      />
+    );
     return (
       <Router>
         <div>
-          <FontStyleComponent>
-            <NavBarStyledComponent display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-              <Box ml={3}><Link href="/"><img width="120px" height="30px" src={NotareWord}/></Link></Box>
-              <Box><Link href="/Notes">Notes</Link></Box>
-              <Box><Link href="/Videos">Videos</Link></Box>
-              <Box mr={3}><Link href="/AboutUs">About us</Link></Box>
-            </NavBarStyledComponent>
-          </FontStyleComponent>
           <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/Notes" component={NotePage} />
-            <Route exact path="/Videos" component={VideoPage} />
-            <Route exact path="/AboutUs" component={AboutUsPage} />
-            <Route exact path="/VideoNotes/:video_id" component={VideoNotesPage}/>
+            <PrivateRoute
+              path="/Notes"
+              component={NotePage}
+              isAuthenticated={AuthService.isAuthenticated}
+              userId={AuthService.userId}
+              Navbar={MyNavbar}
+            />
+            <PrivateRoute
+              path="/Videos"
+              component={VideoPage}
+              isAuthenticated={AuthService.isAuthenticated}
+              userId={AuthService.userId}
+              Navbar={MyNavbar}
+            />
+            <Route
+              exact
+              path="/AboutUs"
+              render={routeProps => (
+                <AboutUsPage {...routeProps} Navbar={MyNavbar} />
+              )}
+            />
+            <PrivateRoute
+              path="/VideoNotes/:video_id"
+              component={VideoNotesPage}
+              isAuthenticated={AuthService.isAuthenticated}
+              userId={AuthService.userId}
+              Navbar={MyNavbar}
+            />
+            <Route
+              exact
+              path="/Login"
+              render={routeProps => (
+                <Login
+                  {...routeProps}
+                  onLogin={this.onLogin.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            ;
+            <Route
+              exact
+              path="/CreateAccount"
+              render={routeProps => (
+                <CreateAccount
+                  {...routeProps}
+                  onCreateAccount={this.onCreateAccount.bind(this)}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/"
+              render={routeProps => (
+                <HomePage {...routeProps} Navbar={MyNavbar} />
+              )}
+            />
           </Switch>
         </div>
       </Router>

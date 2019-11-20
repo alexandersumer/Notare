@@ -60,33 +60,34 @@ definitions = {
                 "errorMessage": {"type": "string", "example": "error message"}
             },
         },
+        "tag": {
+            "type": "object",
+            "properties": {
+                "tag": {"type": "string", "example": "comedy"},
+                "user_id": {"type": "integer", "example": 1},
+            },
+        },
         "note": {
             "type": "object",
             "properties": {
                 "note_id": {"type": "integer", "example": 1},
                 "note": {"type": "string", "example": "this is my note"},
                 "user_id": {"type": "integer", "example": 1},
-                "video_id": {
-                    "type": "string",
-                    "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4",
-                },
+                "video_id": {"type": "string", "example": "gSdG3FsMBq4"},
                 "timestamp": {"type": "number", "example": 2.5},
+                "time_created": {"type": "integer", "example": 1573010015},
+                "last_edited": {"type": "integer", "example": 1573010015},
             },
         },
         "video": {
             "type": "object",
             "properties": {
-                "video_id": {
-                    "type": "string",
-                    "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4",
-                },
+                "video_id": {"type": "string", "example": "gSdG3FsMBq4"},
                 "user_id": {"type": "integer", "example": 1},
                 "video_title": {"type": "string", "example": "physics 101"},
-                "categories": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "example": ["education", "comedy"],
-                },
+                "categories": {"type": "string", "example": "comedy"},
+                "time_created": {"type": "integer", "example": 1573010015},
+                "last_edited": {"type": "integer", "example": 1573010015},
                 "notes_ids": {
                     "type": "array",
                     "items": {"type": "integer"},
@@ -100,18 +101,27 @@ definitions = {
 }
 
 validators = {
-    ("auth_google_logout", "DELETE"): {
+    ("logout", "DELETE"): {
         "headers": {
             "required": ["Authorization"],
             "properties": {"Authorization": {"type": "string"}},
         }
     },
-    ("auth_google_login", "POST"): {
+    ("login", "POST"): {
         "json": {
             "type": "object",
             "properties": {
-                "googleAccessToken": {"type": "string", "example": "hfwfhw0fhw0f"},
                 "email": {"type": "string", "example": "mitchell_shelton@y7mail.com"},
+                "password": {"type": "string", "example": "secret"},
+            },
+        }
+    },
+    ("createAccount", "POST"): {
+        "json": {
+            "type": "object",
+            "properties": {
+                "email": {"type": "string", "example": "mitchell_shelton@y7mail.com"},
+                "password": {"type": "string", "example": "secret"},
             },
         }
     },
@@ -131,11 +141,15 @@ validators = {
                         "+user_id",
                         "+video_id",
                         "+timestamp",
+                        "+time_created",
+                        "+last_edited",
                         "-note_id",
                         "-note",
                         "-user_id",
                         "-video_id",
                         "-timestamp",
+                        "-time_created",
+                        "-last_edited",
                     ],
                     "default": "+timestamp",
                 },
@@ -144,6 +158,8 @@ validators = {
                 "user_id": {"type": "integer"},
                 "timestamp": {"type": "number"},
                 "note": {"type": "string"},
+                "time_created": {"type": "integer"},
+                "last_edited": {"type": "integer"},
             },
         },
     },
@@ -153,10 +169,8 @@ validators = {
             "properties": {
                 "note": {"type": "string", "example": "this is my note"},
                 "user_id": {"type": "integer", "example": 1},
-                "video_id": {
-                    "type": "string",
-                    "example": "https://www.youtube.com/watch?v=gSdG3FsMBq4",
-                },
+                "video_id": {"type": "string", "example": "gSdG3FsMBq4"},
+                "video_title": {"type": "string", "example": "How to code"},
                 "timestamp": {"type": "number", "example": 2.5},
             },
         },
@@ -205,6 +219,10 @@ validators = {
                         "-categories",
                         "+notes_count",
                         "-notes_count",
+                        "+time_created",
+                        "-time_created",
+                        "+last_edited",
+                        "-last_edited",
                     ],
                     "default": "+video_id",
                 },
@@ -213,13 +231,52 @@ validators = {
                 "video_title": {"type": "string"},
                 "categories": {"type": "string"},
                 "notes_count": {"type": "integer"},
+                "time_created": {"type": "integer"},
+                "last_edited": {"type": "integer"},
             },
+        },
+    },
+    ("videos_video_id_tag", "POST"): {
+        "json": {
+            "type": "object",
+            "properties": {
+                "user_id": {"type": "integer", "example": 2},
+                "tag": {"type": "string", "example": "comedy"},
+            },
+        },
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
+    },
+    ("tags", "POST"): {
+        "json": {"$ref": "#/definitions/tag"},
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
+    },
+    ("tags", "GET"): {
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
+        },
+        "args": {
+            "required": [],
+            "properties": {"user_id": {"type": "integer"}, "tag": {"type": "string"}},
+        },
+    },
+    ("tags", "DELETE"): {
+        "json": {"$ref": "#/definitions/tag"},
+        "headers": {
+            "required": ["Authorization"],
+            "properties": {"Authorization": {"type": "string"}},
         },
     },
 }
 
 filters = {
-    ("auth_google_logout", "DELETE"): {
+    ("logout", "DELETE"): {
         200: {
             "headers": None,
             "schema": {
@@ -232,7 +289,20 @@ filters = {
         401: {"headers": None, "schema": None},
         422: {"headers": None, "schema": None},
     },
-    ("auth_google_login", "POST"): {
+    ("login", "POST"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "accessToken": {"type": "string", "example": "fuehfoeifjw"},
+                    "user_id": {"type": "integer", "example": 1},
+                },
+            },
+        },
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+    },
+    ("createAccount", "POST"): {
         200: {
             "headers": None,
             "schema": {
@@ -306,6 +376,43 @@ filters = {
         400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
         401: {"headers": None, "schema": None},
         422: {"headers": None, "schema": None},
+    },
+    ("videos_video_id_tag", "POST"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {"videos": {"$ref": "#/definitions/video"}},
+            },
+        },
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+    },
+    ("tags", "POST"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {"tag": {"$ref": "#/definitions/tag"}},
+            },
+        },
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+    },
+    ("tags", "GET"): {
+        200: {
+            "headers": None,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "tags": {"type": "array", "items": {"$ref": "#/definitions/tag"}},
+                    "num_tags": {"type": "integer", "example": 1},
+                },
+            },
+        },
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
+    },
+    ("tags", "DELETE"): {
+        200: {"headers": None, "schema": {"type": "object"}},
+        400: {"headers": None, "schema": {"$ref": "#/definitions/error"}},
     },
 }
 
