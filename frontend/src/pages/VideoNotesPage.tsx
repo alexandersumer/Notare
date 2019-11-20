@@ -56,14 +56,18 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   exportNotes(withTimestamps: boolean) {
     const { video, notes } = this.state;
-    const notes_text = notes.map((n) => {
-      return withTimestamps
-        ? formatTimestamp(n.timestamp) + " " + n.note
-        : n.note
-    }).join("\n");
-    const exported_notes_text = (notes.length) ? ((video as VideoType).video_title  + "\n" + notes_text) : "";
+    const notes_text = notes
+      .map(n => {
+        return withTimestamps
+          ? formatTimestamp(n.timestamp) + " " + n.note
+          : n.note;
+      })
+      .join("\n");
+    const exported_notes_text = notes.length
+      ? (video as VideoType).video_title + "\n" + notes_text
+      : "";
     const element = document.createElement("a");
-    const file = new Blob([exported_notes_text], {type: 'text/plain'});
+    const file = new Blob([exported_notes_text], { type: "text/plain" });
     element.href = URL.createObjectURL(file);
     element.download = (video as VideoType).video_title + "_exported.txt";
     document.body.appendChild(element); // Required for this to work in FireFox
@@ -117,16 +121,20 @@ class VideoNotesPage extends React.Component<Props, State> {
               searchType="notes"
             />
             <Box ml={3} mt={4}>
-            <Dropdown>
-              <Dropdown.Toggle variant="info" id="dropdown-basic">
-                Export Notes as text
-              </Dropdown.Toggle>
+              <Dropdown>
+                <Dropdown.Toggle variant="info" id="dropdown-basic">
+                  Export Notes as text
+                </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={()=>this.exportNotes(true)}>With Timestamps</Dropdown.Item>
-                  <Dropdown.Item onClick={()=>this.exportNotes(false)}>Without Timestamps</Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.exportNotes(true)}>
+                    With Timestamps
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => this.exportNotes(false)}>
+                    Without Timestamps
+                  </Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown> 
+              </Dropdown>
             </Box>
           </Box>
           <Box display="flex" flexGrow={1}>
