@@ -12,6 +12,10 @@ import { RouteComponentProps } from "react-router-dom";
 import Search from "../components/Search";
 import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
+import Button from "react-bootstrap/Button";
+import { formatTimestamp } from "../utils/stringUtils";
+
+
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -49,6 +53,21 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   updateSearchedNotes(searched_notes: Array<NoteType>) {
     this.setState({ searched_notes: searched_notes });
+  }
+
+  exportNotes() {
+    const { video, notes } = this.state;
+    console.log("export notes");
+    const notes_text = notes.map((n)=>{
+        return (formatTimestamp(n.timestamp) + " " + n.note)
+    }).join("\n");
+    const exported_notes_text = (notes.length) ? ((video as VideoType).video_title  + "\n" + notes_text) : "";
+    const element = document.createElement("a");
+    const file = new Blob([exported_notes_text], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = (video as VideoType).video_title + "_exported.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
   }
 
   async getNotes(video_id: string) {
@@ -91,11 +110,22 @@ class VideoNotesPage extends React.Component<Props, State> {
             <Box mr={1} />
             <h3>{video.video_title}</h3>
           </Box>
-          <Search
-            components={this.state.notes}
-            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-            searchType="notes"
-          />
+          <Box mt={3} display="flex" flexDirection="row">
+            <Search
+              components={this.state.notes}
+              updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+              searchType="notes"
+            />
+            <Box ml={3} mt={4}>
+              <Button
+                size="sm"
+                variant={"success"}
+                onClick={this.exportNotes.bind(this)}
+              >
+                {"Export Notes"}
+              </Button>
+            </Box>
+          </Box>
           <Box display="flex" flexGrow={1}>
             <Box mr={3} alignItems="center" style={{ width: 200 }}>
               <Thumbnail height={130} width={200} video_id={video.video_id} />
