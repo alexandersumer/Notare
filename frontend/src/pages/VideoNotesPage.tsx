@@ -12,6 +12,9 @@ import { RouteComponentProps } from "react-router-dom";
 import Search from "../components/Search";
 import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
+import Button from "react-bootstrap/Button";
+import { formatTimestamp } from "../utils/stringUtils";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
@@ -49,6 +52,22 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   updateSearchedNotes(searched_notes: Array<NoteType>) {
     this.setState({ searched_notes: searched_notes });
+  }
+
+  exportNotes(withTimestamps: boolean) {
+    const { video, notes } = this.state;
+    const notes_text = notes.map((n) => {
+      return withTimestamps
+        ? formatTimestamp(n.timestamp) + " " + n.note
+        : n.note
+    }).join("\n");
+    const exported_notes_text = (notes.length) ? ((video as VideoType).video_title  + "\n" + notes_text) : "";
+    const element = document.createElement("a");
+    const file = new Blob([exported_notes_text], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = (video as VideoType).video_title + "_exported.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
   }
 
   async getNotes(video_id: string) {
@@ -91,11 +110,25 @@ class VideoNotesPage extends React.Component<Props, State> {
             <Box mr={1} />
             <h3>{video.video_title}</h3>
           </Box>
-          <Search
-            components={this.state.notes}
-            updateSearchedComponents={this.updateSearchedNotes.bind(this)}
-            searchType="notes"
-          />
+          <Box mt={3} display="flex" flexDirection="row">
+            <Search
+              components={this.state.notes}
+              updateSearchedComponents={this.updateSearchedNotes.bind(this)}
+              searchType="notes"
+            />
+            <Box ml={3} mt={4}>
+            <Dropdown>
+              <Dropdown.Toggle variant="info" id="dropdown-basic">
+                Export Notes as text
+              </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={()=>this.exportNotes(true)}>With Timestamps</Dropdown.Item>
+                  <Dropdown.Item onClick={()=>this.exportNotes(false)}>Without Timestamps</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> 
+            </Box>
+          </Box>
           <Box display="flex" flexGrow={1}>
             <Box mr={3} alignItems="center" style={{ width: 200 }}>
               <Thumbnail height={130} width={200} video_id={video.video_id} />

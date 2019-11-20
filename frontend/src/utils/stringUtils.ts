@@ -14,3 +14,10 @@ export const sortStringArray = (arr: string[]): string[] => {
         : 0
     );
 };
+
+export const formatTimestamp = (seconds: number): string => {
+  let date = new Date(0);
+  date.setSeconds(seconds);
+  if (seconds >= 60 * 60) return date.toISOString().substr(11, 8);
+  return date.toISOString().substr(14, 5);
+};

@@ -6,13 +6,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import { PINK_COLOR } from "../colorConstants";
 import { Link as RouterLink } from "react-router-dom";
 import YoutubeLink from "./YoutubeLink";
-
-const formatTimestamp = (seconds: number): string => {
-  let date = new Date(0);
-  date.setSeconds(seconds);
-  if (seconds >= 60 * 60) return date.toISOString().substr(11, 8);
-  return date.toISOString().substr(14, 5);
-};
+import { formatTimestamp } from "../utils/stringUtils";
 
 const NoteStyle = materialStyled(Box)({
   height: "80px",
