@@ -57,7 +57,6 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   exportNotes() {
     const { video, notes } = this.state;
-    console.log("export notes");
     const notes_text = notes.map((n)=>{
         return (formatTimestamp(n.timestamp) + " " + n.note)
     }).join("\n");
