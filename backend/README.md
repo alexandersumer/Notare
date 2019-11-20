@@ -4,7 +4,7 @@
 virtualenv --python=`which python3` venv
 source ./venv/bin/activate
 cd app
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 python3 src/__init__.py
 http://127.0.0.1:5000/static/swagger-ui/index.html
 ```
@@ -21,7 +21,7 @@ rm -rf app
 rm -rf venv
 virtualenv --python=`which python3` venv
 source ./venv/bin/activate
-pip3 install swagger-py-codegen
+python3 -m pip install swagger-py-codegen
 swagger_py_codegen -s swagger.yaml app -p src --ui --spec
 cd app
 pip install -r requirements.txt
