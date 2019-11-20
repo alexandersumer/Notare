@@ -46,4 +46,7 @@ type deleteCategoryParams = {
 
 export const deleteCategory = async (
   params: deleteCategoryParams
-): Promise<void> => deleteRequest("/tags", params);
+): Promise<void> => {
+  console.log("deleting", params);
+  return deleteRequest("/tags", params);
+}

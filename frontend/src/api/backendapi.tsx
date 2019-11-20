@@ -80,6 +80,8 @@ export const deleteRequest = async (route: string, params: any) => {
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 
   const userId: number = parseInt(localStorage.getItem("userId") as string);
+
+  console.log("At api, params", params);
   params.user_id = userId;
   const response = await backendapi.delete(route, params);
 
