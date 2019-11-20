@@ -38,23 +38,15 @@ class Navbar extends React.Component<Props> {
   };
 
   renderNavHome = () => {
-    if (this.props.isAuthenticated) {
-      return (
-        <Box ml={3}>
-          <Link to="/Notes" style={{ textDecoration: "none" }}>
-            <img width="120px" height="30px" src={NotareWord} />
-          </Link>
-        </Box>
-      );
-    } else {
-      return (
-        <Box ml={3}>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <img width="120px" height="30px" src={NotareWord} />
-          </Link>
-        </Box>
-      );
-    }
+    const route = this.props.isAuthenticated ? "/Notes" : "/";
+
+    return (
+      <Box ml={3}>
+        <Link to={route} style={{ textDecoration: "none" }}>
+          <img width="120px" height="30px" src={NotareWord} />
+        </Link>
+      </Box>
+    );
   };
 
   renderNavLink = (
