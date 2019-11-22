@@ -134,34 +134,36 @@ def test_get_notes_note_id():
     assert "last_edited" in response_data
 
 
-# def test_put_notes_note_id():
-#     auth_data = get_auth_data()
-#     new_note = "this is my new note"
-#     payload = {
-#         "note_id": 1,
-#         "note": new_note
-#         "user_id": 1,
-#         "video_id": "gSdG3FsMBq4",
-#         "timestamp": 2.5,
-#         "time_created": 1573010015,
-#         "last_edited": 1573010015
-#     }
+def test_put_notes_note_id():
+    auth_data = get_auth_data()
+    new_note = "this is my new note"
+    payload = {
+        "note_id": 1,
+        "note": new_note,
+        "user_id": 1,
+        "video_id": "LlW7Es7gStA",
+        "timestamp": 2.5,
+        "time_created": 1573010001000000,
+        "last_edited": 1573010001000000,
+    }
 
-#     response = requests.put(
-#         "http://127.0.0.1:6000/v1/notes/1",
-#         headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
-#         json=payload,
-#     )
+    response = requests.put(
+        "http://127.0.0.1:6000/v1/notes/1",
+        headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
+        json=payload,
+    )
 
-#     assert response.status_code == 200
-#     response_data = json.loads(response.text)
-#     assert "note_id" in response_data
-#     assert "note" in response_data
-#     assert response_data["note"] == new_note
-#     assert "user_id" in response_data
-#     assert "timestamp" in response_data
-#     assert "time_created" in response_data
-#     assert "last_edited" in response_data
+    print(response.text)
+
+    assert response.status_code == 200
+    response_data = json.loads(response.text)
+    assert "note_id" in response_data
+    assert "note" in response_data
+    assert response_data["note"] == new_note
+    assert "user_id" in response_data
+    assert "timestamp" in response_data
+    assert "time_created" in response_data
+    assert "last_edited" in response_data
 
 
 def test_delete_notes_note_id():
@@ -212,26 +214,28 @@ def test_get_videos():
         assert "notes_count" in video_response
 
 
-# def test_post_videos_video_id_tag():
-#     auth_data = get_auth_data()
-#     payload = {"user_id": 1, "tag": "new_tag"}
-#     response = requests.post(
-#         "http://127.0.0.1:6000/v1/videos/gSdG3FsMBq4",
-#         headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
-#         json=payload,
-#     )
+def test_post_videos_video_id_tag():
+    auth_data = get_auth_data()
+    payload = {"user_id": 1, "tag": "new_tag"}
+    response = requests.post(
+        "http://127.0.0.1:6000/v1/videos/LlW7Es7gStA",
+        headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
+        json=payload,
+    )
 
-#     assert response.status_code == 200
-#     response_data = json.loads(response.text)
-#     assert "video_id" in response_data
-#     assert "user_id" in response_data
-#     assert "video_title" in response_data
-#     assert "categories" in response_data
-#     assert response_data["categories"] == "new_tag"
-#     assert "time_created" in response_data
-#     assert "last_edited" in response_data
-#     assert "notes_ids" in response_data
-#     assert "notes_count" in response_data
+    print(response.text)
+
+    assert response.status_code == 200
+    response_data = json.loads(response.text)
+    assert "video_id" in response_data
+    assert "user_id" in response_data
+    assert "video_title" in response_data
+    assert "categories" in response_data
+    assert response_data["categories"] == "new_tag"
+    assert "time_created" in response_data
+    assert "last_edited" in response_data
+    assert "notes_ids" in response_data
+    assert "notes_count" in response_data
 
 
 def test_get_tags():
@@ -270,15 +274,12 @@ def test_get_tags():
         assert "tag" in tag_response
         assert "user_id" in tag_response
 
-    
+
 def test_post_tags():
     auth_data = get_auth_data()
     new_tag = "gaming"
 
-    payload = {
-        "tag": new_tag,
-        "user_id": 1
-    }
+    payload = {"tag": new_tag, "user_id": 1}
     response = requests.post(
         "http://127.0.0.1:6000/v1/tags",
         headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
@@ -314,10 +315,7 @@ def test_delete_tags():
     auth_data = get_auth_data()
     to_delete = "gaming"
 
-    payload = {
-        "tag": to_delete,
-        "user_id": 1
-    }
+    payload = {"tag": to_delete, "user_id": 1}
     response = requests.delete(
         "http://127.0.0.1:6000/v1/tags",
         headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
