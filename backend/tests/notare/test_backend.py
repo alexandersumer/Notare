@@ -214,29 +214,27 @@ def test_get_videos():
         assert "notes_count" in video_response
 
 
-# TODO: Fix this test
-# def test_post_videos_video_id_tag():
-#     auth_data = get_auth_data()
-#     payload = {"user_id": 1, "tag": "new_tag"}
-#     response = requests.post(
-#         "http://127.0.0.1:6000/v1/videos/LlW7Es7gStA",
-#         headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
-#         json=payload,
-#     )
+def test_post_videos_video_id_tag():
+    auth_data = get_auth_data()
+    payload = {"user_id": 1, "tag": "romance"}
+    response = requests.post(
+        "http://127.0.0.1:6000/v1/videos/LlW7Es7gStA/tag",
+        headers={"Authorization": f"Bearer {auth_data['accessToken']}"},
+        json=payload,
+    )
 
-#     print(response.text)
-
-#     assert response.status_code == 200
-#     response_data = json.loads(response.text)
-#     assert "video_id" in response_data
-#     assert "user_id" in response_data
-#     assert "video_title" in response_data
-#     assert "categories" in response_data
-#     assert response_data["categories"] == "new_tag"
-#     assert "time_created" in response_data
-#     assert "last_edited" in response_data
-#     assert "notes_ids" in response_data
-#     assert "notes_count" in response_data
+    assert response.status_code == 200
+    response_data = json.loads(response.text)
+    assert "videos" in response_data
+    for video_response in response_data["videos"]:
+        assert "video_id" in video_response
+        assert "user_id" in video_response
+        assert "video_title" in video_response
+        assert "categories" in video_response
+        assert "time_created" in video_response
+        assert "last_edited" in video_response
+        assert "notes_ids" in video_response
+        assert "notes_count" in video_response
 
 
 def test_get_tags():
