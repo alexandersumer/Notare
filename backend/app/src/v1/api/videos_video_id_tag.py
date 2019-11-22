@@ -15,8 +15,8 @@ import sqlite3
 class VideosVideoIdTag(Resource):
     @jwt_required
     def post(self, video_id):
-        print(g.json)
-        print(g.headers)
+        # print(g.json)
+        # print(g.headers)
 
         for param in ["tag", "user_id"]:
             if param not in g.json:
@@ -30,7 +30,7 @@ class VideosVideoIdTag(Resource):
         tags_entries = c.fetchall()
         conn.close()
         if g.json["tag"] != "No Tag" and len(tags_entries) == 0:
-            print(f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}")
+            # print(f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}")
             return (
                 {
                     "errorMessage": f"tag {g.json['tag']} doesn't exist for user {g.json['user_id']}"
@@ -56,7 +56,7 @@ class VideosVideoIdTag(Resource):
             conn.commit()
             conn.close()
         else:  # update the videos tag
-            print(f"Updating {video_id} to {g.json['tag']}")
+            # print(f"Updating {video_id} to {g.json['tag']}")
             SQL = f"UPDATE videos SET categories=? WHERE video_id=? and user_id=?;"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
@@ -64,7 +64,7 @@ class VideosVideoIdTag(Resource):
             conn.commit()
             conn.close()
 
-        print("successfuly set tag")
+        # print("successfuly set tag")
         response = {
             "message": f"successfully set tag {g.json['tag']} for video {video_id}"
         }

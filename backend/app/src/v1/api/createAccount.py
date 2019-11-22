@@ -21,7 +21,7 @@ import hashlib
 
 class Createaccount(Resource):
     def post(self):
-        print(g.json)
+        # print(g.json)
 
         for param in ["email", "password"]:
             if param not in g.json:
@@ -42,7 +42,7 @@ class Createaccount(Resource):
         conn.close()
         user_id = None
         if len(user) == 0:
-            print(f"No user with email {g.json['email']} in database. creating")
+            # print(f"No user with email {g.json['email']} in database. creating")
             # create the user
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
@@ -60,7 +60,7 @@ class Createaccount(Resource):
             c.execute(SQL, ())
             user_id = c.fetchall()[0][0]
             conn.close()
-            print(f"Created with user id {user_id}")
+            # print(f"Created with user id {user_id}")
         else:
             # user already exists
             return {"errorMessage": "Invalid Email or Password"}, 400

@@ -9,6 +9,7 @@ import v1
 import os
 import sqlite3
 import hashlib
+import sys
 
 notes = [
     [1, "this is the note", 1, "LlW7Es7gStA", 2.5, 1573010001000000, 1573010001000000],
@@ -148,16 +149,16 @@ def create_db():
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
             entries = cur.fetchall()
-            print(entries)
+            # print(entries)
             cur.execute("""SELECT * FROM videos""")
             entries = cur.fetchall()
-            print(entries)
+            # print(entries)
             cur.execute("""SELECT * FROM users""")
             entries = cur.fetchall()
-            print(entries)
+            # print(entries)
             cur.execute("""SELECT * FROM tags""")
             entries = cur.fetchall()
-            print(entries)
+            # print(entries)
 
         except sqlite3.Error as e:
             print(e)
@@ -193,4 +194,4 @@ def create_app():
 
 if __name__ == "__main__":
     create_db()
-    create_app().run(host="127.0.0.1", port="5000", debug=True)
+    create_app().run(host="127.0.0.1", port=(sys.argv[1] if len(sys.argv) > 1 else "5000"), debug=False)

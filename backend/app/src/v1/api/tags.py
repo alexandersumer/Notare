@@ -14,8 +14,8 @@ import sqlite3
 class Tags(Resource):
     @jwt_required
     def get(self):
-        print(g.headers)
-        print(g.args)
+        # print(g.headers)
+        # print(g.args)
 
         data = []
         query_ops = ""
@@ -44,8 +44,8 @@ class Tags(Resource):
 
     @jwt_required
     def post(self):
-        print(g.json)
-        print(g.headers)
+        # print(g.json)
+        # print(g.headers)
 
         for param in ["tag", "user_id"]:
             if param not in g.json:
@@ -59,7 +59,7 @@ class Tags(Resource):
         tags_entries = c.fetchall()
         conn.close()
         if len(tags_entries) != 0:
-            print(f"tag {g.json['tag']} already exists for user {g.json['user_id']}")
+            # print(f"tag {g.json['tag']} already exists for user {g.json['user_id']}")
             return (
                 {
                     "errorMessage": f"tag {g.json['tag']} already exists for user {g.json['user_id']}"
@@ -80,8 +80,8 @@ class Tags(Resource):
 
     @jwt_required
     def delete(self):
-        print(g.json)
-        print(g.headers)
+        # print(g.json)
+        # print(g.headers)
 
         for param in ["tag", "user_id"]:
             if param not in g.json:
@@ -95,9 +95,9 @@ class Tags(Resource):
         tags_entries = c.fetchall()
         conn.close()
         if len(tags_entries) == 0:
-            print(
-                f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"
-            )
+            # print(
+            #     f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"
+            # )
             return (
                 {
                     "errorMessage": f"category {g.json['tag']} doesn't exist for user {g.json['user_id']}"

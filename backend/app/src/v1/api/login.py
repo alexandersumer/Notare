@@ -20,7 +20,7 @@ import hashlib
 
 class Login(Resource):
     def post(self):
-        print(g.json)
+        # print(g.json)
 
         for param in ["email", "password"]:
             if param not in g.json:
@@ -40,14 +40,14 @@ class Login(Resource):
         conn.close()
         user_id = None
         if len(user) == 0:
-            print(f"No user with email {g.json['email']} in database")
+            # print(f"No user with email {g.json['email']} in database")
             return {"errorMessage": "Invalid Email or Password"}, 400
         else:
             # verify email and password
             if hashlib.sha256(g.json["password"].encode()).hexdigest() != user[0][2]:
                 return {"errorMessage": "Invalid Email or Password"}, 400
             user_id = user[0][0]
-            print(f"user {g.json['email']} exists with id {user_id}")
+            # print(f"user {g.json['email']} exists with id {user_id}")
 
         # create access token for the user
         access_token = create_access_token(identity=g.json["email"])

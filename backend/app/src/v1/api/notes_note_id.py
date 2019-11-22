@@ -29,9 +29,9 @@ db_mapping = {
 class NotesNoteId(Resource):
     @jwt_required
     def get(self, note_id):
-        print(g.headers)
+        # print(g.headers)
         current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        # print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
 
@@ -61,10 +61,10 @@ class NotesNoteId(Resource):
 
     @jwt_required
     def put(self, note_id):
-        print(g.json)
-        print(g.headers)
+        # print(g.json)
+        # print(g.headers)
         current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        # print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"
@@ -125,9 +125,9 @@ class NotesNoteId(Resource):
 
     @jwt_required
     def delete(self, note_id):
-        print(g.headers)
+        # print(g.headers)
         current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        # print(f"CURRENT USER: {current_user}")
         conn = sqlite3.connect("database.db")
         c = conn.cursor()
         SQL = f"SELECT * FROM notes where id=?;"
