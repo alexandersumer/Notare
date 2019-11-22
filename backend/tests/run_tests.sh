@@ -29,7 +29,7 @@ python3 -q ../app/src/__init__.py 6000 &
 
 sleep 1
 
-pytest -vs Notare
+pytest -vs notare
 
 rm database.db
 
