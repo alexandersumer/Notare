@@ -121,16 +121,15 @@ class CreateAccount extends React.Component<
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
                   >
-                    Register
+                    Sign up
                   </Button>
                 </Box>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
                     <br />
                     <Link href="/Login" variant="body1">
-                      {"Already have an account? Login"}
+                      {"Already have an account? Log in"}
                     </Link>
                   </Grid>
                 </Grid>

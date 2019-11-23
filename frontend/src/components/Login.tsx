@@ -86,7 +86,7 @@ class Login extends React.Component<
                 <Box p={1}>
                   {" "}
                   <Typography component="h1" variant="h5">
-                    Login
+                    Log in
                   </Typography>
                 </Box>
               </Grid>
@@ -120,16 +120,16 @@ class Login extends React.Component<
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
-                    Sign In
+                    Log in
                   </Button>
                 </Box>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
                     <br />
                     <Link href="/CreateAccount" variant="body1">
-                      {"Don't have an account? Register"}
+                      {"Don't have an account? Sign up"}
                     </Link>
                   </Grid>
                 </Grid>
