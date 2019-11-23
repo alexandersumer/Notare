@@ -51,6 +51,5 @@ export const editNote = async (params: editNotesParams): Promise<void> => {
   if (!!params && !!params.note_id)
     return putRequest(`/notes/${params.note_id}`, params);
   else {
-    //console.log("params for edit note is invalid, params: ", params);
   }
 };

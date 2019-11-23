@@ -7,8 +7,8 @@ import { login, logout } from "../api/login";
 import NoteTakingBox from "./NotetakingBox";
 import AuthService from "../utils/AuthService";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { BACKGROUND_COLOR } from "../colorConstants";
 import { DOMAIN_URL } from "../constants";
+import { BACKGROUND_COLOR, RED_COLOR } from "../colorConstants";
 
 interface Props {
   video: HTMLMediaElement;
@@ -19,6 +19,7 @@ interface State {
   password: string;
   isAuthenticated: boolean;
   email: string;
+  errorMessage: string;
 }
 
 const StyledWrapper = materialStyled(Box)({
@@ -37,19 +38,22 @@ export default class NoteItem extends React.Component<Props, State> {
     emailTextBox: "",
     password: "",
     isAuthenticated: false,
-    email: ""
+    email: "",
+    errorMessage: ""
   };
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await AuthService.authenticate(
-      this.state.emailTextBox,
-      this.state.password
-    );
-    const isAuthenticated = AuthService.isAuthenticated;
-    const email = await AuthService.email();
-    if (isAuthenticated) this.setState({ isAuthenticated: true, email });
+    const responseText = await AuthService.authenticate(this.state.emailTextBox, this.state.password);
+    if (responseText === "") {
+      const isAuthenticated = AuthService.isAuthenticated;
+      const email = await AuthService.email();
+      if (isAuthenticated) this.setState({ isAuthenticated: true, email});
+    } else {
+      this.setState({ errorMessage: responseText });
+    }
   };
+
 
   handleEmailChange = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -72,7 +76,7 @@ export default class NoteItem extends React.Component<Props, State> {
       await logout();
     } finally {
       await AuthService.logout(); // delete from storage
-      this.setState({ isAuthenticated: false });
+      this.setState({ isAuthenticated: false, errorMessage: "" });
     }
   };
   renderMain = () => {
@@ -103,6 +107,9 @@ export default class NoteItem extends React.Component<Props, State> {
             fullWidth
           />
         </Box>
+        <Box>
+          <p style={{ fontSize: 11, color: RED_COLOR, padding: 3 }}>{this.state.errorMessage}</p>
+        </Box>
         <Box mt={2}>
           <Button onClick={this.login} variant="contained">
             Log in
@@ -127,7 +134,7 @@ export default class NoteItem extends React.Component<Props, State> {
   async componentDidMount() {
     const isAuthenticated = await AuthService.isAuthenticated();
     const email = await AuthService.email();
-    this.setState({ isAuthenticated, email });
+    this.setState({ isAuthenticated, email, errorMessage: "" });
   }
 
   render() {

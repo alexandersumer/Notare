@@ -23,20 +23,25 @@ const getEmail = async (): Promise<string> => {
   return "" + email;
 };
 
+
+
 const AuthService = {
   isAuthenticated,
   accessToken: getAccessToken,
   userId: getUserId,
   email: getEmail,
-  async authenticate(email: string, password: string) {
-    const response = await login({ email: email, password: password });
-    if (response) {
+  async authenticate(email: string, password: string): Promise<string>  {
+    const response = await login({ email, password });
+    if (typeof response === "string") {
+      return response
+    } else {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
       this.userId = response.user_id;
       await LocalStorage.setItem({ accessToken: response.accessToken });
       await LocalStorage.setItem({ userId: response.user_id });
       await LocalStorage.setItem({ email: email });
+      return "";
     }
   },
   async logout() {
