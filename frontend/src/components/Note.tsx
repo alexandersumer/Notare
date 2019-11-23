@@ -23,19 +23,6 @@ interface Props {
 const Note = (props: Props) => {
   const { noteData, thumbNail, youtubeLink } = props;
 
-  const renderNotesLink = () => (
-    <Box
-      m={2}
-      display="flex"
-      alignItems="center"
-      style={{ whiteSpace: "nowrap" }}
-    >
-      <YoutubeLink videoId={noteData.video_id} timestamp={noteData.timestamp}>
-        [Go to Video]
-      </YoutubeLink>
-    </Box>
-  );
-
   return (
     <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
       {thumbNail && (
@@ -55,7 +42,6 @@ const Note = (props: Props) => {
         <Box p={1} display="flex" alignItems="center" flexGrow={1}>
           {noteData.note}
         </Box>
-        {youtubeLink && renderNotesLink()}
       </NoteStyle>
     </Box>
   );
