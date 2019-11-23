@@ -15,14 +15,18 @@ import {
   RouteComponentProps,
   Redirect
 } from "react-router-dom";
+import { RED_COLOR } from "../colorConstants";
+
 
 interface CreateProps {
   onCreateAccount: Function;
+  onCheckAuth: Function;
   isAuthenticated: boolean;
 }
 interface CreateState {
   email: string;
   password: string;
+  errorMessage: string;
 }
 
 class CreateAccount extends React.Component<
@@ -33,14 +37,20 @@ class CreateAccount extends React.Component<
     super(props, state);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      errorMessage: "",
     };
   }
 
-  createAccount = (event: React.SyntheticEvent) => {
+  createAccount = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const { email, password } = this.state;
-    this.props.onCreateAccount(email, password);
+    const response = await this.props.onCreateAccount(email, password);
+    if (response !== "") {
+      this.setState({ errorMessage: response });  
+    } else {
+      this.props.onCheckAuth();
+    }
   };
 
   updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -126,6 +136,11 @@ class CreateAccount extends React.Component<
                     Register
                   </Button>
                 </Box>
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                   <p style={{ color: RED_COLOR }}>{this.state.errorMessage}</p>
+                  </Grid>
+                </Grid>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
                     <br />
