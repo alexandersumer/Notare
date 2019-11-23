@@ -1,7 +1,11 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { GREY_COLOR, RED_COLOR, PINK_COLOR } from "../colorConstants";
+import {
+  DARK_GREY_COLOR,
+  RED_COLOR,
+  LIGHT_PINK_COLOR
+} from "../colorConstants";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import {
@@ -19,7 +23,7 @@ import VideoComponent from "../components/Video";
 import Container from "../components/Container";
 
 const GreyFont = materialStyled(Box)({
-  color: GREY_COLOR
+  color: DARK_GREY_COLOR
 });
 
 interface Props {
@@ -71,6 +75,14 @@ class VideoPage extends React.Component<Props> {
     await this.getCategories();
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const { categories, deleteMode } = this.state;
+    if (categories.length !== prevState.categories.length) {
+      if (categories.length === 0 && deleteMode)
+        this.setState({ deleteMode: false });
+    }
+  }
+
   updateSearchedVideos(searchedVideos: Array<VideoType>) {
     this.setState({ searchedVideos: searchedVideos });
   }
@@ -118,17 +130,21 @@ class VideoPage extends React.Component<Props> {
       <Box>
         <Box display="flex" flexDirection="row">
           <Box mb={1}>
-            <h4 style={{ color: GREY_COLOR }}>Your Categories</h4>
+            <h4 style={{ color: DARK_GREY_COLOR }}>Your Categories</h4>
           </Box>
-          <Box ml={2}>
-            <Button
-              size="sm"
-              variant={deleteMode ? "success" : "secondary"}
-              onClick={this.onToggleDeleteMode.bind(this)}
-            >
-              {deleteMode ? "Finish Deleting" : "Delete Categories"}
-            </Button>
-          </Box>
+          {categories.length ? (
+            <Box ml={2}>
+              <Button
+                size="sm"
+                variant={deleteMode ? "success" : "secondary"}
+                onClick={this.onToggleDeleteMode.bind(this)}
+              >
+                {deleteMode ? "Finish Deleting" : "Delete Categories"}
+              </Button>
+            </Box>
+          ) : (
+            ""
+          )}
         </Box>
 
         <Box display="flex" flexDirection="row" alignItems="center">
@@ -143,7 +159,7 @@ class VideoPage extends React.Component<Props> {
               onDeleteCategory={this.onDeleteCategory.bind(this)}
             />
           ))}
-          {!deleteMode && (
+          {(!deleteMode || !categories.length) && (
             <AddCategory onAdd={this.onAddNewCategory.bind(this)} />
           )}
         </Box>
@@ -183,6 +199,7 @@ class VideoPage extends React.Component<Props> {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box p={1} />
           <Box>Looks like you have no videos yet!</Box>
         </Box>
       </GreyFont>

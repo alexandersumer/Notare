@@ -1,4 +1,6 @@
 import axios from "axios";
+import { AxiosResponse, AxiosError } from "axios";
+import { conditionalExpression } from "@babel/types";
 
 const backendapi = axios.create({
   baseURL: "http://127.0.0.1:5000/v1"
@@ -18,32 +20,30 @@ export const getRequest = async (route: string, params: any) => {
   }
 };
 
-export const login = async (route: string, body: any) => {
-  console.log(body);
+// returns object, or a string
+export const noHeaderPost = async (route: string, body: any) => {
   const response = await backendapi.post(route, {
     email: body.email,
     password: body.password
+  }).then(response => {
+      if (response.status === 200) {
+        return response.data;
+      }
+    }
+  ).catch((reason: AxiosError) => {
+    if (reason.response!.status === 400) {
+      // Handle 400
+      if (reason.response!.data.errorMessage === "Invalid Email") {
+        return "Invalid Email Format";
+      } else if (reason.response!.data.errorMessage === "User Already Exists") {
+        return "User Already Exists";
+      } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
+        return "Invalid Email or Password";
+      }
+      return "There is a problem with our backend service";
+    };
   });
-
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    return undefined;
-  }
-};
-
-export const createAccount = async (route: string, body: any) => {
-  console.log(body);
-  const response = await backendapi.post(route, {
-    email: body.email,
-    password: body.password
-  });
-
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    return undefined;
-  }
+  return response;
 };
 
 export const logout = async (route: string) => {
@@ -59,7 +59,6 @@ export const logout = async (route: string) => {
 };
 
 export const postRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 
@@ -75,7 +74,6 @@ export const postRequest = async (route: string, params: any) => {
 };
 
 export const deleteRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   const Authorization = "Bearer " + accessToken;
 

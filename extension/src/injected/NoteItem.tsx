@@ -14,10 +14,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Box, Paper, IconButton, Link } from "@material-ui/core";
 
 const formatTimestamp = (seconds: number): string => {
-  const date = new Date(null);
+  let date = new Date(0);
   date.setSeconds(seconds);
-  const timeString = date.toISOString().substr(11, 8);
-  return timeString;
+  if (seconds >= 60 * 60) return date.toISOString().substr(11, 8);
+  return date.toISOString().substr(14, 5);
 };
 
 const StyledTextArea = styled.textarea`
@@ -142,11 +142,11 @@ export default class NoteItem extends React.Component<Props, State> {
       return (
         <Box display="flex" flexGrow={1}>
           <StyledTextArea
+            autoFocus
             maxLength={MAX_CHARS}
             value={this.state.textBoxValue}
             onChange={this.onTextBoxChange.bind(this)}
             onKeyDown={this.onTextBoxKeyDown.bind(this)}
-            onBlur={this.cancelEdit.bind(this)}
           />
         </Box>
       );
@@ -171,20 +171,12 @@ export default class NoteItem extends React.Component<Props, State> {
     if (this.state.inEditMode) {
       return (
         <Box display="flex" flexDirection="column">
-          <MyIconButton
-            aria-label="delete"
-            onClick={this.deleteNote.bind(this)}
-          >
-            <DeleteIcon fontSize="small" />
-          </MyIconButton>
-          <MyIconButton
-            aria-label="cancel"
-            onClick={this.cancelEdit.bind(this)}
-          >
-            <ClearIcon fontSize="small" />
-          </MyIconButton>
           <MyIconButton aria-label="done" onClick={this.saveEdit.bind(this)}>
-            <DoneIcon fontSize="small" />
+            <DoneIcon fontSize="default" />
+          </MyIconButton>
+
+          <MyIconButton aria-label="cancel" onClick={this.cancelEdit.bind(this)}>
+            <ClearIcon fontSize="default" />
           </MyIconButton>
         </Box>
       );
@@ -219,6 +211,14 @@ export default class NoteItem extends React.Component<Props, State> {
                   {formatTimestamp(timestamp)}
                 </Link>
               </Box>
+              {this.state.inEditMode ? (
+                <MyIconButton
+                  aria-label="delete"
+                  onClick={this.deleteNote.bind(this)}
+                >
+                  <DeleteIcon fontSize="default" />
+                </MyIconButton>
+              ) : null}
             </Box>
             <Box display="flex" flexGrow={1}>
               {this.renderMainBox()}

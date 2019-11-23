@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { GREY_COLOR, RED_COLOR } from "../colorConstants";
+import { DARK_GREY_COLOR, RED_COLOR } from "../colorConstants";
 import { getNotes } from "../api/notes";
 import { NoteType } from "../types";
 import Note from "../components/Note";
@@ -18,7 +18,7 @@ interface State {
 }
 
 const GreyFont = materialStyled(Box)({
-  color: GREY_COLOR
+  color: DARK_GREY_COLOR
 });
 
 class NotePage extends React.Component<Props, State> {
@@ -68,6 +68,7 @@ class NotePage extends React.Component<Props, State> {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box p={1} />
           <Box>Looks like you have no notes yet!</Box>
         </Box>
       </GreyFont>

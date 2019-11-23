@@ -12,7 +12,6 @@ import { RouteComponentProps } from "react-router-dom";
 import Search from "../components/Search";
 import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
-import Button from "react-bootstrap/Button";
 import { formatTimestamp } from "../utils/stringUtils";
 import Dropdown from "react-bootstrap/Dropdown";
 
@@ -98,8 +97,9 @@ class VideoNotesPage extends React.Component<Props, State> {
           flexDirection="column"
           flexGrow={1}
         >
+          <Box p={1} />
           <Box display="flex" flexGrow={1}>
-            No notes for this video :(
+            Looks like you have no notes for this video yet!
           </Box>
         </FontStyleComponent>
       );

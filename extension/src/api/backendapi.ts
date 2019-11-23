@@ -1,6 +1,7 @@
 import axios from "axios";
 import LocalStorage from "../utils/LocalStorage";
 import { DOMAIN_URL } from "../constants";
+import { AxiosResponse, AxiosError } from 'axios'
 
 const backendapi = axios.create({
   baseURL: DOMAIN_URL + ":5000/v1"
@@ -8,7 +9,6 @@ const backendapi = axios.create({
 
 const setToken = async () => {
   const accessToken = await LocalStorage.getItem("accessToken");
-  console.log("token is:", accessToken);
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 };
 
@@ -36,11 +36,11 @@ export const postRequest = async (route: string, params) => {
   params.user_id = userId;
   const response = await backendapi.post(route, params);
 
-  if (response.status == 201) {
-    console.log(`post to ${route} successful.`);
-  } else {
-    console.log(`post to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 201) {
+  //   console.log(`post to ${route} successful.`);
+  // } else {
+  //   console.log(`post to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const putRequest = async (route: string, params) => {
@@ -50,38 +50,49 @@ export const putRequest = async (route: string, params) => {
   params.user_id = userId;
   const response = await backendapi.put(route, params);
 
-  if (response.status == 200) {
-    console.log(`put to ${route} successful`);
-  } else {
-    console.log(`put to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 200) {
+  //   console.log(`put to ${route} successful`);
+  // } else {
+  //   console.log(`put to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const deleteRequest = async (route: string) => {
-  console.log("deleteRequest called with route: ", route);
+  // console.log("deleteRequest called with route: ", route);
   await setToken();
   const response = await backendapi.delete(route);
 
-  if (response.status == 200) {
-    console.log(`delete to ${route} successful`);
-  } else {
-    console.log(`delete to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 200) {
+  //   console.log(`delete to ${route} successful`);
+  // } else {
+  //   console.log(`delete to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const loginRequest = async (route: string, body: any) => {
-  console.log("loginRequest body:", body);
+  // console.log("loginRequest body:", body);
   const response = await backendapi.post(route, {
     email: body.email,
     password: body.password
+  }).then(response => {
+    if (response.status === 200) {
+      return response.data;
+    }
+  }).catch((reason: AxiosError) => {
+    if (reason.response!.status === 400) {
+      // Handle 400
+      if (reason.response!.data.errorMessage === "Invalid Email") {
+        return "Invalid Email Format";
+      } else if (reason.response!.data.errorMessage === "User Already Exists") {
+        return "User Already Exists";
+      } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
+        return "Invalid Email or Password";
+      }
+      return "400 error"
+    } 
+    return "There is a problem with our backend service"
   });
-
-  console.log("loginRequest response:", response);
-  if (response.status == 200) {
-    return response.data;
-  } else {
-    return undefined;
-  }
+  return response;
 };
 
 export const logoutRequest = async (route: string) => {

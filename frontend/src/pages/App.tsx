@@ -34,29 +34,35 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  async authenticate(email: string, password: string) {
+  async authenticate(email: string, password: string): Promise<string> {
     const response = await postLogin({ email: email, password: password });
-    if (response) {
+    if (typeof response === "string") {
+      return response
+    } else {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
       this.userId = response.user_id;
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
+      return "";
     }
   },
-  async createAccount(email: string, password: string) {
+  async createAccount(email: string, password: string): Promise<string> {
     const response = await postCreateAccount({
       email: email,
       password: password
     });
-    if (response) {
+    if (typeof response === "string") {
+      return response;
+    } else {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
       this.userId = response.user_id;
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
+      return "";
     }
   },
   async logout() {
@@ -115,14 +121,16 @@ class App extends React.Component<{}, State> {
   }
 
   async onLogin(email: string, password: string) {
-    await AuthService.authenticate(email, password);
-    this.setState({
-      isAuthenticated: AuthService.isAuthenticated
-    });
+    const responseString = await AuthService.authenticate(email, password);
+    return responseString;
   }
 
-  async onCreateAccount(email: string, password: string) {
-    await AuthService.createAccount(email, password);
+  async onCreateAccount(email: string, password: string): Promise<string> {
+    const responseString = await AuthService.createAccount(email, password);
+    return responseString;
+  }
+
+  async onCheckAuth() {
     this.setState({
       isAuthenticated: AuthService.isAuthenticated
     });
@@ -183,6 +191,7 @@ class App extends React.Component<{}, State> {
                 <Login
                   {...routeProps}
                   onLogin={this.onLogin.bind(this)}
+                  onCheckAuth={this.onCheckAuth.bind(this)}
                   isAuthenticated={isAuthenticated}
                 />
               )}
@@ -195,6 +204,7 @@ class App extends React.Component<{}, State> {
                 <CreateAccount
                   {...routeProps}
                   onCreateAccount={this.onCreateAccount.bind(this)}
+                  onCheckAuth={this.onCheckAuth.bind(this)}
                   isAuthenticated={isAuthenticated}
                 />
               )}

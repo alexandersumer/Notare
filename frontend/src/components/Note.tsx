@@ -3,14 +3,14 @@ import Box from "@material-ui/core/Box";
 import Thumbnail from "./Thumbnail";
 import { NoteType } from "../types";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { PINK_COLOR } from "../colorConstants";
+import { LIGHT_PINK_COLOR } from "../colorConstants";
 import { Link as RouterLink } from "react-router-dom";
 import YoutubeLink from "./YoutubeLink";
 import { formatTimestamp } from "../utils/stringUtils";
 
 const NoteStyle = materialStyled(Box)({
   height: "80px",
-  backgroundColor: PINK_COLOR,
+  backgroundColor: LIGHT_PINK_COLOR,
   borderRadius: "5px"
 });
 
@@ -22,19 +22,6 @@ interface Props {
 
 const Note = (props: Props) => {
   const { noteData, thumbNail, youtubeLink } = props;
-
-  const renderNotesLink = () => (
-    <Box
-      m={2}
-      display="flex"
-      alignItems="center"
-      style={{ whiteSpace: "nowrap" }}
-    >
-      <YoutubeLink videoId={noteData.video_id} timestamp={noteData.timestamp}>
-        [Go to Video]
-      </YoutubeLink>
-    </Box>
-  );
 
   return (
     <Box display="flex" flexDirection="row" mb={2} flexGrow={1}>
@@ -55,7 +42,6 @@ const Note = (props: Props) => {
         <Box p={1} display="flex" alignItems="center" flexGrow={1}>
           {noteData.note}
         </Box>
-        {youtubeLink && renderNotesLink()}
       </NoteStyle>
     </Box>
   );

@@ -1,53 +1,63 @@
 import * as React from "react";
-import styled from "styled-components";
-import { login, logout } from "../api/login";
-import NoteTakingBox from "./NotetakingBox";
-import AuthService from "../utils/AuthService";
-import { BACKGROUND_COLOR } from "../colorConstants";
-import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
+import TextField from "@material-ui/core/TextField";
+import { login, logout } from "../api/login";
+import NoteTakingBox from "./NotetakingBox";
+import AuthService from "../utils/AuthService";
+import { styled as materialStyled } from "@material-ui/core/styles";
 import { DOMAIN_URL } from "../constants";
+import { BACKGROUND_COLOR, RED_COLOR } from "../colorConstants";
 
 interface Props {
   video: HTMLMediaElement;
 }
 
 interface State {
-  email: string;
+  emailTextBox: string;
   password: string;
   isAuthenticated: boolean;
+  email: string;
+  errorMessage: string;
 }
 
-const StyledWrapper = styled.div`
-  background-color: ${BACKGROUND_COLOR};
-  font-size: 20px;
-  height: 500px;
-  width: 300px;
-  padding: 20px;
-`;
+const StyledWrapper = materialStyled(Box)({
+  background: BACKGROUND_COLOR,
+  fontSize: 20,
+  height: 500,
+  width: 300,
+  padding: 20
+});
 
 export default class NoteItem extends React.Component<Props, State> {
   constructor(props: Props, state: State) {
     super(props, state);
   }
   state = {
-    email: "",
+    emailTextBox: "",
     password: "",
-    isAuthenticated: false
+    isAuthenticated: false,
+    email: "",
+    errorMessage: ""
   };
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await AuthService.authenticate(this.state.email, this.state.password);
-    const isAuthenticated = AuthService.isAuthenticated;
-    if (isAuthenticated) this.setState({ isAuthenticated: true });
+    const responseText = await AuthService.authenticate(this.state.emailTextBox, this.state.password);
+    if (responseText === "") {
+      const isAuthenticated = AuthService.isAuthenticated;
+      const email = await AuthService.email();
+      if (isAuthenticated) this.setState({ isAuthenticated: true, email});
+    } else {
+      this.setState({ errorMessage: responseText });
+    }
   };
+
 
   handleEmailChange = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    this.setState({ email: (event.target as HTMLInputElement).value });
+    this.setState({ emailTextBox: (event.target as HTMLInputElement).value });
   };
 
   handlePasswordKeydown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -62,83 +72,104 @@ export default class NoteItem extends React.Component<Props, State> {
   };
 
   onLogout = async () => {
-    console.log("Logging out");
     try {
       await logout();
     } finally {
       await AuthService.logout(); // delete from storage
-      this.setState({ isAuthenticated: false });
+      this.setState({ isAuthenticated: false, errorMessage: "" });
     }
   };
   renderMain = () => {
     if (this.state.isAuthenticated) {
       return <NoteTakingBox video={this.props.video} />;
     }
+
     return (
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box p={1}>
-          <h3>Log in to your account</h3>
+        <Box mt={1} style={{ fontSize: 15 }}>
+          Log in to your Notare account
         </Box>
-        <Box p={1}>
+        <Box mt={2} style={{ width: 200 }}>
           <TextField
             label="Email"
             variant="filled"
             onChange={this.handleEmailChange}
+            fullWidth
           />
         </Box>
-        <Box p={1}>
+        <Box mt={2} style={{ width: 200 }}>
           <TextField
             type="password"
             label="Password"
             variant="filled"
             onChange={this.handlePasswordChange}
             onKeyDown={this.handlePasswordKeydown}
+            fullWidth
           />
         </Box>
         <Box>
+          <p style={{ fontSize: 11, color: RED_COLOR, padding: 3 }}>{this.state.errorMessage}</p>
+        </Box>
+        <Box mt={2}>
           <Button onClick={this.login} variant="contained">
             Log in
           </Button>
         </Box>
-        <Box p={1}>
-          <h3>Don't have an account? Sign up HERE</h3>
+        <Box
+          display="flex"
+          flexDirection="column"
+          mt={2}
+          justifyContent="center"
+          style={{ fontSize: 14, textAlign: "center" }}
+        >
+          Don't have an account?
+          <Link href={DOMAIN_URL + ":3000"} target="_blank">
+            Sign up here
+          </Link>
         </Box>
       </Box>
     );
   };
 
   async componentDidMount() {
-    console.log("Injected is mounted!");
     const isAuthenticated = await AuthService.isAuthenticated();
-    console.log("isAuthenticaed = ", isAuthenticated);
-    this.setState({ isAuthenticated });
+    const email = await AuthService.email();
+    this.setState({ isAuthenticated, email, errorMessage: "" });
   }
 
   render() {
-    console.log(`is authenticate ${this.state.isAuthenticated}`);
     return (
       <StyledWrapper>
-        <Box display="flex" mb={1}>
-          {this.state.isAuthenticated && (
-            <button onClick={() => this.onLogout()}>Log out</button>
-          )}
+        <Box display="flex">
           <Box display="flex" justifyContent="left">
+            <Link href={DOMAIN_URL + ":3000"} target="_blank">
               <img
-                width={"120px"}
+                width={"30px"}
                 height={"30px"}
-                src={chrome.runtime.getURL("NotareWord.png")}
+                src={chrome.runtime.getURL("NotareCircleTransparent.png")}
               />
-          </Box>
-          <Box flexGrow={1} />
-          <Box display="flex" justifyContent="right">
-            <Link href={DOMAIN_URL+":3000"} target="_blank">
-            <img
-              width={"30px"}
-              height={"30px"}
-              src={chrome.runtime.getURL("NotareCircleTransparent.png")}
-            />
             </Link>
           </Box>
+          <Box flexGrow={1} />
+
+          {this.state.isAuthenticated && (
+            <Box
+              display="flex"
+              justifyContent="right"
+              flexDirection="column"
+              style={{ fontSize: 12, textAlign: "right" }}
+            >
+              <Box>{this.state.email}</Box>
+              <Box mr={1}>
+                <Link
+                  style={{ cursor: "pointer" }}
+                  onClick={() => this.onLogout()}
+                >
+                  Log out
+                </Link>
+              </Box>
+            </Box>
+          )}
         </Box>
         {this.renderMain()}
       </StyledWrapper>

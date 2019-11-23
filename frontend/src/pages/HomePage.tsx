@@ -2,8 +2,11 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { ORANGE_COLOR } from "../colorConstants";
+import { CHARCOAL_COLOR } from "../colorConstants";
 import Container from "../components/Container";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import Demo from "../Demo.png";
 
 export const Home = () => <h1></h1>;
 
@@ -21,32 +24,28 @@ class HomePage extends React.Component<Props> {
       <Box>
         {this.props.Navbar()}
         <Container>
-          <Box mt={5} display="flex" flexDirection="column" alignItems="center">
+          <Box mt={4} display="flex" flexDirection="column" alignItems="center">
+            <Box p={2} />
+            <Typography variant="h2">
+              What if you could take notes on YouTube?
+            </Typography>
+            <Box p={2} />
             <Box>
-              <h1>
-                What if you could take notes <i>on YouTube?</i>
-              </h1>
-            </Box>
-            <Box mt={3} style={{ color: ORANGE_COLOR }}>
+              <img width="993px" height="458px" src={Demo}/>
+           </Box>
+           <Box p={1} />
+            <Box mt={2} style={{ color: CHARCOAL_COLOR }}>
               <h4>
-                Meet Notare, a free Google Chrome extension made by sutdents to
-                help make learning online easier.
+                Meet <b>Notare</b>, a <b>free Google Chrome extension</b> made by students to
+                help <b>make learning online easier</b>.
               </h4>
             </Box>
-            <Box mt={3}>
-              <Button variant="contained" color="secondary">
-                Try Notare Now <GetAppIcon />
-              </Button>
-            </Box>
-            <Box mt={6}>
-              WARNING: May contain blood, sweat and tears from the following
-              individuals:
-            </Box>
-            <Box>
-              <b>
-                Alexander Jones | Daniel Brockwell | Guy Segev | Mitchell
-                Shelton
-              </b>
+            <Box mt={2}>
+              <Link href={"https://github.com/alexanderj2357/Notare/blob/develop/README.md"} target="_blank">
+                <Button variant="contained" color="secondary">
+                  Try Notare Now <GetAppIcon />
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Container>
