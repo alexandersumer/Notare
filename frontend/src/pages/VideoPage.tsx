@@ -71,6 +71,13 @@ class VideoPage extends React.Component<Props> {
     await this.getCategories();
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const {categories, deleteMode} = this.state;
+    if (categories.length !== prevState.categories.length) {
+      if (categories.length === 0 && deleteMode) this.setState({deleteMode: false})
+    }
+  }
+
   updateSearchedVideos(searchedVideos: Array<VideoType>) {
     this.setState({ searchedVideos: searchedVideos });
   }
@@ -120,15 +127,19 @@ class VideoPage extends React.Component<Props> {
           <Box mb={1}>
             <h4 style={{ color: DARK_GREY_COLOR }}>Your Categories</h4>
           </Box>
-          <Box ml={2}>
-            <Button
-              size="sm"
-              variant={deleteMode ? "success" : "secondary"}
-              onClick={this.onToggleDeleteMode.bind(this)}
-            >
-              {deleteMode ? "Finish Deleting" : "Delete Categories"}
-            </Button>
-          </Box>
+          {categories.length ? 
+            <Box ml={2}>
+              <Button
+                size="sm"
+                variant={deleteMode ? "success" : "secondary"}
+                onClick={this.onToggleDeleteMode.bind(this)}
+              >
+                {deleteMode ? "Finish Deleting" : "Delete Categories"}
+              </Button>
+            </Box>
+            :
+            ""
+          }
         </Box>
 
         <Box display="flex" flexDirection="row" alignItems="center">
@@ -143,7 +154,7 @@ class VideoPage extends React.Component<Props> {
               onDeleteCategory={this.onDeleteCategory.bind(this)}
             />
           ))}
-          {!deleteMode && (
+          {(!deleteMode || !categories.length) && (
             <AddCategory onAdd={this.onAddNewCategory.bind(this)} />
           )}
         </Box>
