@@ -44,16 +44,18 @@ export default class NoteItem extends React.Component<Props, State> {
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const responseText = await AuthService.authenticate(this.state.emailTextBox, this.state.password);
+    const responseText = await AuthService.authenticate(
+      this.state.emailTextBox,
+      this.state.password
+    );
     if (responseText === "") {
       const isAuthenticated = AuthService.isAuthenticated;
       const email = await AuthService.email();
-      if (isAuthenticated) this.setState({ isAuthenticated: true, email});
+      if (isAuthenticated) this.setState({ isAuthenticated: true, email });
     } else {
       this.setState({ errorMessage: responseText });
     }
   };
-
 
   handleEmailChange = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -108,7 +110,9 @@ export default class NoteItem extends React.Component<Props, State> {
           />
         </Box>
         <Box>
-          <p style={{ fontSize: 11, color: RED_COLOR, padding: 3 }}>{this.state.errorMessage}</p>
+          <p style={{ fontSize: 11, color: RED_COLOR, padding: 3 }}>
+            {this.state.errorMessage}
+          </p>
         </Box>
         <Box mt={2}>
           <Button onClick={this.login} variant="contained">
@@ -123,7 +127,7 @@ export default class NoteItem extends React.Component<Props, State> {
           style={{ fontSize: 14, textAlign: "center" }}
         >
           Don't have an account?
-          <Link href={DOMAIN_URL + ":3000"} target="_blank">
+          <Link href={DOMAIN_URL + ":3000/CreateAccount"} target="_blank">
             Sign up here
           </Link>
         </Box>
