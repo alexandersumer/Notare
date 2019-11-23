@@ -10,16 +10,15 @@ The follow instruction are for Mac and Linux computers.
 If you want to run the frontend, extension and backend together, follow these instructions:
 
 1. Clone the repository by running `git clone https://github.com/alexanderj2357/Notare`
-`git clone https://github.com/alexanderj2357/Notare`.
 2. Ensure you have the following software installed:
 - Python 3, can be installed from https://www.python.org/downloads/
 - virtualenv, can be installed using `python3 -m pip install virtualenv`
 - Node.js, can be installed from https://nodejs.org/en/download/
 - npm, can be installed from https://www.npmjs.com/get-npm/
 - yarn, can be installed from https://yarnpkg.com/lang/en/docs/install/
-3. Ensure you are in `Notare/`.
-4. Run `sh run_notare.sh` to run the frontend, backend and extension.
-5. If the extension is installed on Google Chrome, refresh it from [_chrome://extensions_](chrome://extensions) once the extension completes building.
+3. Ensure you are in `Notare/`
+4. Run `sh run_notare.sh` to run the frontend, backend and extension
+5. If the extension is installed on Google Chrome, refresh it from [_chrome://extensions_](chrome://extensions) once the extension completes building
 
 If you want to run the frontend, backend and extension separately, follow the instructions above and then open 3 separate shells and run the following in each shell:
 
