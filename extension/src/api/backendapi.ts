@@ -36,11 +36,11 @@ export const postRequest = async (route: string, params) => {
   params.user_id = userId;
   const response = await backendapi.post(route, params);
 
-  if (response.status == 201) {
-    console.log(`post to ${route} successful.`);
-  } else {
-    console.log(`post to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 201) {
+  //   console.log(`post to ${route} successful.`);
+  // } else {
+  //   console.log(`post to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const putRequest = async (route: string, params) => {
@@ -50,27 +50,27 @@ export const putRequest = async (route: string, params) => {
   params.user_id = userId;
   const response = await backendapi.put(route, params);
 
-  if (response.status == 200) {
-    console.log(`put to ${route} successful`);
-  } else {
-    console.log(`put to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 200) {
+  //   console.log(`put to ${route} successful`);
+  // } else {
+  //   console.log(`put to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const deleteRequest = async (route: string) => {
-  console.log("deleteRequest called with route: ", route);
+  // console.log("deleteRequest called with route: ", route);
   await setToken();
   const response = await backendapi.delete(route);
 
-  if (response.status == 200) {
-    console.log(`delete to ${route} successful`);
-  } else {
-    console.log(`delete to ${route} unsuccessful. status: `, response.status);
-  }
+  // if (response.status == 200) {
+  //   console.log(`delete to ${route} successful`);
+  // } else {
+  //   console.log(`delete to ${route} unsuccessful. status: `, response.status);
+  // }
 };
 
 export const loginRequest = async (route: string, body: any) => {
-  console.log("loginRequest body:", body);
+  // console.log("loginRequest body:", body);
   const response = await backendapi.post(route, {
     email: body.email,
     password: body.password

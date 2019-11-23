@@ -27,7 +27,7 @@ const StyledWrapper = materialStyled(Box)({
   fontSize: 20,
   height: 500,
   width: 300,
-  padding: 20,
+  padding: 20
 });
 
 export default class NoteItem extends React.Component<Props, State> {
@@ -86,8 +86,10 @@ export default class NoteItem extends React.Component<Props, State> {
 
     return (
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box mt={1} style={{ fontSize: 15 }}>Log in to your Notare account</Box>
-        <Box mt={2} style={{ width: 200}} >
+        <Box mt={1} style={{ fontSize: 15 }}>
+          Log in to your Notare account
+        </Box>
+        <Box mt={2} style={{ width: 200 }}>
           <TextField
             label="Email"
             variant="filled"
@@ -95,7 +97,7 @@ export default class NoteItem extends React.Component<Props, State> {
             fullWidth
           />
         </Box>
-        <Box mt={2} style={{ width: 200}} >
+        <Box mt={2} style={{ width: 200 }}>
           <TextField
             type="password"
             label="Password"
@@ -113,16 +115,23 @@ export default class NoteItem extends React.Component<Props, State> {
             Log in
           </Button>
         </Box>
-        <Box display="flex" flexDirection="column" mt={2} justifyContent="center" style={{ fontSize: 14, textAlign: "center" }}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          mt={2}
+          justifyContent="center"
+          style={{ fontSize: 14, textAlign: "center" }}
+        >
           Don't have an account?
-          <Link href={DOMAIN_URL+":3000"} target="_blank">Sign up here</Link>
+          <Link href={DOMAIN_URL + ":3000"} target="_blank">
+            Sign up here
+          </Link>
         </Box>
       </Box>
     );
   };
 
   async componentDidMount() {
-    console.log("Injected is mounted!");
     const isAuthenticated = await AuthService.isAuthenticated();
     const email = await AuthService.email();
     this.setState({ isAuthenticated, email, errorMessage: "" });
@@ -133,7 +142,7 @@ export default class NoteItem extends React.Component<Props, State> {
       <StyledWrapper>
         <Box display="flex">
           <Box display="flex" justifyContent="left">
-              <Link href={DOMAIN_URL + ":3000"} target="_blank">
+            <Link href={DOMAIN_URL + ":3000"} target="_blank">
               <img
                 width={"30px"}
                 height={"30px"}
@@ -142,12 +151,22 @@ export default class NoteItem extends React.Component<Props, State> {
             </Link>
           </Box>
           <Box flexGrow={1} />
-          
+
           {this.state.isAuthenticated && (
-            <Box display="flex" justifyContent="right" flexDirection="column" style={{fontSize: 12, textAlign: "right"}}>
+            <Box
+              display="flex"
+              justifyContent="right"
+              flexDirection="column"
+              style={{ fontSize: 12, textAlign: "right" }}
+            >
               <Box>{this.state.email}</Box>
               <Box mr={1}>
-                <Link style={{ cursor: "pointer"}} onClick={() => this.onLogout()}>Log out</Link>
+                <Link
+                  style={{ cursor: "pointer" }}
+                  onClick={() => this.onLogout()}
+                >
+                  Log out
+                </Link>
               </Box>
             </Box>
           )}

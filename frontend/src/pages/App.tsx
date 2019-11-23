@@ -37,8 +37,7 @@ export const AuthService = {
   async authenticate(email: string, password: string): Promise<string> {
     const response = await postLogin({ email: email, password: password });
     if (typeof response === "string") {
-      console.log("login failed setting errorMessage");
-      return response;
+      return response
     } else {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
@@ -55,7 +54,6 @@ export const AuthService = {
       password: password
     });
     if (typeof response === "string") {
-      console.log("login failed setting errorMessage");
       return response;
     } else {
       this.isAuthenticated = true;

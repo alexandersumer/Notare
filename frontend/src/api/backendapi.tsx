@@ -22,37 +22,27 @@ export const getRequest = async (route: string, params: any) => {
 
 // returns object, or a string
 export const noHeaderPost = async (route: string, body: any) => {
-  console.log(body);
-  const response = await backendapi
-    .post(route, {
-      email: body.email,
-      password: body.password
-    })
-    .then(response => {
+  const response = await backendapi.post(route, {
+    email: body.email,
+    password: body.password
+  }).then(response => {
       if (response.status === 200) {
         return response.data;
       }
-    })
-    .catch((reason: AxiosError) => {
-      console.log("reason", reason);
-      console.log("reason response", reason.response);
-      if (reason.response!.status === 400) {
-        // Handle 400
-        if (reason.response!.data.errorMessage === "Invalid Email") {
-          return "Invalid Email Format";
-        } else if (
-          reason.response!.data.errorMessage === "User Already Exists"
-        ) {
-          return "User Already Exists";
-        } else if (
-          reason.response!.data.errorMessage === "Invalid Email or Password"
-        ) {
-          return "Invalid Email or Password";
-        }
-        return "400 error";
+    }
+  ).catch((reason: AxiosError) => {
+    if (reason.response!.status === 400) {
+      // Handle 400
+      if (reason.response!.data.errorMessage === "Invalid Email") {
+        return "Invalid Email Format";
+      } else if (reason.response!.data.errorMessage === "User Already Exists") {
+        return "User Already Exists";
+      } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
+        return "Invalid Email or Password";
       }
       return "There is a problem with our backend service";
-    });
+    };
+  });
   return response;
 };
 
@@ -69,7 +59,6 @@ export const logout = async (route: string) => {
 };
 
 export const postRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 
@@ -85,7 +74,6 @@ export const postRequest = async (route: string, params: any) => {
 };
 
 export const deleteRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   const Authorization = "Bearer " + accessToken;
 
