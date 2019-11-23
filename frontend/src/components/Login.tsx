@@ -1,5 +1,4 @@
 import * as React from "react";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
   Box,
@@ -16,6 +15,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { RED_COLOR } from "../colorConstants";
+import NotareCircle from "../NotareCircle.png";
 
 
 interface LoginProps {
@@ -23,6 +23,7 @@ interface LoginProps {
   onCheckAuth: Function;
   isAuthenticated: boolean;
 }
+
 interface LoginState {
   email: string;
   password: string;
@@ -90,9 +91,9 @@ class Login extends React.Component<
               >
                 <Box p={1}>
                   {" "}
-                  <Avatar>
-                    <LockOutlinedIcon />
-                  </Avatar>
+                  <Box>
+                    <img width="35px" height="35px" src={NotareCircle} />
+                  </Box>
                 </Box>
                 <Box p={1}>
                   {" "}
