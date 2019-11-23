@@ -1,5 +1,4 @@
 import * as React from "react";
-import AddBoxOutlined from "@material-ui/icons/AddBoxOutlined";
 import {
   Avatar,
   Box,
@@ -16,6 +15,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { RED_COLOR } from "../colorConstants";
+import NotareCircle from "../NotareCircle.png";
 
 interface CreateProps {
   onCreateAccount: Function;
@@ -89,9 +89,9 @@ class CreateAccount extends React.Component<
               >
                 <Box p={1}>
                   {" "}
-                  <Avatar>
-                    <AddBoxOutlined />
-                  </Avatar>
+                  <Box>
+                    <img width="35px" height="35px" src={NotareCircle} />
+                  </Box>
                 </Box>
                 <Box p={1}>
                   {" "}
@@ -130,9 +130,8 @@ class CreateAccount extends React.Component<
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
                   >
-                    Register
+                    Sign up
                   </Button>
                 </Box>
                 <Grid container direction="column" alignItems="center">
@@ -146,7 +145,7 @@ class CreateAccount extends React.Component<
                   <Grid item>
                     <br />
                     <Link href="/Login" variant="body1">
-                      {"Already have an account? Login"}
+                      {"Already have an account? Log in"}
                     </Link>
                   </Grid>
                 </Grid>

@@ -3,14 +3,14 @@ import Box from "@material-ui/core/Box";
 import Thumbnail from "./Thumbnail";
 import { NoteType } from "../types";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { PINK_COLOR } from "../colorConstants";
+import { LIGHT_PINK_COLOR } from "../colorConstants";
 import { Link as RouterLink } from "react-router-dom";
 import YoutubeLink from "./YoutubeLink";
 import { formatTimestamp } from "../utils/stringUtils";
 
 const NoteStyle = materialStyled(Box)({
   height: "80px",
-  backgroundColor: PINK_COLOR,
+  backgroundColor: LIGHT_PINK_COLOR,
   borderRadius: "5px"
 });
 
