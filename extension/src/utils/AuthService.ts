@@ -24,16 +24,22 @@ const getEmail = async (): Promise<string> => {
   return "" + email;
 };
 
+
+
 const AuthService = {
   isAuthenticated,
   accessToken: getAccessToken,
   userId: getUserId,
   email: getEmail,
-  async authenticate(email: string, password: string) {
-    const response = await login({ email: email, password: password });
+  async authenticate(email: string, password: string): Promise<string>  {
+    const response = await login({ email, password });
     console.log("authenticate response", response);
     console.log(response);
-    if (response) {
+    if (typeof response === "string") {
+      console.log("login failed setting errorMessage");
+      console.log(response);
+      return response
+    } else {
       console.log("authenticating and saving here!");
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
@@ -41,6 +47,7 @@ const AuthService = {
       await LocalStorage.setItem({ accessToken: response.accessToken });
       await LocalStorage.setItem({ userId: response.user_id });
       await LocalStorage.setItem({ email: email });
+      return "";
     }
   },
   async logout() {
