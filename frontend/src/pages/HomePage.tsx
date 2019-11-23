@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { ORANGE_COLOR } from "../colorConstants";
 import Container from "../components/Container";
+import Typography from "@material-ui/core/Typography";
 
 export const Home = () => <h1></h1>;
 
@@ -22,11 +23,11 @@ class HomePage extends React.Component<Props> {
         {this.props.Navbar()}
         <Container>
           <Box mt={5} display="flex" flexDirection="column" alignItems="center">
-            <Box>
-              <h1>
-                What if you could take notes <i>on YouTube?</i>
-              </h1>
-            </Box>
+            <Box p={2} />
+            <Typography variant="h2">
+              What if you could take notes on YouTube?
+            </Typography>
+            <Box p={2} />
             <Box mt={3} style={{ color: ORANGE_COLOR }}>
               <h4>
                 Meet Notare, a free Google Chrome extension made by sutdents to
@@ -38,7 +39,7 @@ class HomePage extends React.Component<Props> {
                 Try Notare Now <GetAppIcon />
               </Button>
             </Box>
-            <Box mt={6}>
+            {/* <Box mt={6}>
               WARNING: May contain blood, sweat and tears from the following
               individuals:
             </Box>
@@ -47,7 +48,7 @@ class HomePage extends React.Component<Props> {
                 Alexander Jones | Daniel Brockwell | Guy Segev | Mitchell
                 Shelton
               </b>
-            </Box>
+            </Box> */}
           </Box>
         </Container>
       </Box>

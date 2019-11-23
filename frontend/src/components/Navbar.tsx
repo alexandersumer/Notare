@@ -70,14 +70,18 @@ class Navbar extends React.Component<Props> {
       if (window.location.pathname !== pathname) {
         return (
           <Link to={pathname} style={{ textDecoration: "none" }}>
-            <NavButton color="secondary"><div style={{color: CHARCOAL_COLOR}}>{text}</div></NavButton>
+            <NavButton color="secondary">
+              <div style={{ color: CHARCOAL_COLOR }}>{text}</div>
+            </NavButton>
           </Link>
         );
       } else {
         return (
           <Box>
             <Link to={pathname} style={{ textDecoration: "none" }}>
-              <NavButton color="secondary"><div style={{color: RED_COLOR}}>{text}</div></NavButton>
+              <NavButton color="secondary">
+                <div style={{ color: RED_COLOR }}>{text}</div>
+              </NavButton>
             </Link>
           </Box>
         );
@@ -112,9 +116,7 @@ class Navbar extends React.Component<Props> {
           </Box>
           <Box ml={3}>
             <Link to={`/CreateAccount`}>
-              <Button variant="contained">
-                Sign up
-              </Button>
+              <Button variant="contained">Sign up</Button>
             </Link>
           </Box>
         </Box>

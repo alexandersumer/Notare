@@ -15,7 +15,7 @@ const Profile = (profile: ProfileType) => {
   return (
     <Box m={3} display="flex" flexDirection="column" alignItems="center">
       <Box>
-        <img width="200px" height="200px" src={profile.image}/>
+        <img width="200px" height="200px" src={profile.image} />
       </Box>
       <Box p={1} />
       <Typography variant="h5" color="textPrimary">

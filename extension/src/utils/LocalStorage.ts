@@ -1,6 +1,7 @@
 type StorageItems = {
   accessToken?: string;
   userId?: number;
+  email?: string;
 };
 
 const getItem = (key: string): Promise<string | void> => {

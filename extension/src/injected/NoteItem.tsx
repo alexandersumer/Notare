@@ -172,19 +172,13 @@ export default class NoteItem extends React.Component<Props, State> {
       return (
         <Box display="flex" flexDirection="column">
           <MyIconButton
-            aria-label="delete"
-            onClick={this.deleteNote.bind(this)}
-          >
-            <DeleteIcon fontSize="small" />
-          </MyIconButton>
-          <MyIconButton
             aria-label="cancel"
             onClick={this.cancelEdit.bind(this)}
           >
-            <ClearIcon fontSize="small" />
+            <ClearIcon fontSize="default" />
           </MyIconButton>
           <MyIconButton aria-label="done" onClick={this.saveEdit.bind(this)}>
-            <DoneIcon fontSize="small" />
+            <DoneIcon fontSize="default" />
           </MyIconButton>
         </Box>
       );
@@ -219,6 +213,16 @@ export default class NoteItem extends React.Component<Props, State> {
                   {formatTimestamp(timestamp)}
                 </Link>
               </Box>
+              {this.state.inEditMode ?
+                <MyIconButton
+                  aria-label="delete"
+                  onClick={this.deleteNote.bind(this)}
+                >
+                  <DeleteIcon fontSize="default" />
+                </MyIconButton>
+                :
+                null
+              }
             </Box>
             <Box display="flex" flexGrow={1}>
               {this.renderMainBox()}
