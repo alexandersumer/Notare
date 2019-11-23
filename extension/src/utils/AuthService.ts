@@ -1,6 +1,7 @@
 import { login } from "../api/login";
 import LocalStorage from "./LocalStorage";
 
+
 const isAuthenticated = async (): Promise<boolean> => {
   const accessToken = await LocalStorage.getItem("accessToken");
   console.log(`in isAuthenticated, accessToken: ${accessToken}`);
@@ -23,17 +24,22 @@ const AuthService = {
   isAuthenticated,
   accessToken: getAccessToken,
   userId: getUserId,
-  async authenticate(email: string, password: string) {
+  async authenticate(email: string, password: string): Promise<string>  {
     const response = await login({ email: email, password: password });
     console.log("authenticate response", response);
     console.log(response);
-    if (response) {
+    if (typeof response === "string") {
+      console.log("login failed setting errorMessage");
+      console.log(response);
+      return response
+    } else {
       console.log("authenticating and saving here!");
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
       this.userId = response.user_id;
       await LocalStorage.setItem({ accessToken: response.accessToken });
       await LocalStorage.setItem({ userId: response.user_id });
+      return "";
     }
   },
   async logout() {

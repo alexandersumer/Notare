@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { login, logout } from "../api/login";
 import NoteTakingBox from "./NotetakingBox";
 import AuthService from "../utils/AuthService";
-import { BACKGROUND_COLOR } from "../colorConstants";
+import { BACKGROUND_COLOR, RED_COLOR } from "../colorConstants";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -18,6 +18,7 @@ interface State {
   email: string;
   password: string;
   isAuthenticated: boolean;
+  errorMessage;
 }
 
 const StyledWrapper = styled.div`
@@ -35,14 +36,21 @@ export default class NoteItem extends React.Component<Props, State> {
   state = {
     email: "",
     password: "",
-    isAuthenticated: false
+    isAuthenticated: false,
+    errorMessage: ""
   };
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    await AuthService.authenticate(this.state.email, this.state.password);
-    const isAuthenticated = AuthService.isAuthenticated;
-    if (isAuthenticated) this.setState({ isAuthenticated: true });
+    const responseText = await AuthService.authenticate(this.state.email, this.state.password);
+    console.log("got", responseText);
+    if (responseText === "") {
+      const isAuthenticated = AuthService.isAuthenticated;
+      console.log("is authetnicated", isAuthenticated);
+      if (isAuthenticated) this.setState({ isAuthenticated: true });
+    } else {
+      this.setState({ errorMessage: responseText });
+    }
   };
 
   handleEmailChange = (event: React.SyntheticEvent) => {
@@ -67,7 +75,7 @@ export default class NoteItem extends React.Component<Props, State> {
       await logout();
     } finally {
       await AuthService.logout(); // delete from storage
-      this.setState({ isAuthenticated: false });
+      this.setState({ isAuthenticated: false, errorMessage: "" });
     }
   };
   renderMain = () => {
@@ -96,6 +104,9 @@ export default class NoteItem extends React.Component<Props, State> {
           />
         </Box>
         <Box>
+          <p style={{ fontSize: 11, color: RED_COLOR, padding: 3 }}>{this.state.errorMessage}</p>
+        </Box>
+        <Box>
           <Button onClick={this.login} variant="contained">
             Log in
           </Button>
@@ -111,7 +122,7 @@ export default class NoteItem extends React.Component<Props, State> {
     console.log("Injected is mounted!");
     const isAuthenticated = await AuthService.isAuthenticated();
     console.log("isAuthenticaed = ", isAuthenticated);
-    this.setState({ isAuthenticated });
+    this.setState({ isAuthenticated: isAuthenticated, errorMessage: "" });
   }
 
   render() {
