@@ -9,7 +9,6 @@ const backendapi = axios.create({
 
 const setToken = async () => {
   const accessToken = await LocalStorage.getItem("accessToken");
-  console.log("token is:", accessToken);
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 };
 
@@ -80,8 +79,6 @@ export const loginRequest = async (route: string, body: any) => {
       return response.data;
     }
   }).catch((reason: AxiosError) => {
-    console.log("reason", reason);
-    console.log("reason response", reason.response);
     if (reason.response!.status === 400) {
       // Handle 400
       if (reason.response!.data.errorMessage === "Invalid Email") {
