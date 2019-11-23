@@ -27,7 +27,8 @@ type postCreateAccountResponse = {
 
 export const postCreateAccount = async (
   params: postCreateAccountParams
-): Promise<postCreateAccountResponse | string> => noHeaderPost("/createAccount", params);
+): Promise<postCreateAccountResponse | string> =>
+  noHeaderPost("/createAccount", params);
 
 type LogoutResponse = {};
 

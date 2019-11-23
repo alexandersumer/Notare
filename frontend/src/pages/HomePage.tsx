@@ -6,7 +6,6 @@ import { ORANGE_COLOR } from "../colorConstants";
 import Container from "../components/Container";
 import Typography from "@material-ui/core/Typography";
 
-
 export const Home = () => <h1></h1>;
 
 interface Props {

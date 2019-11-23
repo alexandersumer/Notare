@@ -126,11 +126,7 @@ class CreateAccount extends React.Component<
                   onChange={this.updatePassword.bind(this)}
                 />
                 <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                  >
+                  <Button type="submit" fullWidth variant="contained">
                     Sign up
                   </Button>
                 </Box>
