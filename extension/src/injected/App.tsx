@@ -106,7 +106,7 @@ export default class NoteItem extends React.Component<Props, State> {
         </Box>
         <Box display="flex" flexDirection="column" mt={2} justifyContent="center" style={{ fontSize: 14, textAlign: "center" }}>
           Don't have an account?
-          <Link href={DOMAIN_URL+":3000"} target="_blank">Sign up here</Link>
+          <Link href={DOMAIN_URL+":3000/CreateAccount"} target="_blank">Sign up here</Link>
         </Box>
       </Box>
     );
