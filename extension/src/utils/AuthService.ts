@@ -3,7 +3,6 @@ import LocalStorage from "./LocalStorage";
 
 const isAuthenticated = async (): Promise<boolean> => {
   const accessToken = await LocalStorage.getItem("accessToken");
-  console.log(`in isAuthenticated, accessToken: ${accessToken}`);
   return !!accessToken;
 };
 
@@ -31,10 +30,7 @@ const AuthService = {
   email: getEmail,
   async authenticate(email: string, password: string) {
     const response = await login({ email: email, password: password });
-    console.log("authenticate response", response);
-    console.log(response);
     if (response) {
-      console.log("authenticating and saving here!");
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
       this.userId = response.user_id;

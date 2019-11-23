@@ -16,10 +16,7 @@ query_mapping = {"note_id": "id"}
 class Notes(Resource):
     @jwt_required
     def get(self):
-        # print(g.args)
-        # print(g.headers)
         current_user = get_jwt_identity()
-        # print(f"CURRENT USER IN GET /NOTES {current_user}")
         # NOTE: cannot inject SQL :)
         query_ops = get_notes(
             [
@@ -65,14 +62,7 @@ class Notes(Resource):
 
     @jwt_required
     def post(self):
-        # print(g.json)
-        # print(g.headers)
         current_user = get_jwt_identity()
-        # print(f"CURRENT USER: {current_user}")
-        # TODO mitch
-        # TODO validate video_id with youtube api
-        # TODO get video title
-        # TODO leave video category for now
 
         for param in ["note", "user_id", "video_id", "timestamp", "video_title"]:
             if param not in g.json:
@@ -84,14 +74,12 @@ class Notes(Resource):
         c.execute(SQL, (g.json["video_id"], g.json["user_id"]))
         video_entries = c.fetchall()
         conn.close()
-        # print(video_entries)
         current_time = int(str(time.time()).replace(".", ""))
         # if video not in videos table database create new video
         if len(video_entries) == 0:
             SQL = f"INSERT INTO videos (video_id, user_id, video_title, categories, time_created, last_edited) values (?,?,?,?,?,?)"
             conn = sqlite3.connect("database.db")
             c = conn.cursor()
-            # TODO get video title from youtube api and category
             c.execute(
                 SQL,
                 (
@@ -155,6 +143,4 @@ def get_notes(query_params, args):
             else:
                 query_ops += f" and {query_mapping.get(query_param, query_param)}=?"
                 data.append(args[query_param])
-    # print(query_ops)
-    # print(data)
     return {"query_ops": query_ops, "data": data}
