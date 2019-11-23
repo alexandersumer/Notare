@@ -3,13 +3,6 @@
 Notare is a note-taking app for educational youtube videos. It consists of a google chrome
 extension and a companion website for the frontend which both communicate with a rest api in the backend
 
-## Contributors
-
-- Mitchell Shelton z5113359 (Frontend and Backend)
-- Alexander Jones z5114400 (Frontend and Backend)
-- Daniel Brockwell z5116823 (Frontend and UI/UX)
-- Guy Segev z5114848 (Frontend and Extension)
-
 ## Running Notare
 
 The follow instruction are for Mac and Linux computers.
@@ -45,3 +38,10 @@ To run the frontend, backend and extension manually, check the README.md in thei
 ## Running Tests
 
 Please run the following command `sh run_backend_tests.sh`
+
+## Contributors
+
+- Mitchell Shelton z5113359 (Frontend and Backend)
+- Alexander Jones z5114400 (Frontend and Backend)
+- Daniel Brockwell z5116823 (Frontend and UI/UX)
+- Guy Segev z5114848 (Frontend and Extension)
