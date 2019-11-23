@@ -1,6 +1,6 @@
 # Notare
 
-Notare is a note-taking app for educational youtube videos. It consists of a Google Chrome
+Notare is a note-taking app for educational YouTube videos. It consists of a Google Chrome
 extension and a companion website for the frontend which both communicate with a REST API in the backend.
 
 ## Running Notare
