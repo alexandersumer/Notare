@@ -70,7 +70,7 @@ class CreateAccount extends React.Component<
     return (
       <div
         style={{
-          backgroundColor: LIGHT_PINK_COLOR,
+          backgroundColor: LIGHT_PINK_COLOR
         }}
       >
         <Grid
