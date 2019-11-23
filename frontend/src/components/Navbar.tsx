@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import { LIGHT_PINK_COLOR } from "../colorConstants";
+import { RED_COLOR, CHARCOAL_COLOR, LIGHT_PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import NotareCircle from "../NotareCircle.png";
 import { SyntheticEvent } from "react";
@@ -70,14 +70,14 @@ class Navbar extends React.Component<Props> {
       if (window.location.pathname !== pathname) {
         return (
           <Link to={pathname} style={{ textDecoration: "none" }}>
-            <NavButton color="secondary">{text}</NavButton>
+            <NavButton color="secondary"><div style={{color: CHARCOAL_COLOR}}>{text}</div></NavButton>
           </Link>
         );
       } else {
         return (
           <Box>
             <Link to={pathname} style={{ textDecoration: "none" }}>
-              <NavButton color="secondary"><b>{text}</b></NavButton>
+              <NavButton color="secondary"><div style={{color: RED_COLOR}}>{text}</div></NavButton>
             </Link>
           </Box>
         );
