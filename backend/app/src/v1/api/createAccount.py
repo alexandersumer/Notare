@@ -63,7 +63,7 @@ class Createaccount(Resource):
             # print(f"Created with user id {user_id}")
         else:
             # user already exists
-            return {"errorMessage": "Invalid Email or Password"}, 400
+            return {"errorMessage": "User Already Exists"}, 400
 
         # create access token for the user
         access_token = create_access_token(identity=g.json["email"])
