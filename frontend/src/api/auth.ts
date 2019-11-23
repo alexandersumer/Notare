@@ -1,4 +1,4 @@
-import { login, createAccount, logout } from "./backendapi";
+import { noHeaderPost, logout } from "./backendapi";
 
 // POST LOGIN
 type postLoginParams = {
@@ -13,7 +13,7 @@ type postLoginResponse = {
 
 export const postLogin = async (
   params: postLoginParams
-): Promise<postLoginResponse | void> => login("/login", params);
+): Promise<postLoginResponse | string> => noHeaderPost("/login", params);
 
 type postCreateAccountParams = {
   email: string;
@@ -27,7 +27,7 @@ type postCreateAccountResponse = {
 
 export const postCreateAccount = async (
   params: postCreateAccountParams
-): Promise<postCreateAccountResponse | void> => login("/createAccount", params);
+): Promise<postCreateAccountResponse | string> => noHeaderPost("/createAccount", params);
 
 type LogoutResponse = {};
 

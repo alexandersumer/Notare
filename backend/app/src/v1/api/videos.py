@@ -15,10 +15,10 @@ import sqlite3
 class Videos(Resource):
     @jwt_required
     def get(self):
-        print(g.args)
-        print(g.headers)
+        # print(g.args)
+        # print(g.headers)
         current_user = get_jwt_identity()
-        print(f"CURRENT USER: {current_user}")
+        # print(f"CURRENT USER: {current_user}")
         data = []
         query_ops = ""
         for query_param in [
@@ -53,7 +53,7 @@ class Videos(Resource):
             c.execute(SQL, tuple(query_ops["data"]))
             notes_entries = c.fetchall()
             SQL = f"SELECT * FROM tags where id=?;"
-            print(f"tag id: {video[4]}")
+            # print(f"tag id: {video[4]}")
             c.execute(SQL, (video[4],))
             tags_entries = c.fetchall()
             tag = tags_entries[0][2] if len(tags_entries) == 1 else "No Tag"
