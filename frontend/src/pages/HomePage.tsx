@@ -5,7 +5,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { ORANGE_COLOR } from "../colorConstants";
 import Container from "../components/Container";
 import Typography from "@material-ui/core/Typography";
-
+import Link from "@material-ui/core/Link";
 
 export const Home = () => <h1></h1>;
 
@@ -36,9 +36,11 @@ class HomePage extends React.Component<Props> {
               </h4>
             </Box>
             <Box mt={3}>
-              <Button variant="contained" color="secondary">
-                Try Notare Now <GetAppIcon />
-              </Button>
+              <Link href={"https://github.com/alexanderj2357/Notare/blob/develop/README.md"} target="_blank">
+                <Button variant="contained" color="secondary">
+                  Try Notare Now <GetAppIcon />
+                </Button>
+              </Link>
             </Box>
             {/* <Box mt={6}>
               WARNING: May contain blood, sweat and tears from the following
