@@ -16,6 +16,7 @@ import sqlite3
 import requests
 import re
 import hashlib
+from validate_email import validate_email
 
 
 class Login(Resource):
@@ -26,9 +27,7 @@ class Login(Resource):
             if param not in g.json:
                 return {"errorMessage": f"param {param} not in body"}, 400
 
-        if not re.match(
-            r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", g.json["email"]
-        ):
+        if not validate_email(g.json["email"]):
             return {"errorMessage": "Invalid Email"}, 400
 
         # check email if already in database
