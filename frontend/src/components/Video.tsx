@@ -1,7 +1,7 @@
 import { VideoType } from "../types";
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { PINK_COLOR } from "../colorConstants";
+import { LIGHT_PINK_COLOR } from "../colorConstants";
 import { NO_CATEGORY, NO_TAG } from "../stringConstants";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 const VideoStyledComponent = materialStyled(Box)({
   width: 200
-  // backgroundColor: PINK_COLOR
+  // backgroundColor: LIGHT_PINK_COLOR
 });
 
 interface Props {
