@@ -35,7 +35,7 @@ class VideoComponent extends React.Component<Props, State> {
     const { video, categories } = this.props;
     const category =
       video.categories === NO_TAG ? NO_CATEGORY : video.categories;
-    const variant = category === NO_CATEGORY ? "secondary" : "info";
+    const variant = category === NO_CATEGORY ? "secondary" : "success";
 
     return (
       <VideoStyledComponent
