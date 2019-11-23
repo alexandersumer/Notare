@@ -97,8 +97,9 @@ class VideoNotesPage extends React.Component<Props, State> {
           flexDirection="column"
           flexGrow={1}
         >
+          <Box p={1} />
           <Box display="flex" flexGrow={1}>
-            No notes for this video :(
+            Looks like you have no notes for this video yet!
           </Box>
         </FontStyleComponent>
       );
