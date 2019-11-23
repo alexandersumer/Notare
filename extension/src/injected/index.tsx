@@ -1,6 +1,6 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as $ from "jquery";
+import React from "react";
+import ReactDOM from "react-dom";
+import $ from "jquery";
 import App from "./App";
 
 window.addEventListener("load", myMain, false);
