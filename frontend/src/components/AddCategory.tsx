@@ -61,6 +61,7 @@ export default class Search extends React.Component<Props, State> {
         <Badge variant="success">
           <Box>
             <input
+              autoFocus
               type="text"
               onChange={this.onHandleChange.bind(this)}
               onKeyDown={this.onKeyDown.bind(this)}
