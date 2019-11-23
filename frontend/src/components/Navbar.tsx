@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled as materialStyled } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import { PINK_COLOR } from "../colorConstants";
+import { RED_COLOR, CHARCOAL_COLOR, LIGHT_PINK_COLOR } from "../colorConstants";
 import NotareWord from "../NotareWord.png";
 import NotareCircle from "../NotareCircle.png";
 import { SyntheticEvent } from "react";
@@ -14,11 +14,11 @@ const FontStyleComponent = materialStyled(Box)({
 });
 
 const NavBarStyledComponent = materialStyled(Box)({
-  backgroundColor: PINK_COLOR,
+  backgroundColor: LIGHT_PINK_COLOR,
   height: 70
 });
 
-const NoOutlineButton = materialStyled(Button)({
+const NavButton = materialStyled(Button)({
   fontSize: 17
 });
 
@@ -66,14 +66,26 @@ class Navbar extends React.Component<Props> {
     text: string,
     needsAuth: boolean = true
   ) => {
-    const color =
-      window.location.pathname !== pathname ? "primary" : "secondary";
     if (this.props.isAuthenticated || !needsAuth) {
-      return (
-        <Link to={pathname} style={{ textDecoration: "none" }}>
-          <NoOutlineButton color={color}>{text}</NoOutlineButton>
-        </Link>
-      );
+      if (window.location.pathname !== pathname) {
+        return (
+          <Link to={pathname} style={{ textDecoration: "none" }}>
+            <NavButton color="secondary">
+              <div style={{ color: CHARCOAL_COLOR }}>{text}</div>
+            </NavButton>
+          </Link>
+        );
+      } else {
+        return (
+          <Box>
+            <Link to={pathname} style={{ textDecoration: "none" }}>
+              <NavButton color="secondary">
+                <div style={{ color: RED_COLOR }}>{text}</div>
+              </NavButton>
+            </Link>
+          </Box>
+        );
+      }
     }
     return null;
   };
@@ -83,8 +95,8 @@ class Navbar extends React.Component<Props> {
 
     if (this.props.isAuthenticated) {
       return (
-        <Button variant="contained" color="primary" onClick={this.logout}>
-          Logout
+        <Button variant="contained" color="secondary" onClick={this.logout}>
+          Log out
         </Button>
       );
     } else {
@@ -97,16 +109,14 @@ class Navbar extends React.Component<Props> {
         >
           <Box ml={3}>
             <Link to={`/Login`}>
-              <Button variant="contained" color="primary">
-                Login
+              <Button variant="contained" color="secondary">
+                Log in
               </Button>
             </Link>
           </Box>
           <Box ml={3}>
             <Link to={`/CreateAccount`}>
-              <Button variant="contained" color="secondary">
-                Signup
-              </Button>
+              <Button variant="contained">Sign up</Button>
             </Link>
           </Box>
         </Box>

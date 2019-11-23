@@ -166,7 +166,8 @@ export default class NotetakingBox extends React.Component<AppProps, AppState> {
           onChange={this.handleChange}
           onKeyDown={this.onKeyDown}
         />
-        <h2>Your Notes</h2>
+        <h3>Your Notes</h3>
+        <Box p={1} />
         <NoteList
           notesList={allNotes}
           onDeleteNote={this.deleteNote.bind(this)}
