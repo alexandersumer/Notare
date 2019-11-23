@@ -17,7 +17,6 @@ import {
 } from "react-router-dom";
 import { RED_COLOR } from "../colorConstants";
 
-
 interface LoginProps {
   onLogin: Function;
   onCheckAuth: Function;
@@ -44,10 +43,13 @@ class Login extends React.Component<
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const response = await this.props.onLogin(this.state.email, this.state.password);
+    const response = await this.props.onLogin(
+      this.state.email,
+      this.state.password
+    );
     console.log("login rsponse:", response);
     if (response !== "") {
-      this.setState({ errorMessage: response });  
+      this.setState({ errorMessage: response });
     } else {
       this.props.onCheckAuth();
     }
@@ -138,7 +140,9 @@ class Login extends React.Component<
                 </Box>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
-                   <p style={{ color: RED_COLOR }}>{this.state.errorMessage}</p>
+                    <p style={{ color: RED_COLOR }}>
+                      {this.state.errorMessage}
+                    </p>
                   </Grid>
                 </Grid>
                 <Grid container direction="column" alignItems="center">

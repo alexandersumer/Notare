@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AxiosResponse, AxiosError } from 'axios'
+import { AxiosResponse, AxiosError } from "axios";
 import { conditionalExpression } from "@babel/types";
 
 const backendapi = axios.create({
@@ -23,30 +23,36 @@ export const getRequest = async (route: string, params: any) => {
 // returns object, or a string
 export const noHeaderPost = async (route: string, body: any) => {
   console.log(body);
-  const response = await backendapi.post(route, {
-    email: body.email,
-    password: body.password
-  }).then(response => {
+  const response = await backendapi
+    .post(route, {
+      email: body.email,
+      password: body.password
+    })
+    .then(response => {
       if (response.status === 200) {
         return response.data;
       }
-    }
-  ).catch((reason: AxiosError) => {
-    console.log("reason", reason);
-    console.log("reason response", reason.response);
-    if (reason.response!.status === 400) {
-      // Handle 400
-      if (reason.response!.data.errorMessage === "Invalid Email") {
-        return "Invalid Email Format";
-      } else if (reason.response!.data.errorMessage === "User Already Exists") {
-        return "User Already Exists";
-      } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
-        return "Invalid Email or Password";
+    })
+    .catch((reason: AxiosError) => {
+      console.log("reason", reason);
+      console.log("reason response", reason.response);
+      if (reason.response!.status === 400) {
+        // Handle 400
+        if (reason.response!.data.errorMessage === "Invalid Email") {
+          return "Invalid Email Format";
+        } else if (
+          reason.response!.data.errorMessage === "User Already Exists"
+        ) {
+          return "User Already Exists";
+        } else if (
+          reason.response!.data.errorMessage === "Invalid Email or Password"
+        ) {
+          return "Invalid Email or Password";
+        }
+        return "400 error";
       }
-      return "400 error"
-    } 
-    return "There is a problem with our backend service"
-  })
+      return "There is a problem with our backend service";
+    });
   return response;
 };
 
