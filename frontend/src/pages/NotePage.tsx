@@ -68,6 +68,7 @@ class NotePage extends React.Component<Props, State> {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box p={1} />
           <Box>Looks like you have no notes yet!</Box>
         </Box>
       </GreyFont>
