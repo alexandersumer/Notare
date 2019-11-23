@@ -213,16 +213,14 @@ export default class NoteItem extends React.Component<Props, State> {
                   {formatTimestamp(timestamp)}
                 </Link>
               </Box>
-              {this.state.inEditMode ?
+              {this.state.inEditMode ? (
                 <MyIconButton
                   aria-label="delete"
                   onClick={this.deleteNote.bind(this)}
                 >
                   <DeleteIcon fontSize="default" />
                 </MyIconButton>
-                :
-                null
-              }
+              ) : null}
             </Box>
             <Box display="flex" flexGrow={1}>
               {this.renderMainBox()}
