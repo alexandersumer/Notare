@@ -123,20 +123,20 @@ export default class NoteItem extends React.Component<Props, State> {
             <button onClick={() => this.onLogout()}>Log out</button>
           )}
           <Box display="flex" justifyContent="left">
-              <img
-                width={"120px"}
-                height={"30px"}
-                src={chrome.runtime.getURL("NotareWord.png")}
-              />
+            <img
+              width={"120px"}
+              height={"30px"}
+              src={chrome.runtime.getURL("NotareWord.png")}
+            />
           </Box>
           <Box flexGrow={1} />
           <Box display="flex" justifyContent="right">
-            <Link href={DOMAIN_URL+":3000"} target="_blank">
-            <img
-              width={"30px"}
-              height={"30px"}
-              src={chrome.runtime.getURL("NotareCircleTransparent.png")}
-            />
+            <Link href={DOMAIN_URL + ":3000"} target="_blank">
+              <img
+                width={"30px"}
+                height={"30px"}
+                src={chrome.runtime.getURL("NotareCircleTransparent.png")}
+              />
             </Link>
           </Box>
         </Box>

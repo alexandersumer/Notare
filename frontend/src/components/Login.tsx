@@ -15,14 +15,18 @@ import {
   RouteComponentProps,
   Redirect
 } from "react-router-dom";
+import { RED_COLOR } from "../colorConstants";
+
 
 interface LoginProps {
   onLogin: Function;
+  onCheckAuth: Function;
   isAuthenticated: boolean;
 }
 interface LoginState {
   email: string;
   password: string;
+  errorMessage: string;
 }
 
 class Login extends React.Component<
@@ -33,13 +37,20 @@ class Login extends React.Component<
     super(props, state);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      errorMessage: ""
     };
   }
 
-  login = (event: React.SyntheticEvent) => {
+  login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    this.props.onLogin(this.state.email, this.state.password);
+    const response = await this.props.onLogin(this.state.email, this.state.password);
+    console.log("login rsponse:", response);
+    if (response !== "") {
+      this.setState({ errorMessage: response });  
+    } else {
+      this.props.onCheckAuth();
+    }
   };
 
   updateEmail = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -125,6 +136,11 @@ class Login extends React.Component<
                     Log in
                   </Button>
                 </Box>
+                <Grid container direction="column" alignItems="center">
+                  <Grid item>
+                   <p style={{ color: RED_COLOR }}>{this.state.errorMessage}</p>
+                  </Grid>
+                </Grid>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
                     <br />
