@@ -194,6 +194,7 @@ class VideoPage extends React.Component<Props> {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box p={1} />
           <Box>Looks like you have no videos yet!</Box>
         </Box>
       </GreyFont>
