@@ -18,7 +18,7 @@ const NavBarStyledComponent = materialStyled(Box)({
   height: 70
 });
 
-const NoOutlineButton = materialStyled(Button)({
+const NavButton = materialStyled(Button)({
   fontSize: 17
 });
 
@@ -66,14 +66,22 @@ class Navbar extends React.Component<Props> {
     text: string,
     needsAuth: boolean = true
   ) => {
-    const color =
-      window.location.pathname !== pathname ? "primary" : "secondary";
     if (this.props.isAuthenticated || !needsAuth) {
-      return (
-        <Link to={pathname} style={{ textDecoration: "none" }}>
-          <NoOutlineButton color={color}>{text}</NoOutlineButton>
-        </Link>
-      );
+      if (window.location.pathname !== pathname) {
+        return (
+          <Link to={pathname} style={{ textDecoration: "none" }}>
+            <NavButton color="secondary">{text}</NavButton>
+          </Link>
+        );
+      } else {
+        return (
+          <Box>
+            <Link to={pathname} style={{ textDecoration: "none" }}>
+              <NavButton color="secondary"><b>{text}</b></NavButton>
+            </Link>
+          </Box>
+        );
+      }
     }
     return null;
   };
@@ -83,8 +91,8 @@ class Navbar extends React.Component<Props> {
 
     if (this.props.isAuthenticated) {
       return (
-        <Button variant="contained" color="primary" onClick={this.logout}>
-          Logout
+        <Button variant="contained" color="secondary" onClick={this.logout}>
+          Log out
         </Button>
       );
     } else {
@@ -97,15 +105,15 @@ class Navbar extends React.Component<Props> {
         >
           <Box ml={3}>
             <Link to={`/Login`}>
-              <Button variant="contained" color="primary">
-                Login
+              <Button variant="contained" color="secondary">
+                Log in
               </Button>
             </Link>
           </Box>
           <Box ml={3}>
             <Link to={`/CreateAccount`}>
-              <Button variant="contained" color="secondary">
-                Signup
+              <Button variant="contained">
+                Sign up
               </Button>
             </Link>
           </Box>
