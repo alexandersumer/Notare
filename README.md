@@ -41,7 +41,7 @@ Please run the following command: `sh run_backend_tests.sh`
 
 ## Contributors
 
-- [https://github.com/alexanderj2357](Alexander Jones) (Fullstack)
-- [https://github.com/Actom360](Daniel Brockwell) (Frontend & UX)
-- [https://github.com/atiredturtle](Guy Segev) (Frontend & UX)
-- [https://github.com/armoured](Mitchell Shelton) (Fullstack)
+- [Alexander Jones](https://github.com/alexanderj2357) (Fullstack)
+- [Daniel Brockwell](https://github.com/Actom360) (Frontend & UX)
+- [Guy Segev](https://github.com/atiredturtle) (Frontend & UX)
+- [Mitchell Shelton](https://github.com/armoured) (Fullstack)
