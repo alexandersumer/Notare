@@ -1,24 +1,64 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import Container from "../components/Container";
 
-const ProfileImage = (name: string) => {
+const Profile = (profile: ProfileType) => {
   return (
     <Box m={3} display="flex" flexDirection="column" alignItems="center">
       <Box>
-        <AccountCircleIcon />
+        <AccountCircleIcon/>
       </Box>
-      <Box>{name}</Box>
+      <Box>{profile.name}</Box>
+      <Box>{profile.description}</Box>
+      <Box>
+        <GitHubIcon/>
+      </Box>
+      <Box>
+        <LinkedInIcon/>
+      </Box>
     </Box>
   );
 };
 
-const names = [
-  "Alexander Jones",
-  "Daniel Brockwell",
-  "Guy Segev",
-  "Mitchell Shelton"
+type ProfileType = {
+  name: string,
+  description: string,
+}
+
+const profileInfo = [
+  {
+    name: "Alexander Jones",
+    description: "Backend Developer | Software Engineering Intern @ Atlassian"
+  },
+  {
+    name: "Daniel Brockwell",
+    description: "UX Designer & Front-End Developer | Account Executive @ Uber",
+  },
+  {
+    name: "Guy Segev",
+    description: "Backend Developer | Backend & DevOps Engineer @ Fitsense"
+  },
+  {
+    name: "Mitchell Shelton",
+    description: "Fullstack Developer | Freelance Developer"
+  }
+];
+
+const gitLinks = [
+  "https://github.com/alexanderj2357",
+  "https://github.com/Actom360",
+  "https://github.com/atiredturtle",
+  "https://github.com/armoured"
+];
+
+const liLinks = [
+"https://www.linkedin.com/in/alexanderj2357/",
+"https://www.linkedin.com/in/danielbrockwell/",
+"https://www.linkedin.com/in/guy-segev-98a27110a/",
+"https://www.linkedin.com/in/mitchell-shelton/"
 ];
 
 interface Props {
@@ -39,7 +79,7 @@ class AboutUsPage extends React.Component<Props> {
               <h1>Who the heck are these guys?</h1>
             </Box>
             <Box display="flex" flexDirection="row">
-              {names.map(ProfileImage)}
+              {profileInfo.map(Profile)}
             </Box>
           </Box>
         </Container>
