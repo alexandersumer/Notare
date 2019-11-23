@@ -58,7 +58,7 @@ export default class Search extends React.Component<Props, State> {
     const { addMode } = this.state;
     if (addMode)
       return (
-        <Badge variant="info">
+        <Badge variant="success">
           <Box>
             <input
               type="text"
@@ -78,7 +78,7 @@ export default class Search extends React.Component<Props, State> {
     return (
       <Button
         size="sm"
-        variant="info"
+        variant="success"
         onClick={this.onToggleAddMode.bind(this)}
       >
         + add new category
