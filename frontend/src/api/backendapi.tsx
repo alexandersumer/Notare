@@ -22,7 +22,6 @@ export const getRequest = async (route: string, params: any) => {
 
 // returns object, or a string
 export const noHeaderPost = async (route: string, body: any) => {
-  console.log(body);
   const response = await backendapi.post(route, {
     email: body.email,
     password: body.password
@@ -32,8 +31,6 @@ export const noHeaderPost = async (route: string, body: any) => {
       }
     }
   ).catch((reason: AxiosError) => {
-    console.log("reason", reason);
-    console.log("reason response", reason.response);
     if (reason.response!.status === 400) {
       // Handle 400
       if (reason.response!.data.errorMessage === "Invalid Email") {
@@ -63,7 +60,6 @@ export const logout = async (route: string) => {
 };
 
 export const postRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   backendapi.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
 
@@ -79,7 +75,6 @@ export const postRequest = async (route: string, params: any) => {
 };
 
 export const deleteRequest = async (route: string, params: any) => {
-  console.log(params);
   const accessToken = localStorage.getItem("accessToken");
   const Authorization = "Bearer " + accessToken;
 

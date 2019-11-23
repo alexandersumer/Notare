@@ -46,7 +46,6 @@ class Login extends React.Component<
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const response = await this.props.onLogin(this.state.email, this.state.password);
-    console.log("login rsponse:", response);
     if (response !== "") {
       this.setState({ errorMessage: response });  
     } else {

@@ -149,16 +149,12 @@ def create_db():
             conn.commit()
             cur.execute("""SELECT * FROM notes""")
             entries = cur.fetchall()
-            # print(entries)
             cur.execute("""SELECT * FROM videos""")
             entries = cur.fetchall()
-            # print(entries)
             cur.execute("""SELECT * FROM users""")
             entries = cur.fetchall()
-            # print(entries)
             cur.execute("""SELECT * FROM tags""")
             entries = cur.fetchall()
-            # print(entries)
 
         except sqlite3.Error as e:
             print(e)

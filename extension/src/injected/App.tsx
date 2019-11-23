@@ -62,7 +62,6 @@ export default class NoteItem extends React.Component<Props, State> {
   };
 
   onLogout = async () => {
-    console.log("Logging out");
     try {
       await logout();
     } finally {
@@ -108,14 +107,11 @@ export default class NoteItem extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    console.log("Injected is mounted!");
     const isAuthenticated = await AuthService.isAuthenticated();
-    console.log("isAuthenticaed = ", isAuthenticated);
     this.setState({ isAuthenticated });
   }
 
   render() {
-    console.log(`is authenticate ${this.state.isAuthenticated}`);
     return (
       <StyledWrapper>
         <Box display="flex" mb={1}>
