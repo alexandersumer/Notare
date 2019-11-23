@@ -18,10 +18,16 @@ const getUserId = async (): Promise<number> => {
   return -1;
 };
 
+const getEmail = async (): Promise<string> => {
+  const email = await LocalStorage.getItem("email");
+  return "" + email;
+};
+
 const AuthService = {
   isAuthenticated,
   accessToken: getAccessToken,
   userId: getUserId,
+  email: getEmail,
   async authenticate(email: string, password: string) {
     const response = await login({ email: email, password: password });
     if (response) {
@@ -30,12 +36,14 @@ const AuthService = {
       this.userId = response.user_id;
       await LocalStorage.setItem({ accessToken: response.accessToken });
       await LocalStorage.setItem({ userId: response.user_id });
+      await LocalStorage.setItem({ email: email });
     }
   },
   async logout() {
     this.isAuthenticated = false;
     await LocalStorage.removeItem("accessToken");
     await LocalStorage.removeItem("userId");
+    await LocalStorage.removeItem("email");
   }
 };
 

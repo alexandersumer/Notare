@@ -17,7 +17,6 @@ import {
 import { RED_COLOR } from "../colorConstants";
 import NotareCircle from "../NotareCircle.png";
 
-
 interface CreateProps {
   onCreateAccount: Function;
   onCheckAuth: Function;
@@ -38,7 +37,7 @@ class CreateAccount extends React.Component<
     this.state = {
       email: "",
       password: "",
-      errorMessage: "",
+      errorMessage: ""
     };
   }
 
@@ -47,7 +46,7 @@ class CreateAccount extends React.Component<
     const { email, password } = this.state;
     const response = await this.props.onCreateAccount(email, password);
     if (response !== "") {
-      this.setState({ errorMessage: response });  
+      this.setState({ errorMessage: response });
     } else {
       this.props.onCheckAuth();
     }
@@ -127,17 +126,15 @@ class CreateAccount extends React.Component<
                   onChange={this.updatePassword.bind(this)}
                 />
                 <Box p={1}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                  >
+                  <Button type="submit" fullWidth variant="contained">
                     Sign up
                   </Button>
                 </Box>
                 <Grid container direction="column" alignItems="center">
                   <Grid item>
-                   <p style={{ color: RED_COLOR }}>{this.state.errorMessage}</p>
+                    <p style={{ color: RED_COLOR }}>
+                      {this.state.errorMessage}
+                    </p>
                   </Grid>
                 </Grid>
                 <Grid container direction="column" alignItems="center">

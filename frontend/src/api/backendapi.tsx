@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AxiosResponse, AxiosError } from 'axios'
+import { AxiosResponse, AxiosError } from "axios";
 import { conditionalExpression } from "@babel/types";
 
 const backendapi = axios.create({
@@ -40,10 +40,9 @@ export const noHeaderPost = async (route: string, body: any) => {
       } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
         return "Invalid Email or Password";
       }
-      return "400 error"
-    } 
-    return "There is a problem with our backend service"
-  })
+      return "There is a problem with our backend service";
+    };
+  });
   return response;
 };
 

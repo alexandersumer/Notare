@@ -34,7 +34,7 @@ export const AuthService = {
     localStorage.getItem("userId") === undefined
       ? -1
       : parseInt(localStorage.getItem("userId") as string),
-  async authenticate(email: string, password: string) : Promise<string> {
+  async authenticate(email: string, password: string): Promise<string> {
     const response = await postLogin({ email: email, password: password });
     if (typeof response === "string") {
       return response
@@ -45,10 +45,10 @@ export const AuthService = {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
-      return "" 
+      return "";
     }
   },
-  async createAccount(email: string, password: string) : Promise<string> {
+  async createAccount(email: string, password: string): Promise<string> {
     const response = await postCreateAccount({
       email: email,
       password: password
@@ -62,7 +62,7 @@ export const AuthService = {
       localStorage.setItem("accessToken", response.accessToken);
       localStorage.setItem("userId", response.user_id.toString());
       localStorage.setItem("email", email);
-      return ""; 
+      return "";
     }
   },
   async logout() {
@@ -110,29 +110,29 @@ class App extends React.Component<{}, State> {
   constructor(props: {}, state: State) {
     super(props, state);
     this.state = {
-      isAuthenticated: false,
+      isAuthenticated: false
     };
   }
 
   componentDidMount() {
     this.setState({
-      isAuthenticated: AuthService.isAuthenticated,
+      isAuthenticated: AuthService.isAuthenticated
     });
   }
 
-  async onLogin(email: string, password: string){
+  async onLogin(email: string, password: string) {
     const responseString = await AuthService.authenticate(email, password);
     return responseString;
   }
 
-  async onCreateAccount(email: string, password: string) : Promise<string>{
+  async onCreateAccount(email: string, password: string): Promise<string> {
     const responseString = await AuthService.createAccount(email, password);
-    return responseString
+    return responseString;
   }
 
   async onCheckAuth() {
     this.setState({
-      isAuthenticated: AuthService.isAuthenticated,
+      isAuthenticated: AuthService.isAuthenticated
     });
   }
 

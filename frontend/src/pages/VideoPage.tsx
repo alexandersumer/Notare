@@ -1,7 +1,11 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import { DARK_GREY_COLOR, RED_COLOR, LIGHT_PINK_COLOR } from "../colorConstants";
+import {
+  DARK_GREY_COLOR,
+  RED_COLOR,
+  LIGHT_PINK_COLOR
+} from "../colorConstants";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import {
@@ -194,6 +198,7 @@ class VideoPage extends React.Component<Props> {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box p={1} />
           <Box>Looks like you have no videos yet!</Box>
         </Box>
       </GreyFont>
