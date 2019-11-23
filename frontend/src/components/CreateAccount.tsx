@@ -14,7 +14,7 @@ import {
   RouteComponentProps,
   Redirect
 } from "react-router-dom";
-import { RED_COLOR } from "../colorConstants";
+import { RED_COLOR, LIGHT_PINK_COLOR } from "../colorConstants";
 import NotareCircle from "../NotareCircle.png";
 
 interface CreateProps {
@@ -68,88 +68,94 @@ class CreateAccount extends React.Component<
     }
 
     return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
+      <div
+        style={{
+          backgroundColor: LIGHT_PINK_COLOR,
+        }}
       >
-        <Grid alignItems="center" justify="center" item xs={4}>
-          <Container component="main" maxWidth="sm">
-            <Box boxShadow={3} p={2}>
-              <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: "1vh" }}
-              >
-                <Box p={1}>
-                  {" "}
-                  <Box>
-                    <img width="35px" height="35px" src={NotareCircle} />
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Grid alignItems="center" justify="center" item xs={4}>
+            <Container component="main" maxWidth="sm">
+              <Box boxShadow={3} p={2}>
+                <Grid
+                  container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ minHeight: "1vh" }}
+                >
+                  <Box p={1}>
+                    {" "}
+                    <Box>
+                      <img width="35px" height="35px" src={NotareCircle} />
+                    </Box>
                   </Box>
-                </Box>
-                <Box p={1}>
-                  {" "}
-                  <Typography component="h1" variant="h5">
-                    Create Account
-                  </Typography>
-                </Box>
-              </Grid>
-              <form noValidate onSubmit={this.createAccount.bind(this)}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  type="text"
-                  autoFocus
-                  onChange={this.updateEmail.bind(this)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.updatePassword.bind(this)}
-                />
-                <Box p={1}>
-                  <Button type="submit" fullWidth variant="contained">
-                    Sign up
-                  </Button>
-                </Box>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <p style={{ color: RED_COLOR }}>
-                      {this.state.errorMessage}
-                    </p>
-                  </Grid>
+                  <Box p={1}>
+                    {" "}
+                    <Typography component="h1" variant="h5">
+                      Create Account
+                    </Typography>
+                  </Box>
                 </Grid>
-                <Grid container direction="column" alignItems="center">
-                  <Grid item>
-                    <br />
-                    <Link href="/Login" variant="body1">
-                      {"Already have an account? Log in"}
-                    </Link>
+                <form noValidate onSubmit={this.createAccount.bind(this)}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    type="text"
+                    autoFocus
+                    onChange={this.updateEmail.bind(this)}
+                  />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={this.updatePassword.bind(this)}
+                  />
+                  <Box p={1}>
+                    <Button type="submit" fullWidth variant="contained">
+                      Sign up
+                    </Button>
+                  </Box>
+                  <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                      <p style={{ color: RED_COLOR }}>
+                        {this.state.errorMessage}
+                      </p>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </form>
-            </Box>
-          </Container>
+                  <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                      <br />
+                      <Link href="/Login" variant="body1">
+                        {"Already have an account? Log in"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </form>
+              </Box>
+            </Container>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     );
   }
 }
