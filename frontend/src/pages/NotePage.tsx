@@ -63,7 +63,7 @@ class NotePage extends React.Component<Props, State> {
       return (
         <Box mt="3" display="flex">
             <Typography variant="h6">
-              No videos found.
+              No notes found.
             </Typography>
         </Box>
       );
