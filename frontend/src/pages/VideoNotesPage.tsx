@@ -48,10 +48,16 @@ class VideoNotesPage extends React.Component<Props, State> {
     };
   }
 
-  async getVideos(video_id: string) {
-    const response = await getVideos({ sort: "-last_edited", video_id });
-    if (response && response.num_videos)
-      this.setState({ video: response.videos[0] });
+  async getVideo(video_id: string): Promise<void | VideoType> {
+    const response = await getVideos({
+      sort: "-last_edited",
+      video_id: video_id
+    });
+    if (response && response.num_videos) {
+      return response.videos[0];
+    } else {
+      return undefined;
+    }
   }
 
   updateSearchedNotes(searchedNotes: Array<NoteType>) {
@@ -78,17 +84,56 @@ class VideoNotesPage extends React.Component<Props, State> {
     element.click();
   }
 
-  async getNotes(video_id: string) {
-    const response = await getNotes({ video_id: video_id });
-    if (response)
-      this.setState({ notes: response.notes, searchedNotes: response.notes });
+  async getNotes(video_id: string): Promise<void | NoteType[]> {
+    const response = await getNotes({
+      sort: "-last_edited",
+      video_id: video_id
+    });
+
+    if (response) {
+      var minLen = Number.MAX_SAFE_INTEGER;
+
+      for (var note of response.notes) {
+        if (note.last_edited.toString().length < minLen) {
+          minLen = note.last_edited.toString().length;
+        }
+      }
+
+      const sortedNotes = response.notes.sort((n1, n2) => {
+        if (
+          Number(n1.last_edited.toString().substring(0, minLen)) <
+          Number(n2.last_edited.toString().substring(0, minLen))
+        ) {
+          return 1;
+        }
+        if (
+          Number(n1.last_edited.toString().substring(0, minLen)) >
+          Number(n2.last_edited.toString().substring(0, minLen))
+        ) {
+          return -1;
+        }
+        return 0;
+      });
+
+      return sortedNotes;
+    }
+
+    return undefined;
   }
 
   async componentDidMount() {
     const { video_id } = this.props.match.params;
 
-    await this.getVideos(video_id);
-    await this.getNotes(video_id);
+    const video = await this.getVideo(video_id);
+    const notes = await this.getNotes(video_id);
+
+    if (notes) {
+      this.setState({ notes: notes, searchedNotes: notes });
+    }
+
+    if (video) {
+      this.setState({ video: video });
+    }
   }
 
   renderVideoNotes() {
@@ -96,26 +141,10 @@ class VideoNotesPage extends React.Component<Props, State> {
     const numNotes = notes.length;
     const numSearchedNotes = searchedNotes.length;
 
-    const sortedSearchedNotes = searchedNotes.sort((n1, n2) => {
-      if (
-        Number(n1.last_edited.toString().substring(0, 14)) <
-        Number(n2.last_edited.toString().substring(0, 14))
-      ) {
-        return 1;
-      }
-      if (
-        Number(n1.last_edited.toString().substring(0, 14)) >
-        Number(n2.last_edited.toString().substring(0, 14))
-      ) {
-        return -1;
-      }
-      return 0;
-    });
-
     if (numNotes && numSearchedNotes) {
       return (
         <Box display="flex" flexDirection="column" flexGrow={1}>
-          {sortedSearchedNotes.map(n => (
+          {searchedNotes.map(n => (
             <Note noteData={n} thumbNail={false} youtubeLink />
           ))}
         </Box>

@@ -32,8 +32,43 @@ class NotePage extends React.Component<Props, State> {
     };
   }
 
+  async getNotes(): Promise<void | NoteType[]> {
+    const response = await getNotes({ sort: "-last_edited" });
+
+    if (response) {
+      var minLen = Number.MAX_SAFE_INTEGER;
+
+      for (var note of response.notes) {
+        if (note.last_edited.toString().length < minLen) {
+          minLen = note.last_edited.toString().length;
+        }
+      }
+
+      const sortedNotes = response.notes.sort((n1, n2) => {
+        if (
+          Number(n1.last_edited.toString().substring(0, minLen)) <
+          Number(n2.last_edited.toString().substring(0, minLen))
+        ) {
+          return 1;
+        }
+        if (
+          Number(n1.last_edited.toString().substring(0, minLen)) >
+          Number(n2.last_edited.toString().substring(0, minLen))
+        ) {
+          return -1;
+        }
+        return 0;
+      });
+
+      return sortedNotes;
+    }
+
+    return undefined;
+  }
+
   async componentDidMount() {
     const notes = await this.getNotes();
+
     if (notes) {
       this.setState({ notes: notes, searchedNotes: notes });
     }
@@ -44,26 +79,10 @@ class NotePage extends React.Component<Props, State> {
     const numNotes = notes.length;
     const numSearchedNotes = searchedNotes.length;
 
-    const sortedSearchedNotes = searchedNotes.sort((n1, n2) => {
-      if (
-        Number(n1.last_edited.toString().substring(0, 14)) <
-        Number(n2.last_edited.toString().substring(0, 14))
-      ) {
-        return 1;
-      }
-      if (
-        Number(n1.last_edited.toString().substring(0, 14)) >
-        Number(n2.last_edited.toString().substring(0, 14))
-      ) {
-        return -1;
-      }
-      return 0;
-    });
-
     if (numNotes && numSearchedNotes) {
       return (
         <Box mr={4}>
-          {sortedSearchedNotes.map(n => (
+          {searchedNotes.map(n => (
             <Note noteData={n} thumbNail youtubeLink />
           ))}
         </Box>
@@ -95,12 +114,6 @@ class NotePage extends React.Component<Props, State> {
         </GreyFont>
       );
     }
-  }
-
-  async getNotes(): Promise<void | NoteType[]> {
-    const response = await getNotes({ sort: "-last_edited" });
-    if (response) return response.notes;
-    return undefined;
   }
 
   updateSearchedNotes(searchedNotes: Array<NoteType>) {
