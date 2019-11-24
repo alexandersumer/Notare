@@ -113,7 +113,8 @@ class NotePage extends React.Component<Props, State> {
               searchType="notes"
             />
           </Box>
-          <Box>{this.renderMain()}</Box>
+          <Box p="2" />
+          {this.renderMain()}
         </Container>
       </Box>
     );

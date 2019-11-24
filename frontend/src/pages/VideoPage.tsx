@@ -1,11 +1,7 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
 import { styled as materialStyled } from "@material-ui/core/styles";
-import {
-  DARK_GREY_COLOR,
-  RED_COLOR,
-  LIGHT_PINK_COLOR
-} from "../colorConstants";
+import { DARK_GREY_COLOR, RED_COLOR } from "../colorConstants";
 import { VideoType } from "../types";
 import { getVideos } from "../api/videos";
 import {
@@ -232,6 +228,7 @@ class VideoPage extends React.Component<Props> {
             />
           </Box>
           {this.renderCategoryLabels()}
+          <Box p="2" />
           {this.renderMain()}
         </Container>
       </Box>

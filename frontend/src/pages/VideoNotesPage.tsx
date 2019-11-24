@@ -196,7 +196,7 @@ class VideoNotesPage extends React.Component<Props, State> {
                 {notes.length} {getPlural("note", notes.length)}
               </Box>
             </Box>
-
+            <Box p="2" />
             {this.renderVideoNotes()}
           </Box>
         </Container>
