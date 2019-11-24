@@ -21,6 +21,7 @@ import Button from "react-bootstrap/Button";
 import Search from "../components/Search";
 import VideoComponent from "../components/Video";
 import Container from "../components/Container";
+import Typography from "@material-ui/core/Typography";
 
 const GreyFont = materialStyled(Box)({
   color: DARK_GREY_COLOR
@@ -168,9 +169,11 @@ class VideoPage extends React.Component<Props> {
   }
 
   renderMain() {
-    const { categories, videos } = this.state;
+    const { categories, videos, searchedVideos } = this.state;
     const numVideos = videos.length;
-    if (numVideos) {
+    const numSearchedVideos = searchedVideos.length;
+
+    if (numVideos && numSearchedVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searchedVideos.map(video => (
@@ -179,31 +182,37 @@ class VideoPage extends React.Component<Props> {
               video={video}
               categories={categories}
               onChangeCategory={this.onChangeCategory.bind(this)}
-            /> // TODO: update to actually pull in data
+            />
           ))}
         </Box>
       );
-    }
-
-    return (
-      <GreyFont
-        display="flex"
-        style={{ height: "100%" }}
-        alignItems="center"
-        flexDirection="center"
-        justifyContent="center"
-      >
-        <Box
+    } else if (numVideos && !numSearchedVideos) {
+      return (
+        <Box mt="3" display="flex">
+          <Typography variant="h6">No videos found.</Typography>
+        </Box>
+      );
+    } else {
+      return (
+        <GreyFont
           display="flex"
+          style={{ height: "100%" }}
           alignItems="center"
-          flexDirection="column"
+          flexDirection="center"
           justifyContent="center"
         >
-          <Box p={1} />
-          <Box>Looks like you have no videos yet!</Box>
-        </Box>
-      </GreyFont>
-    );
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <Box p={1} />
+            <Box>Looks like you have no videos yet!</Box>
+          </Box>
+        </GreyFont>
+      );
+    }
   }
 
   render() {

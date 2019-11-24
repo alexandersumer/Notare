@@ -25,26 +25,23 @@ class HomePage extends React.Component<Props> {
         {this.props.Navbar()}
         <Container>
           <Box mt={4} display="flex" flexDirection="column" alignItems="center">
-            <Box p={2} />
-            <Typography variant="h2">
+            <Typography variant="h3">
               What if you could take notes on YouTube?
             </Typography>
-            <Box p={2} />
+            <Box p={1} />
             <Box>
-              <img width="993px" height="458px" src={Demo} />
+              <img width="910px" height="405px" src={Demo} />
             </Box>
             <Box p={1} />
-            <Box mt={2} style={{ color: CHARCOAL_COLOR }}>
+            <Box mt={1} style={{ color: CHARCOAL_COLOR }}>
               <h4>
                 Meet <b>Notare</b>, a <b>free Google Chrome extension</b> made
                 by students to help <b>make learning online easier</b>.
               </h4>
             </Box>
-            <Box mt={2}>
+            <Box mt={1}>
               <Link
-                href={
-                  "https://github.com/alexanderj2357/Notare/blob/develop/README.md"
-                }
+                href={"https://github.com/alexanderj2357/Notare/"}
                 target="_blank"
               >
                 <Button variant="contained" color="secondary">
@@ -53,6 +50,7 @@ class HomePage extends React.Component<Props> {
               </Link>
             </Box>
           </Box>
+          <Box p={5} />
         </Container>
       </Box>
     );
