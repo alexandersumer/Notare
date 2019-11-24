@@ -17,7 +17,7 @@ If you want to run the frontend, extension and backend together, follow these in
 - npm, can be installed from https://www.npmjs.com/get-npm/
 - yarn, can be installed from https://yarnpkg.com/lang/en/docs/install/
 3. Ensure you are in `Notare/`
-4. Run `sh run_notare.sh` to run the frontend, backend and extension
+4. Run `sh run.sh` to run the frontend, backend and extension
 5. If the extension is installed on Google Chrome, refresh it from [_chrome://extensions_](chrome://extensions) once the extension completes building
 
 If you want to run the frontend, backend and extension separately, follow the instructions above and then open 3 separate shells and run the following in each shell:

@@ -168,9 +168,10 @@ class VideoPage extends React.Component<Props> {
   }
 
   renderMain() {
-    const { categories, videos } = this.state;
+    const { categories, videos, searchedVideos } = this.state;
     const numVideos = videos.length;
-    if (numVideos) {
+    const numSearchedVideos = searchedVideos.length;
+    if (numVideos && numSearchedVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
           {this.state.searchedVideos.map(video => (
@@ -179,11 +180,31 @@ class VideoPage extends React.Component<Props> {
               video={video}
               categories={categories}
               onChangeCategory={this.onChangeCategory.bind(this)}
-            /> // TODO: update to actually pull in data
+            />
           ))}
         </Box>
       );
-    }
+    } else if (numVideos && !numSearchedVideos) {
+      return (
+        <GreyFont
+          display="flex"
+          style={{ height: "100%" }}
+          alignItems="center"
+          flexDirection="center"
+          justifyContent="center"
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <Box p={1} />
+            <Box>No videos found.</Box>
+          </Box>
+        </GreyFont>
+      );
+    })
 
     return (
       <GreyFont
