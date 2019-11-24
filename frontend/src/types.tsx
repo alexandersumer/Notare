@@ -5,7 +5,6 @@ export type NoteType = {
   video_id: string;
   timestamp: number;
   video_title: string;
-  last_edited: number;
 };
 
 export type VideoType = {
