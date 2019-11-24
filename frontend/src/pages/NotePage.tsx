@@ -62,9 +62,7 @@ class NotePage extends React.Component<Props, State> {
     } else if (numNotes && !numSearchedNotes) {
       return (
         <Box mt="3" display="flex">
-            <Typography variant="h6">
-              No notes found.
-            </Typography>
+          <Typography variant="h6">No notes found.</Typography>
         </Box>
       );
     } else {

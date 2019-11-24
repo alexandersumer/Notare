@@ -172,7 +172,7 @@ class VideoPage extends React.Component<Props> {
     const { categories, videos, searchedVideos } = this.state;
     const numVideos = videos.length;
     const numSearchedVideos = searchedVideos.length;
-    
+
     if (numVideos && numSearchedVideos) {
       return (
         <Box display="flex" flexWrap="wrap">
@@ -189,9 +189,7 @@ class VideoPage extends React.Component<Props> {
     } else if (numVideos && !numSearchedVideos) {
       return (
         <Box mt="3" display="flex">
-            <Typography variant="h6">
-              No videos found.
-            </Typography>
+          <Typography variant="h6">No videos found.</Typography>
         </Box>
       );
     } else {
@@ -209,7 +207,7 @@ class VideoPage extends React.Component<Props> {
             flexDirection="column"
             justifyContent="center"
           >
-          <Box p={1} />
+            <Box p={1} />
             <Box>Looks like you have no videos yet!</Box>
           </Box>
         </GreyFont>
