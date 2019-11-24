@@ -53,7 +53,10 @@ class Login extends React.Component<
     } else if (password === "") {
       response = "Please Enter a Password";
     } else {
-      response = await this.props.onLogin(email, password);
+      response = await this.props.onLogin(
+        email,
+        password
+      );
     }
     if (response !== "") {
       this.setState({ errorMessage: response });

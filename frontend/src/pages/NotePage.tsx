@@ -7,7 +7,6 @@ import { NoteType } from "../types";
 import Note from "../components/Note";
 import Container from "../components/Container";
 import Search from "../components/Search";
-import Typography from "@material-ui/core/Typography";
 
 interface Props {
   Navbar: any;
@@ -15,7 +14,7 @@ interface Props {
 
 interface State {
   notes: Array<NoteType>;
-  searchedNotes: Array<NoteType>;
+  searched_notes: Array<NoteType>;
 }
 
 const GreyFont = materialStyled(Box)({
@@ -28,22 +27,18 @@ class NotePage extends React.Component<Props, State> {
 
     this.state = {
       notes: [],
-      searchedNotes: []
+      searched_notes: []
     };
   }
 
   async componentDidMount() {
     const notes = await this.getNotes();
     if (notes) {
-      this.setState({ notes: notes, searchedNotes: notes });
+      this.setState({ notes: notes, searched_notes: notes });
     }
   }
 
   renderMain() {
-    const { notes, searchedNotes } = this.state;
-    const numNotes = notes.length;
-    const numSearchedNotes = searchedNotes.length;
-
     const TryNotareBox = materialStyled(Box)({
       width: "300px",
       height: "60px",
@@ -51,41 +46,33 @@ class NotePage extends React.Component<Props, State> {
       color: "white"
     });
 
-    if (numNotes && numSearchedNotes) {
+    if (this.state.notes.length)
       return (
         <Box mr={4}>
-          {this.state.searchedNotes.map(n => (
+          {this.state.searched_notes.map(n => (
             <Note noteData={n} thumbNail youtubeLink />
           ))}
         </Box>
       );
-    } else if (numNotes && !numSearchedNotes) {
-      return (
-        <Box mt="3" display="flex">
-          <Typography variant="h6">No notes found.</Typography>
-        </Box>
-      );
-    } else {
-      return (
-        <GreyFont
+    return (
+      <GreyFont
+        display="flex"
+        style={{ height: "100%" }}
+        alignItems="center"
+        flexDirection="center"
+        justifyContent="center"
+      >
+        <Box
           display="flex"
-          style={{ height: "100%" }}
           alignItems="center"
-          flexDirection="center"
+          flexDirection="column"
           justifyContent="center"
         >
-          <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            justifyContent="center"
-          >
-            <Box p={1} />
-            <Box>Looks like you have no notes yet!</Box>
-          </Box>
-        </GreyFont>
-      );
-    }
+          <Box p={1} />
+          <Box>Looks like you have no notes yet!</Box>
+        </Box>
+      </GreyFont>
+    );
   }
 
   async getNotes(): Promise<void | NoteType[]> {
@@ -94,8 +81,8 @@ class NotePage extends React.Component<Props, State> {
     return undefined;
   }
 
-  updateSearchedNotes(searchedNotes: Array<NoteType>) {
-    this.setState({ searchedNotes: searchedNotes });
+  updateSearchedNotes(searched_notes: Array<NoteType>) {
+    this.setState({ searched_notes: searched_notes });
   }
 
   render() {
