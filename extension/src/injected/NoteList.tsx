@@ -28,11 +28,20 @@ export default class NoteList extends React.Component<Props> {
 
   render() {
     const { notesList, onDeleteNote, onEditNote } = this.props;
+    const displayNotesList = notesList.sort((n1, n2) => {
+      if (n1.timestamp > n2.timestamp) {
+        return 1;
+      }
+      if (n1.timestamp < n2.timestamp) {
+        return -1;
+      }
+      return 0;
+    });
     return (
       <StyledWrapper>
         <Box display="flex" flexDirection="column">
-          {notesList.length
-            ? notesList.map(n => (
+          {displayNotesList.length
+            ? displayNotesList.map(n => (
                 <NoteItem
                   key={n.note_id}
                   note={n}
