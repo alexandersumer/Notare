@@ -35,7 +35,7 @@ class NotePage extends React.Component<Props, State> {
   async getNotes(): Promise<void | NoteType[]> {
     const response = await getNotes({ sort: "-last_edited" });
 
-    if (response) {
+    if (response && response.num_notes) {
       var minLen = Number.MAX_SAFE_INTEGER;
 
       for (var note of response.notes) {
