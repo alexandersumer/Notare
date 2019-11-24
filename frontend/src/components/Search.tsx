@@ -16,7 +16,7 @@ interface State {
   myComponents: Array<NoteType> | Array<VideoType> | Array<string>;
 }
 
-function fuzzy_match(str: string, pattern: string): boolean {
+function match_pattern(str: string, pattern: string): boolean {
   if (pattern == "") return true;
   return str.includes(pattern);
 }
@@ -70,12 +70,12 @@ export default class Search extends React.Component<Props, State> {
     // filter for notes, videos that have searchbartext in them
     if (this.props.searchType === "notes") {
       return (myComponents as Array<NoteType>).filter(c =>
-        fuzzy_match(c.note.toLowerCase(), searchBarText.toLowerCase())
+        match_pattern(c.note.toLowerCase(), searchBarText.toLowerCase())
       );
     } else if (this.props.searchType === "videos") {
       return (myComponents as Array<VideoType>).filter(
         c =>
-          fuzzy_match(
+          match_pattern(
             c.video_title.toLowerCase(),
             searchBarText.toLowerCase()
           ) && this.categoryMatch(c) // search based on categories too
