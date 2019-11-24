@@ -175,10 +175,10 @@ class VideoNotesPage extends React.Component<Props, State> {
 
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => this.exportNotes(true)}>
-                    With Timestamps
+                    With timestamps
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => this.exportNotes(false)}>
-                    Without Timestamps
+                    Without timestamps
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
