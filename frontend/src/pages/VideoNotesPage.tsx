@@ -169,8 +169,8 @@ class VideoNotesPage extends React.Component<Props, State> {
             />
             <Box ml={3} mt={4}>
               <Dropdown>
-                <Dropdown.Toggle variant="info" id="dropdown-basic">
-                  Export Notes as text
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Export notes as text
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
