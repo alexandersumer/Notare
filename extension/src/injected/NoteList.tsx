@@ -28,11 +28,12 @@ export default class NoteList extends React.Component<Props> {
 
   render() {
     const { notesList, onDeleteNote, onEditNote } = this.props;
+    const displayList = notesList.reverse()
     return (
       <StyledWrapper>
         <Box display="flex" flexDirection="column">
-          {notesList.length
-            ? notesList.map(n => (
+          {displayList.length
+            ? displayList.map(n => (
                 <NoteItem
                   key={n.note_id}
                   note={n}
