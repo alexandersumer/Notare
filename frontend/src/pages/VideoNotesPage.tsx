@@ -4,7 +4,7 @@ import { styled as materialStyled } from "@material-ui/core/styles";
 import Thumbnail from "../components/Thumbnail";
 import { getPlural } from "../utils/stringUtils";
 import Note from "../components/Note";
-import { RED_COLOR } from "../colorConstants";
+import { RED_COLOR, DARK_GREY_COLOR } from "../colorConstants";
 import { getVideos } from "../api/videos";
 import { getNotes } from "../api/notes";
 import { VideoType, NoteType } from "../types";
@@ -14,14 +14,11 @@ import Container from "../components/Container";
 import YoutubeLink from "../components/YoutubeLink";
 import { formatTimestamp } from "../utils/stringUtils";
 import Dropdown from "react-bootstrap/Dropdown";
+import Typography from "@material-ui/core/Typography";
 
 const FontStyleComponent = materialStyled(Box)({
   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
 });
-
-interface MatchParams {
-  video_id: string;
-}
 
 interface Props extends RouteComponentProps<MatchParams> {
   Navbar: any;
@@ -30,8 +27,16 @@ interface Props extends RouteComponentProps<MatchParams> {
 interface State {
   video: VideoType | void;
   notes: NoteType[];
-  searched_notes: Array<NoteType>;
+  searchedNotes: Array<NoteType>;
 }
+
+interface MatchParams {
+  video_id: string;
+}
+
+const GreyFont = materialStyled(Box)({
+  color: DARK_GREY_COLOR
+});
 
 class VideoNotesPage extends React.Component<Props, State> {
   constructor(props: Props, state: State) {
@@ -39,7 +44,7 @@ class VideoNotesPage extends React.Component<Props, State> {
     this.state = {
       video: undefined,
       notes: [],
-      searched_notes: []
+      searchedNotes: []
     };
   }
 
@@ -49,8 +54,8 @@ class VideoNotesPage extends React.Component<Props, State> {
       this.setState({ video: response.videos[0] });
   }
 
-  updateSearchedNotes(searched_notes: Array<NoteType>) {
-    this.setState({ searched_notes: searched_notes });
+  updateSearchedNotes(searchedNotes: Array<NoteType>) {
+    this.setState({ searchedNotes: searchedNotes });
   }
 
   exportNotes(withTimestamps: boolean) {
@@ -76,7 +81,7 @@ class VideoNotesPage extends React.Component<Props, State> {
   async getNotes(video_id: string) {
     const response = await getNotes({ video_id: video_id });
     if (response)
-      this.setState({ notes: response.notes, searched_notes: response.notes });
+      this.setState({ notes: response.notes, searchedNotes: response.notes });
   }
 
   async componentDidMount() {
@@ -86,8 +91,50 @@ class VideoNotesPage extends React.Component<Props, State> {
     await this.getNotes(video_id);
   }
 
+  renderVideoNotes() {
+    const { notes, searchedNotes } = this.state;
+    const numNotes = notes.length;
+    const numSearchedNotes = searchedNotes.length;
+
+    if (numNotes && numSearchedNotes) {
+      return (
+        <Box display="flex" flexDirection="column" flexGrow={1}>
+          {searchedNotes.map(n => (
+            <Note noteData={n} thumbNail={false} youtubeLink />
+          ))}
+        </Box>
+      );
+    } else if (numNotes && !numSearchedNotes) {
+      return (
+        <Box mt="3" display="flex">
+          <Typography variant="h6">No notes found.</Typography>
+        </Box>
+      );
+    } else {
+      return (
+        <GreyFont
+          display="flex"
+          style={{ height: "100%" }}
+          alignItems="center"
+          flexDirection="center"
+          justifyContent="center"
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <Box p={1} />
+            <Box>Looks like you have no notes for this video yet!</Box>
+          </Box>
+        </GreyFont>
+      );
+    }
+  }
+
   render() {
-    const { video, notes, searched_notes } = this.state;
+    const { video, notes, searchedNotes } = this.state;
 
     if (!video) {
       return (
@@ -150,11 +197,7 @@ class VideoNotesPage extends React.Component<Props, State> {
               </Box>
             </Box>
 
-            <Box display="flex" flexDirection="column" flexGrow={1}>
-              {searched_notes.map(n => (
-                <Note noteData={n} thumbNail={false} youtubeLink />
-              ))}
-            </Box>
+            {this.renderVideoNotes()}
           </Box>
         </Container>
       </Box>
