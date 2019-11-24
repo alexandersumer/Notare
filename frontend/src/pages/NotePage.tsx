@@ -45,10 +45,16 @@ class NotePage extends React.Component<Props, State> {
     const numSearchedNotes = searchedNotes.length;
 
     const sortedSearchedNotes = searchedNotes.sort((n1, n2) => {
-      if (n1.last_edited > n2.last_edited) {
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) <
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
         return 1;
       }
-      if (n1.last_edited < n2.last_edited) {
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) >
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
         return -1;
       }
       return 0;

@@ -93,17 +93,24 @@ class VideoNotesPage extends React.Component<Props, State> {
 
   renderVideoNotes() {
     const { notes, searchedNotes } = this.state;
+    const numNotes = notes.length;
+    const numSearchedNotes = searchedNotes.length;
+
     const sortedSearchedNotes = searchedNotes.sort((n1, n2) => {
-      if (n1.last_edited > n2.last_edited) {
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) <
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
         return 1;
       }
-      if (n1.last_edited < n2.last_edited) {
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) >
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
         return -1;
       }
       return 0;
     });
-    const numNotes = notes.length;
-    const numSearchedNotes = searchedNotes.length;
 
     if (numNotes && numSearchedNotes) {
       return (
