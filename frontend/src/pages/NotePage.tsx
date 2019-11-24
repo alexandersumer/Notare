@@ -44,17 +44,26 @@ class NotePage extends React.Component<Props, State> {
     const numNotes = notes.length;
     const numSearchedNotes = searchedNotes.length;
 
-    const TryNotareBox = materialStyled(Box)({
-      width: "300px",
-      height: "60px",
-      backgroundColor: RED_COLOR,
-      color: "white"
+    const sortedSearchedNotes = searchedNotes.sort((n1, n2) => {
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) <
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
+        return 1;
+      }
+      if (
+        Number(n1.last_edited.toString().substring(0, 14)) >
+        Number(n2.last_edited.toString().substring(0, 14))
+      ) {
+        return -1;
+      }
+      return 0;
     });
 
     if (numNotes && numSearchedNotes) {
       return (
         <Box mr={4}>
-          {this.state.searchedNotes.map(n => (
+          {sortedSearchedNotes.map(n => (
             <Note noteData={n} thumbNail youtubeLink />
           ))}
         </Box>
