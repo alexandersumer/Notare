@@ -28,7 +28,7 @@ export default class NoteList extends React.Component<Props> {
 
   render() {
     const { notesList, onDeleteNote, onEditNote } = this.props;
-    const displayList = notesList.reverse()
+    const displayList = notesList.reverse();
     return (
       <StyledWrapper>
         <Box display="flex" flexDirection="column">
