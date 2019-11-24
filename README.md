@@ -41,6 +41,15 @@ Please run the following command: `sh run_backend_tests.sh`
 ## Contributors
 
 - Alexander Jones (Fullstack) [GitHub](https://github.com/alexanderj2357) [LinkedIn](https://www.linkedin.com/in/alexanderj2357/)
+ [[params.social]]
+    icon = "linkedin"
+    icon_pack = "fa"
+    link = "//linkedin.com/in/alexanderj2357"
+
+ [[params.social]]
+    icon = "github"
+    icon_pack = "fa"
+    link = "//github.com/alexanderj2357"
 - Daniel Brockwell (Frontend & UX) [GitHub](https://github.com/Actom360) [LinkedIn](https://www.linkedin.com/in/danielbrockwell/)
 - Guy Segev (Frontend & UX) [GitHub](https://github.com/atiredturtle) [LinkedIn](https://www.linkedin.com/in/guy-segev-98a27110a/)
 - Mitchell Shelton (Fullstack) [GitHub](https://github.com/armoured) [LinkedIn](https://www.linkedin.com/in/mitchell-shelton/)
