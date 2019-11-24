@@ -18,7 +18,10 @@ interface State {
 
 function fuzzy_match(str: string, pattern: string): boolean {
   if (pattern == "") return true;
-  return str.includes(pattern);
+  pattern = pattern.split("").reduce(function(a, b) {
+    return a + ".*" + b;
+  });
+  return new RegExp(pattern).test(str);
 }
 
 export default class Search extends React.Component<Props, State> {
