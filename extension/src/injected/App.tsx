@@ -44,10 +44,20 @@ export default class NoteItem extends React.Component<Props, State> {
 
   login = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const responseText = await AuthService.authenticate(
-      this.state.emailTextBox,
-      this.state.password
-    );
+    let responseText = "";
+    if (this.state.emailTextBox === "" && this.state.password === "") {
+      responseText = "Please Enter an Email and Password";
+    } else if (this.state.emailTextBox === "") {
+      responseText = "Please Enter a Email";
+    } else if (this.state.password === "") {
+      responseText = "Please Enter a Password";
+    } else {
+      responseText = await AuthService.authenticate(
+        this.state.emailTextBox,
+        this.state.password
+      );
+    }
+
     if (responseText === "") {
       const isAuthenticated = AuthService.isAuthenticated;
       const email = await AuthService.email();
