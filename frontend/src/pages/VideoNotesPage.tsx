@@ -53,6 +53,7 @@ class VideoNotesPage extends React.Component<Props, State> {
       sort: "-last_edited",
       video_id: video_id
     });
+    
     if (response && response.num_videos) {
       return response.videos[0];
     } else {
