@@ -44,7 +44,16 @@ class CreateAccount extends React.Component<
   createAccount = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const { email, password } = this.state;
-    const response = await this.props.onCreateAccount(email, password);
+    let response = "";
+    if (email === "" && password === "") {
+      response = "Please Enter an Email and Password";
+    } else if (email === "") {
+      response = "Please Enter a Email";
+    } else if (password === "") {
+      response = "Please Enter a Password";
+    } else {
+      response = await this.props.onCreateAccount(email, password);
+    }
     if (response !== "") {
       this.setState({ errorMessage: response });
     } else {

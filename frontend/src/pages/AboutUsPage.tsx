@@ -15,7 +15,12 @@ const Profile = (profile: ProfileType) => {
   return (
     <Box m={3} display="flex" flexDirection="column" alignItems="center">
       <Box>
-        <img width="200px" height="200px" style={{borderRadius: 100}} src={profile.image} />
+        <img
+          width="200px"
+          height="200px"
+          style={{ borderRadius: 100 }}
+          src={profile.image}
+        />
       </Box>
       <Box p={1} />
       <Typography variant="h5" color="textPrimary">
@@ -103,7 +108,11 @@ class AboutUsPage extends React.Component<Props> {
             <Box p={2} />
             <Typography variant="h2">Who the heck are these guys?</Typography>
             <Box p={1} />
-            <Typography variant="h6"> <b>WARNING:</b> Notare may contain blood, sweat and tears from the following individuals:</Typography>
+            <Typography variant="h6">
+              {" "}
+              <b>WARNING:</b> Notare may contain blood, sweat and tears from the
+              following individuals:
+            </Typography>
             <Box p={2} />
             <Box display="flex" flexDirection="row">
               {profileInfo.map(Profile)}

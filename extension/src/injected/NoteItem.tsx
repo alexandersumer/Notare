@@ -175,7 +175,10 @@ export default class NoteItem extends React.Component<Props, State> {
             <DoneIcon fontSize="default" />
           </MyIconButton>
 
-          <MyIconButton aria-label="cancel" onClick={this.cancelEdit.bind(this)}>
+          <MyIconButton
+            aria-label="cancel"
+            onClick={this.cancelEdit.bind(this)}
+          >
             <ClearIcon fontSize="default" />
           </MyIconButton>
         </Box>

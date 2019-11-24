@@ -1,7 +1,7 @@
 import axios from "axios";
 import LocalStorage from "../utils/LocalStorage";
 import { DOMAIN_URL } from "../constants";
-import { AxiosResponse, AxiosError } from 'axios'
+import { AxiosResponse, AxiosError } from "axios";
 
 const backendapi = axios.create({
   baseURL: DOMAIN_URL + ":5000/v1"
@@ -71,27 +71,34 @@ export const deleteRequest = async (route: string) => {
 
 export const loginRequest = async (route: string, body: any) => {
   // console.log("loginRequest body:", body);
-  const response = await backendapi.post(route, {
-    email: body.email,
-    password: body.password
-  }).then(response => {
-    if (response.status === 200) {
-      return response.data;
-    }
-  }).catch((reason: AxiosError) => {
-    if (reason.response!.status === 400) {
-      // Handle 400
-      if (reason.response!.data.errorMessage === "Invalid Email") {
-        return "Invalid Email Format";
-      } else if (reason.response!.data.errorMessage === "User Already Exists") {
-        return "User Already Exists";
-      } else if (reason.response!.data.errorMessage === "Invalid Email or Password") {
-        return "Invalid Email or Password";
+  const response = await backendapi
+    .post(route, {
+      email: body.email,
+      password: body.password
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return response.data;
       }
-      return "400 error"
-    } 
-    return "There is a problem with our backend service"
-  });
+    })
+    .catch((reason: AxiosError) => {
+      if (reason.response!.status === 400) {
+        // Handle 400
+        if (reason.response!.data.errorMessage === "Invalid Email") {
+          return "Invalid Email Format";
+        } else if (
+          reason.response!.data.errorMessage === "User Already Exists"
+        ) {
+          return "User Already Exists";
+        } else if (
+          reason.response!.data.errorMessage === "Invalid Email or Password"
+        ) {
+          return "Invalid Email or Password";
+        }
+        return "400 error";
+      }
+      return "There is a problem with our backend service";
+    });
   return response;
 };
 

@@ -23,17 +23,15 @@ const getEmail = async (): Promise<string> => {
   return "" + email;
 };
 
-
-
 const AuthService = {
   isAuthenticated,
   accessToken: getAccessToken,
   userId: getUserId,
   email: getEmail,
-  async authenticate(email: string, password: string): Promise<string>  {
+  async authenticate(email: string, password: string): Promise<string> {
     const response = await login({ email, password });
     if (typeof response === "string") {
-      return response
+      return response;
     } else {
       this.isAuthenticated = true;
       this.accessToken = response.accessToken;
