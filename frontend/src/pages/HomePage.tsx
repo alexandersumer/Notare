@@ -6,7 +6,7 @@ import { CHARCOAL_COLOR } from "../colorConstants";
 import Container from "../components/Container";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Demo from "../Demo.png";
+import Demo from "../demo.png";
 
 export const Home = () => <h1></h1>;
 
