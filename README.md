@@ -2,6 +2,12 @@
 
 Notare is an open source note-taking app for educational YouTube videos. It consists of a Google Chrome extension for note-taking and a companion webapp for note and video organisation, both communicating with a common Flask REST API backend.
 
+## Roadmap
+
+- Replace the Flask REST API with a golang gRPC backend on AWS, replacing the SQLite database with DynamoDB
+- Improve the authentication experience; allowing for password reset and Google authentication
+- Deploy the product
+
 ## Running Notare
 
 The follow instruction are for Mac and Linux computers.
