@@ -6,7 +6,7 @@ Notare is an open source note-taking app for educational YouTube videos. It cons
 
 ## Roadmap
 
-- Replace the Flask REST API with a gRPC backend on AWS; replacing the SQLite database with DynamoDB
+- Replace the Flask REST API with a Kotlin gRPC backend on AWS; replacing the SQLite database with DynamoDB
 - Improve the authentication experience; allowing for password reset and Google authentication
 - Various UX improvements, including rich text
 - Deploy the product
